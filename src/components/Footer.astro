@@ -1,0 +1,40 @@
+---
+import { entreprise as e } from '../data/entreprise';
+import { services } from '../data/services';
+import { nav } from '../data/navigation';
+import Tbc from './Tbc.astro';
+import { PROD } from '../lib/env';
+import { conseilsPublies } from '../lib/conseils';
+const avecConseils = (await conseilsPublies()).length > 0;
+const annee = new Date().getFullYear();
+---
+<footer class="ftr">
+  <span class="regard d-only" aria-hidden="true"></span>
+  <div class="wrap">
+    <div class="ftr-grid">
+      <div class="ftr-brand">
+        <img src="/img/logo/hf-logo-blanc.svg" alt="HYDROFLASH" width="240" height="56" loading="lazy">
+        <p>{e.slogan}</p>
+        <a class="btn btn-call d-only" href={e.telephone.lien}><svg class="ic" aria-hidden="true"><use class="u-d" href="#i-tel"/><use class="u-m" href="#i-tel-f"/></svg>{e.telephone.affiche}</a>
+      </div>
+      <nav aria-label="Services (pied de page)"><details class="fdet" open data-fdet><summary><h2 class="fh">Services</h2><span class="tog" aria-hidden="true"></span></summary><ul>
+        {services.map((s) => <li><a href={s.url}>{s.court}</a></li>)}
+        <li><a href="/urgence-debouchage-24h/">Urgence 24 h/24</a></li>
+      </ul></details></nav>
+      <nav aria-label="HYDROFLASH (pied de page)"><details class="fdet" open data-fdet><summary><h2 class="fh">HYDROFLASH</h2><span class="tog" aria-hidden="true"></span></summary><ul>
+        <li><a href="/a-propos/">À propos</a></li><li><a href="/professionnels/">Professionnels &amp; syndics</a></li><li><a href="/zones-intervention/">Zones d'intervention</a></li>{avecConseils && <li><a href="/conseils/">Conseils</a></li>}<li><a href="/contact/">Contact et devis</a></li>
+      </ul></details></nav>
+      <div class="ftr-contact"><h2 class="fh">Contact</h2><ul class="contact">
+        <li><img class="ct-ic" src="/img/pictos/appel-blanc.svg" alt="" width="22" height="22" loading="lazy"><span class="ct-l mono">Téléphone</span><a class="ct-tel" href={e.telephone.lien}>{e.telephone.affiche}</a></li>
+        <li><img class="ct-ic" src="/img/pictos/devis-blanc.svg" alt="" width="22" height="22" loading="lazy"><span class="ct-l mono">E-mail</span><a class="ct-mail" href={`mailto:${e.email}`}>{e.email}</a></li>
+        <li><img class="ct-ic" src="/img/pictos/zone-blanc.svg" alt="" width="22" height="22" loading="lazy"><span class="ct-l mono">Zone</span><span>{e.zone.libelle}</span></li>
+        <li><img class="ct-ic" src="/img/pictos/permanence-24h-blanc.svg" alt="" width="22" height="22" loading="lazy"><span class="ct-l mono">Horaires</span><span>Intervention {e.disponibilite.libelle}</span></li>
+      </ul></div>
+    </div>
+    <div class="ftr-bot">
+      <span>© {annee} HYDROFLASH{e.siret ? <> — SIRET {e.siret}</> : <> — SIRET <Tbc /></>}</span>
+      <ul>{nav.legal.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
+    </div>
+  </div>
+  {!PROD && <p class="proto-band mono">Préproduction — contenus en cours de validation</p>}
+</footer>

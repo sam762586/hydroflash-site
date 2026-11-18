@@ -1,0 +1,40 @@
+---
+/** En-tête des pages intérieures (prestations, zones, contact, à propos, légales…).
+ *  Ordinateur : bandeau sombre style C (fil d'Ariane, surtitre mono, titre en deux tons, visuel à droite).
+ *  Smartphone : bandeau sombre style A (titre condensé en capitales, gros bouton d'appel). */
+import { entreprise as e } from '../data/entreprise';
+import Breadcrumb from './Breadcrumb.astro';
+interface Props {
+  ariane: { label: string; href?: string }[];
+  surtitre: string; titre: string; titreFin?: string; intro?: string;
+  picto?: string; visuel?: { src: string; alt: string; w: number; h: number; legende?: string };
+  actions?: boolean; compact?: boolean;
+}
+const { ariane, surtitre, titre, titreFin, intro, picto, visuel, actions = true, compact = false } = Astro.props;
+---
+<section class:list={['shero', { 'shero--compact': compact }]} aria-labelledby="h1">
+  <div class="wrap shero-grid">
+    <div class="shero-txt">
+      <Breadcrumb items={ariane} />
+      <p class="eyebrow"><span class="pulse" aria-hidden="true"></span>{surtitre}</p>
+      <h1 id="h1"><span class="sh-a">{titre}</span>{titreFin && <> <span class="sh-b">{titreFin}</span></>}</h1>
+      {intro && <p class="lead" set:html={intro} />}
+      {actions && (
+        <div class="shero-ctas">
+          <a class="btn btn-call btn-xl" href={e.telephone.lien}><span class="ic-round"><svg class="ic" aria-hidden="true"><use class="u-d" href="#i-tel"/><use class="u-m" href="#i-tel-f"/></svg></span><span class="btn-txt"><span class="l1">Appeler HYDROFLASH</span><span class="l2">{e.telephone.affiche}</span></span></a>
+          <a class="btn btn-ghost btn-xl" href="/contact/#devis"><svg class="ic ic-doc" aria-hidden="true"><use href="#i-doc"/></svg>Demander un devis</a>
+        </div>
+      )}
+      {actions && <p class="shero-micro"><span>Intervention {e.disponibilite.court}</span><span>Sans majoration</span><span>{e.zone.libelle}</span></p>}
+    </div>
+    {(visuel || picto) && (
+      <div class="shero-vis d-only" aria-hidden={visuel ? undefined : 'true'}>
+        {visuel ? (
+          <figure><img src={visuel.src} alt={visuel.alt} width={visuel.w} height={visuel.h} fetchpriority="high" />{visuel.legende && <figcaption class="mono">{visuel.legende}</figcaption>}</figure>
+        ) : (
+          <div class="shero-picto"><img src={`/img/pictos/${picto}-blanc.svg`} alt="" width="160" height="160" /></div>
+        )}
+      </div>
+    )}
+  </div>
+</section>

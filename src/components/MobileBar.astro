@@ -1,0 +1,16 @@
+---
+import { entreprise as e } from '../data/entreprise';
+interface Props { variante?: 'standard' | 'urgence' }
+const { variante = 'standard' } = Astro.props;
+---
+{variante === 'urgence' ? (
+  <nav class="mbar mbar--urg" aria-label="Actions rapides">
+    <a class="btn btn-call" href={e.telephone.lien}><svg class="ic" aria-hidden="true"><use class="u-d" href="#i-tel"/><use class="u-m" href="#i-tel-f"/></svg>Appeler — 24&nbsp;h/24</a>
+    <a class="btn btn-ghost" href="#rappel" data-rappel aria-controls="rappel">Être rappelé</a>
+  </nav>
+) : (
+  <nav class="mbar" aria-label="Actions rapides">
+    <a class="btn btn-call" href={e.telephone.lien}><svg class="ic" aria-hidden="true"><use class="u-d" href="#i-tel"/><use class="u-m" href="#i-tel-f"/></svg>Appeler</a>
+    <a class="btn btn-ghost" href="/contact/#devis"><svg class="ic d-only" aria-hidden="true"><use href="#i-doc"/></svg>Devis</a>
+  </nav>
+)}

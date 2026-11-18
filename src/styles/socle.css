@@ -1,0 +1,95 @@
+/* =========================================================================
+   HYDROFLASH — site (issu de la version finale hybride validée le 18/11/2026)
+   socle.css : jetons et règles communes aux deux rendus.
+     · ordinateur.css  → ≥ 701 px : concept C « Next »  (chargé avec media="(min-width: 701px)")
+     · mobile.css      → ≤ 700 px : concept A « Impact » (chargé avec media="(max-width: 700px)")
+   Une seule source HTML : les éléments propres à un rendu portent .d-only (ordinateur/tablette)
+   ou .m-only (smartphone) et reçoivent display:none dans l'autre feuille.
+   ========================================================================= */
+
+:root {
+  /* Couleurs (charte : logo officiel)
+     --orange est la SEULE valeur d'orange écran : calage sur le RAL 2009 du véhicule en cours.
+     Toutes les teintes dérivées (survol, halos, transparences) sont calculées à partir d'elle (color-mix). */
+  --orange: #F26A1B;
+  --o: var(--orange);
+  --o-hi: color-mix(in srgb, var(--orange) 84%, #fff);      /* survol bouton orange */
+  --o-a12: color-mix(in srgb, var(--orange) 12%, transparent);
+  --o-a18: color-mix(in srgb, var(--orange) 18%, transparent);
+  --o-a22: color-mix(in srgb, var(--orange) 22%, transparent);
+  --o-a35: color-mix(in srgb, var(--orange) 35%, transparent);
+  --o-a55: color-mix(in srgb, var(--orange) 55%, transparent);
+  --o-text: #C2470A;     /* orange TEXTE sur fond clair (charte, 5,0:1) — à recalculer si --orange change */
+  --ink: #0E0F12;        /* noir profond de fond */
+  --ink0: #0B0C0E;       /* noir A */
+  --ink2: #14161A;       /* noir marque */
+  --ink3: #1B1E24;
+  --ink4: #272B32;
+  --paper: #FFFFFF;
+  --mist: #F2F3F5;       /* gris clair */
+  --mist2: #E4E6EA;
+  --grey: #5C6169;       /* texte secondaire sur clair (6,2:1) */
+  --grey-d: #A9AEB6;     /* texte secondaire sur sombre (8,1:1) */
+  --line: #DADDE2;
+  --line-d: rgba(255, 255, 255, .13);
+  --line-k: #2A2E35;     /* filet sur noir (A) */
+
+  /* Typographie unifiée : Archivo (police de marque) partout.
+     --display : police d'affichage (titres) — à remplacer ici pour tester une autre famille.
+     Contraste « Next » obtenu par les axes de largeur (62–125 %) et de graisse d'Archivo. */
+  --display: "Archivo Variable";
+  --text: "Archivo Variable";
+  --m: "JetBrains Mono";
+  --f-display: var(--display), "Archivo", "Arial Narrow", Arial, sans-serif;
+  --f-text: var(--text), Arial, sans-serif;
+  --f-mono: var(--m), ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  /* Réglages d'axes (largeur / graisse) */
+  --cond-xx: 62%;   /* condensé « impact » (minimum de l axe wdth) */
+  --cond-x: 72%;    /* condensé titres */
+  --cond: 82%;      /* semi-condensé (sous-titres, cartes) */
+  --wide: 110%;     /* large (segments fins du titre principal) */
+  --wide-s: 100%;   /* large (segments fins des titres de section) */
+  --w-black: 860;
+  --w-heavy: 780;
+  --w-thin: 250;
+
+  --tel-href: "tel:+33762882839";
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+body {
+  margin: 0; font-family: var(--f-text); font-stretch: 100%; color: var(--ink2); background: var(--paper);
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; overflow-x: clip;
+}
+img, svg { max-width: 100%; }
+img { display: block; }
+picture { display: contents; }
+a { color: inherit; }
+p { margin: 0; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+h1, h2, h3, h4 { margin: 0; }
+figure { margin: 0; }
+button, input, select, textarea { font: inherit; color: inherit; }
+.sr { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; margin: -1px; padding: 0; border: 0; }
+.sr:focus { position: fixed !important; z-index: 200; left: 12px; top: 12px; width: auto; height: auto; clip: auto; clip-path: none; margin: 0; padding: 12px 16px; background: var(--o); color: var(--ink2); font-weight: 700; border-radius: 8px; }
+.tel { white-space: nowrap; }
+
+/* Vérificateur de code postal : états communs (le rendu est précisé dans chaque feuille) */
+.cp-res:empty { display: none; }
+.cp-res .cp-ok, .cp-res .cp-ko, .cp-res .cp-err { margin: 0; }
+picture > source { display: none; }
+
+/* ——— Ajouts site (formulaires réels, piège anti-spam, messages) ——— */
+.hp { position: absolute !important; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.form-msg:empty { display: none; }
+.form-msg { margin: 0; padding: 12px 14px; border-radius: 12px; font-size: 15px; line-height: 1.45; }
+.form-msg.is-ok { background: #E3F4E8; color: #14622F; }
+.form-msg.is-err { background: #FBE3E1; color: #8E1E16; }
+.form-msg a { color: inherit; font-weight: 700; }
+[aria-invalid="true"] { border-color: #C8281E !important; box-shadow: 0 0 0 3px rgba(200, 40, 30, .18); }

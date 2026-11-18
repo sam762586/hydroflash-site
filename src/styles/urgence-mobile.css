@@ -1,0 +1,161 @@
+/* =========================================================================
+   HYDROFLASH — VERSION FINALE · page « Urgence débouchage 24 h/24, 7 j/7 » · SMARTPHONE (≤ 700 px) = A
+   S'ajoute à socle.css + mobile.css (chargé avec media="(max-width: 700px)").
+   Premier écran : titre + « Appeler maintenant » + « Être rappelé ».
+   ========================================================================= */
+
+/* Page courte : surtitres masqués, rythme resserré (comme A) */
+.p-urg main .sec-label, .u-status { display: none; }
+.p-urg .sec { padding: 28px 0; }
+.p-urg .sec-head { margin-bottom: 14px; }
+.p-urg .h2 { font-size: 37px; }
+.p-urg .cta-sec { padding: 0; }
+.u-faq .h2 em { display: none; }
+
+/* ---------- 1. HERO de nuit : l'ordre visuel est recomposé (contenus inchangés) ---------- */
+.u-hero { display: flex; flex-direction: column; padding: 2px var(--pad) 0; background: #07080A; }
+.u-hero .hero-bg img { object-position: 70% 40%; filter: saturate(.55) brightness(.68) contrast(1.12); }
+.u-hero .hero-bg::after {
+  background: radial-gradient(30% 42% at 90% 58%, rgba(255, 150, 50, .3), transparent 70%),
+    linear-gradient(90deg, rgba(7, 8, 10, .98) 0%, rgba(7, 8, 10, .93) 40%, rgba(7, 8, 10, .66) 72%, rgba(7, 8, 10, .5) 100%),
+    linear-gradient(0deg, rgba(7, 8, 10, .94) 0%, transparent 36%), linear-gradient(180deg, rgba(7, 8, 10, .85) 0%, transparent 20%);
+}
+.u-hero .hero-flux { width: 380px; right: -190px; top: -40px; opacity: .15; }
+.u-grid, .u-txt, .u-rp-wrap { display: contents; }
+.crumb { order: 1; }
+.u-hero h1 { order: 2; }
+.u-hero .lead { order: 3; }
+.u-ctas { order: 4; }
+.u-rappel { order: 5; }
+.u-info { order: 6; }
+.u-visual { order: 7; }
+.u-stamp { order: 8; }
+
+.crumb ol { display: flex; flex-wrap: wrap; align-items: center; gap: 0 10px; margin: 0 0 6px; font-size: 16px; color: var(--grey-d); }
+.crumb li { display: flex; align-items: center; }
+.crumb li + li::before { content: "›"; margin-right: 10px; color: var(--o); font-weight: 800; font-size: 18px; }
+.crumb a { display: inline-flex; align-items: center; min-height: 44px; color: #D9DCE0; text-underline-offset: 3px; }
+.crumb [aria-current] { color: #fff; font-weight: 600; }
+
+.u-hero h1 { font-size: 41px; line-height: .94; }
+.u-hero h1 .h1a, .u-hero h1 .h1b { display: inline; }
+.u-hero .h1b em { display: inline-block; margin-top: .08em; padding: .07em .16em .02em; background: var(--o); color: var(--ink2); line-height: .9; }
+.u-hero .lead { margin: 14px 0 18px; color: #D9DCE0; font-size: 16px; line-height: 1.47; }
+
+.u-ctas { display: flex; flex-direction: column; gap: 10px; }
+.u-call { display: grid; grid-template-columns: 56px minmax(0, 1fr); column-gap: 14px; align-items: center; justify-content: stretch; min-height: 84px; padding: 10px 14px 10px 10px; text-align: left; letter-spacing: 0; text-transform: none; }
+.u-call .ic-round { width: 56px; height: 56px; }
+.u-call .l1 { font: 900 24px/1 var(--f-display); font-stretch: 72%; letter-spacing: .04em; }
+.u-call .l2 { font-size: 28px; margin-top: 6px; }
+@media (prefers-reduced-motion: no-preference) {
+  .u-call .ic-round { animation: u-ring 2.4s ease-out infinite; }
+  @keyframes u-ring { 0% { box-shadow: 0 0 0 0 rgba(20, 22, 26, .5); } 70%, 100% { box-shadow: 0 0 0 14px rgba(20, 22, 26, 0); } }
+}
+.u-cb { --h: 56px; width: 100%; font-size: 17px; background: rgba(7, 8, 10, .55); }
+.u-cb[aria-expanded="true"] { background: #fff; color: var(--ink2); }
+
+/* Être rappelé : volet qui s'ouvre sous le bouton (fermé par défaut, ouvert sans script) */
+.u-rappel { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; padding: 16px 16px 14px; background: var(--ink2); border-radius: var(--radius); border-top: 5px solid var(--o); scroll-margin-top: 16px; }
+.js .u-rappel:not(.is-open) { display: none; }
+.u-rappel .fld { order: 1; }
+.u-rp-btn { order: 2; grid-column: 1 / -1; width: 100%; --h: 54px; }
+.u-rp-head { order: 3; grid-column: 1 / -1; }
+.u-rp-ic { display: none; }
+.u-rappel h2 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.u-rp-micro { font-size: 16px; color: var(--grey-d); }
+.u-rappel .rgpd { order: 4; grid-column: 1 / -1; margin-top: -4px; }
+
+.u-info { display: flex; flex-direction: column; gap: 4px; margin-top: 16px; color: var(--grey-d); font-size: 16px; }
+.u-info li { display: flex; align-items: center; gap: 9px; }
+.u-info li::before { content: ""; width: 8px; height: 8px; background: var(--o); transform: rotate(45deg); flex: none; }
+.u-info .tbc { color: #E6E8EB; }
+
+.u-visual { position: relative; margin: 12px 0 -2px; }
+.u-truck { width: 90%; margin: 0 0 0 auto; }
+.u-stamp { align-self: flex-start; margin: 0 0 14px; }
+
+/* ---------- 2. EN ATTENDANT : aplat orange ---------- */
+.u-wait { background: var(--o); color: var(--ink2); }
+.p-urg .u-wait { padding: 32px 0 16px; }
+.u-wait .h2 em { color: inherit; }
+.u-note { margin: 8px 0 14px; font-size: 16px; font-weight: 700; }
+.u-wait-list { border-top: 4px solid var(--ink2); }
+.u-wait-list li { display: grid; grid-template-columns: 44px 1fr; gap: 12px; padding: 10px 0; border-top: 2px solid rgba(20, 22, 26, .2); }
+.u-wait-list li:first-child { border-top: 0; }
+.u-n { display: grid; place-items: center; width: 44px; height: 44px; background: var(--ink2); color: var(--o); border-radius: var(--radius); font: 900 28px/1 var(--f-display); font-stretch: 62%; }
+.u-wait-list strong { display: block; margin-bottom: 3px; font: 900 20px/1 var(--f-display); font-stretch: 72%; text-transform: uppercase; }
+.w-sep { display: none; }
+.w-d { display: block; font-size: 16px; line-height: 1.38; }
+.w-d::first-letter { text-transform: uppercase; }
+
+/* ---------- 3. DÉROULÉ (tube orange, cf. mobile.css) ---------- */
+.u-flow-head { margin-bottom: 14px; }
+.u-step { padding-bottom: 12px; }
+.u-step h3 { font-size: 21px; margin-top: 9px; }
+
+/* ---------- 4. URGENCES : liste compacte sur fond noir ---------- */
+.u-cases { background: var(--ink0); color: #fff; }
+.u-cases .h2 em { color: var(--o); }
+.u-cases-head { margin-bottom: 14px; }
+.u-bento { border-top: 1px solid var(--line-k); }
+.uc a { display: grid; grid-template-columns: 36px minmax(0, 1fr) 44px; grid-template-areas: "pic t go" "pic to go"; gap: 2px 14px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--line-k); color: #fff; text-decoration: none; }
+.uc:last-child a { border-bottom: 0; }
+.uc-top, .uc-to { display: contents; }
+.uc-i, .uc-ill { display: none; }
+.uc .picto { grid-area: pic; width: 36px; height: 36px; }
+.uc h3 { grid-area: t; align-self: end; font-size: 20px; line-height: 1.02; }
+.uc-sub { font: 600 16px/1.3 var(--f-text); text-transform: none; color: var(--grey-d); }
+.uc-svc { grid-area: to; align-self: start; font-size: 16px; font-weight: 700; color: var(--o); }
+.uc-svc .tbc { color: #C9CDD3; }
+.uc .ar { grid-area: go; width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--o); color: var(--o); display: grid; place-items: center; }
+.uc .ar .ic { width: 18px; height: 18px; }
+.uc a:focus-visible { outline-offset: -3px; }
+
+/* ---------- 5. PRIX (gris) + 6. ZONE (noir pointillé) ---------- */
+.u-duo-band > .wrap { padding: 0; }
+.u-price { background: var(--mist); padding: 32px var(--pad); }
+.u-price .h2 { font-size: 36px; margin-bottom: 18px; }
+.u-ticket { background: var(--ink2); color: #fff; border-radius: var(--radius); padding: 4px 16px 6px; border-top: 6px solid var(--o); }
+.u-ticket li { position: relative; display: block; padding: 11px 0 11px 22px; border-bottom: 1px solid var(--line-k); font-size: 17px; font-weight: 600; line-height: 1.4; }
+.u-ticket li:last-child { border-bottom: 0; }
+.u-ticket li::before { content: ""; position: absolute; left: 2px; top: 19px; width: 9px; height: 9px; background: var(--o); transform: rotate(45deg); }
+.u-ticket .ic { display: none; }
+.u-ticket .tbc { margin-left: 6px; }
+.u-ticket .u-ok { margin-left: 6px; color: var(--o); font-weight: 800; text-transform: uppercase; letter-spacing: .04em; }
+.u-rule { display: flex; gap: 12px; align-items: center; margin-top: 16px; font-size: 16px; font-weight: 700; line-height: 1.35; }
+.u-rule::before { content: "!"; flex: none; width: 30px; height: 30px; border-radius: 50%; background: var(--o); color: var(--ink2); display: grid; place-items: center; font-weight: 900; font-size: 16px; }
+.u-zone { padding: 32px var(--pad); color: #fff; background: radial-gradient(circle, #23272E 1.6px, transparent 1.8px) 0 0 / 22px 22px, var(--ink0); }
+.u-zone .h2 { font-size: 37px; }
+.u-zone .zmap { width: 84%; margin-inline: auto; }
+.u-zone .rp-t { display: none; }
+.u-zone .communes li { padding: 3px 9px; }
+
+/* ---------- 7. FAQ ---------- */
+.u-faq { background: #fff; }
+.p-urg .faq-grid { gap: 14px; }
+.u-faq .h2 { font-size: 34px; }
+.p-urg .faq summary { font-size: 18px; padding: 10px 0; }
+.p-urg .faq details:last-of-type { border-bottom: 2px solid var(--ink2); }
+
+/* ---------- 8. CTA FINAL : carte noire sur aplat orange ---------- */
+.u-final.cta-sec > .wrap { padding-top: 36px; padding-bottom: 36px; }
+.u-cta { gap: 22px; }
+.u-cta .cta-txt .h2 { font-size: 50px; }
+.u-cta .cta-btns { position: relative; margin-top: 22px; padding: 18px 16px 16px; background: var(--ink2); border-radius: var(--radius); }
+.u-cta .cta-btns::before { content: ""; position: absolute; left: 16px; top: -6px; width: 90px; height: 12px; background: var(--ink2); }
+.u-fcall { background: var(--o); color: var(--ink2); }
+.u-fcall .btn-txt { display: flex; align-items: baseline; gap: .4em; }
+.u-fcall .btn-txt .l1, .u-fcall .btn-txt .l2 { margin: 0; font: 800 17px/1 var(--f-display); font-stretch: 85%; letter-spacing: .05em; }
+.u-cta .btn-line { color: #fff; border-color: #fff; }
+.u-cta .cta-btns a:focus-visible { outline-color: #fff; box-shadow: 0 0 0 6px var(--ink2); }
+
+/* Barre d'action : toujours visible sur cette page */
+.mbar--urg { grid-template-columns: 1.5fr 1fr; }
+.mbar--urg .btn { font-stretch: 75%; letter-spacing: .03em; gap: 8px; padding: 0 10px; }
+.mbar--urg.is-off { transform: none; visibility: visible; }
+
+@media (max-width: 360px) {
+  .u-hero h1 { font-size: 36px; }
+  .u-call .l1 { font-size: 21px; }
+  .u-cta .cta-txt .h2 { font-size: 44px; }
+}

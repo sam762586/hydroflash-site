@@ -1,0 +1,26 @@
+---
+/** Section finale « Contact » (panneau orange + formulaire), reprise de la maquette validée. */
+import { entreprise as e } from '../data/entreprise';
+import FormulaireDemande from './FormulaireDemande.astro';
+interface Props { label?: string; titreD?: string; titreDem?: string; titreM?: string; prestation?: string }
+const { label = 'Contact', titreD = 'Un écoulement qui ne passe plus ?', titreDem = 'Parlons-en maintenant.', titreM = 'Appelez HYDROFLASH.', prestation } = Astro.props;
+---
+<section class="sec cta-sec" id="contact" aria-labelledby="t-cta">
+  <svg class="final-flux m-only" viewBox="-2 -2 116 128" aria-hidden="true"><use href="#flux-line"/></svg>
+  <div class="wrap">
+    <div class="cta-panel on-orange reveal">
+      <svg class="deco d-only" viewBox="0 0 520 300" aria-hidden="true"><path d="M-20,90 H250 Q360,90 360,200 V340" fill="none" stroke="#fff" stroke-width="40"/></svg>
+      <div class="cta-txt">
+        <p class="sec-label sec-label-nb"><span class="d-only">{label}</span><span class="m-only">{titreD}</span></p>
+        <h2 class="h2" id="t-cta"><span class="d-only">{titreD} <em>{titreDem}</em></span><span class="m-only">{titreM}</span></h2>
+        <p class="lead">Appelez-nous ou décrivez votre problème en quelques lignes&nbsp;: nous vous rappelons immédiatement.</p>
+        <p class="cta-phone d-only"><span class="mono">Ligne directe · {e.disponibilite.court}</span><a class="cta-num" href={e.telephone.lien}>{e.telephone.affiche}</a></p>
+        <div class="cta-btns">
+          <a class="btn btn-dark btn-xl" href={e.telephone.lien}><svg class="ic" aria-hidden="true"><use class="u-d" href="#i-tel"/><use class="u-m" href="#i-tel-f"/></svg><span>Appeler<span class="d-only"> HYDROFLASH</span><span class="m-only"> {e.telephone.affiche}</span></span></a>
+          <a class="btn btn-line btn-xl d-only" href="#devis">Demander un devis</a>
+        </div>
+      </div>
+      <FormulaireDemande prestation={prestation} />
+    </div>
+  </div>
+</section>

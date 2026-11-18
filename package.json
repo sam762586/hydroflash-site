@@ -1,0 +1,23 @@
+{
+  "name": "hydroflash-site",
+  "private": true,
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Site internet HYDROFLASH — assainissement, débouchage, curage (Seine-Maritime, Eure)",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "build:prod": "HF_ENV=production astro build && node scripts/verifier-production.mjs",
+    "preview": "astro preview",
+    "verifier": "node scripts/verifier-production.mjs"
+  },
+  "engines": {
+    "node": ">=22.23.4"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "3.7.5",
+    "@fontsource-variable/archivo": "5.3.0",
+    "@fontsource/jetbrains-mono": "5.3.0",
+    "astro": "7.4.12"
+  }
+}

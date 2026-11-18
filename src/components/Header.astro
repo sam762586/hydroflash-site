@@ -1,0 +1,60 @@
+---
+import { entreprise as e } from '../data/entreprise';
+import { services } from '../data/services';
+import { nav } from '../data/navigation';
+import { conseilsPublies } from '../lib/conseils';
+const avecConseils = (await conseilsPublies()).length > 0;
+const principal = nav.principal.filter((l) => l.href !== '/conseils/' || avecConseils);
+const path = Astro.url.pathname;
+const cur = (href: string) => (href === '/' ? path === '/' : path.startsWith(href)) ? 'page' : undefined;
+const tel = e.telephone;
+---
+<header class="hdr">
+  <div class="topbar d-only">
+    <div class="wrap topbar-in">
+      <p class="tb-l">Assainissement · Débouchage · Curage · Passage caméra</p>
+      <p class="tb-r"><span class="tb-zone"><svg class="ic" aria-hidden="true"><use href="#i-pin"/></svg>{e.zone.libelle}</span><span class="tb-sep" aria-hidden="true"></span><span class="tb-24"><span class="pulse" aria-hidden="true"></span>Intervention {e.disponibilite.court}</span></p>
+    </div>
+  </div>
+  <a class="m-urg m-only" href={nav.urgence.href}><span class="dot" aria-hidden="true"></span><b>Urgence 24&nbsp;h/24</b><span class="m-urg-q">Que faire maintenant&nbsp;?</span><i aria-hidden="true">→</i></a>
+  <div class="wrap hdr-in">
+    <a class="brand" href="/"><img src="/img/logo/hf-logo-blanc.svg" alt="HYDROFLASH — accueil" width="214" height="50"></a>
+    <nav class="nav" aria-label="Navigation principale">
+      <ul>
+        <li><a class="nav-urg" href={nav.urgence.href} aria-current={cur(nav.urgence.href)}><span class="pulse" aria-hidden="true"></span>Urgence 24&nbsp;h/24</a></li>
+        {principal.map((l) => <li><a href={l.href} aria-current={cur(l.href)}>{l.label}</a></li>)}
+      </ul>
+    </nav>
+    <div class="hdr-cta">
+      <a class="btn btn-call btn-sm hdr-call" href={tel.lien} aria-label={`Appeler HYDROFLASH au ${tel.affiche}`}><svg class="ic" aria-hidden="true"><use class="u-d" href="#i-tel"/><use class="u-m" href="#i-tel-f"/></svg><span class="hdr-num">{tel.affiche}</span></a>
+      <a class="btn btn-ghost btn-sm" href="/contact/#devis">Devis</a>
+    </div>
+    <div class="hdr-m">
+      <a class="icon-btn call" href={tel.lien} aria-label={`Appeler HYDROFLASH au ${tel.affiche}`}><svg class="ic" aria-hidden="true"><use class="u-d" href="#i-tel"/><use class="u-m" href="#i-tel-f"/></svg></a>
+      <button class="icon-btn burger" type="button" data-burger aria-expanded="false" aria-controls="menu" aria-label="Ouvrir le menu"><span class="bl" aria-hidden="true"></span></button>
+    </div>
+  </div>
+</header>
+
+<div class="mmenu" id="menu" role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="mmenu-top">
+    <img src="/img/logo/hf-logo-blanc.svg" alt="HYDROFLASH" width="223" height="52">
+    <button class="icon-btn close" type="button" data-close aria-label="Fermer le menu"><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg></button>
+  </div>
+  <nav class="mm-nav" aria-label="Navigation (menu)">
+    <a class="mm-urg" href={nav.urgence.href}><img class="mm-urg-ic" src="/img/pictos/permanence-24h-sur-orange.svg" alt="" width="34" height="34"><span class="pulse" aria-hidden="true"></span>Urgence 24&nbsp;h/24<span class="mm-arr" aria-hidden="true">→</span></a>
+    <a class="mm-svc-h d-only" href="/services/">Services <span class="mono">{String(services.length).padStart(2, '0')}</span></a>
+    <ul class="mm-svc">
+      {services.map((s) => <li><a href={s.url}><img src={`/img/pictos/${s.picto}-blanc.svg`} alt="" width="30" height="30" />{s.court}</a></li>)}
+      <li class="m-only"><a href="/services/"><img src="/img/pictos/devis-blanc.svg" alt="" width="30" height="30">Toutes les prestations</a></li>
+    </ul>
+    <ul class="mm-big">
+      {principal.filter((l) => l.href !== '/services/').map((l) => <li><a href={l.href}>{l.label} <span class="mm-arr" aria-hidden="true">→</span></a></li>)}
+    </ul>
+  </nav>
+  <div class="mmenu-cta">
+    <a class="btn btn-call btn-xl" href={tel.lien}><span class="ic-round"><svg class="ic" aria-hidden="true"><use class="u-d" href="#i-tel"/><use class="u-m" href="#i-tel-f"/></svg></span><span class="btn-txt"><span class="l1">Appeler HYDROFLASH</span><span class="l2">{tel.affiche}</span></span></a>
+    <a class="btn btn-ghost" href="/contact/#devis"><svg class="ic ic-doc" aria-hidden="true"><use href="#i-doc"/></svg>Demander un devis</a>
+    <p class="mm-24"><span class="pulse" aria-hidden="true"></span>Intervention {e.disponibilite.court}</p>
+  </div>
+</div>

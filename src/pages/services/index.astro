@@ -1,0 +1,61 @@
+---
+/* PAGE MODÈLE des pages intérieures : Base + SousHero + sections (.sec / .sec-sm) + ContactCta. */
+import Base from '../../layouts/Base.astro';
+import SousHero from '../../components/SousHero.astro';
+import ContactCta from '../../components/ContactCta.astro';
+import { FEUILLE_CONTENU } from '../../lib/feuilles';
+import { services } from '../../data/services';
+import { entreprise as e } from '../../data/entreprise';
+import { schemaEntreprise } from '../../lib/schema';
+---
+<Base
+  titre="Nos services : débouchage, curage, passage caméra, pompage | HYDROFLASH"
+  description={`Débouchage, curage, détartrage, passage caméra, pompage et entretien des réseaux d'assainissement, ${e.disponibilite.libelle}, en Seine-Maritime (76) et dans l'Eure (27). Appelez le ${e.telephone.affiche}.`}
+  feuilles={[FEUILLE_CONTENU]}
+  jsonld={schemaEntreprise()}
+>
+  <SousHero
+    ariane={[{ label: 'Nos services' }]}
+    surtitre="Nos services · 6 prestations"
+    titre="Du débouchage au pompage,"
+    titreFin="toute la chaîne de l'assainissement."
+    intro="Un seul interlocuteur pour vos canalisations et réseaux d'assainissement : nous identifions l'origine du problème et choisissons la technique adaptée, chez les particuliers comme chez les professionnels et les syndics."
+    picto="entretien"
+  />
+
+  <section class="sec sec-sm" aria-labelledby="t-liste">
+    <div class="wrap">
+      <div class="c-head">
+        <div><p class="sec-label">Prestations</p><h2 class="h2" id="t-liste">Choisissez <em>votre intervention</em></h2></div>
+        <p class="lead">Vous ne savez pas laquelle choisir&nbsp;? Décrivez-nous les symptômes au téléphone&nbsp;: nous vous orientons vers la bonne technique.</p>
+      </div>
+      <ul class="cards cards-3">
+        {services.map((s) => (
+          <li style="display:contents"><a class="card" href={s.url}>
+            <span class="num">{s.numero}</span>
+            <img src={`/img/pictos/${s.picto}-noir.svg`} alt="" width="48" height="48" loading="lazy" />
+            <h3>{s.titre}</h3>
+            <p>{s.resume}</p>
+            <span class="go">Découvrir <svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></span>
+          </a></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec sec-sm on-dark" aria-labelledby="t-urg">
+    <div class="wrap c-grid2">
+      <div>
+        <p class="sec-label">Urgence</p>
+        <h2 class="h2" id="t-urg">Ça déborde&nbsp;? <em>Appelez maintenant.</em></h2>
+      </div>
+      <div class="callout callout-o">
+        <h3>Intervention {e.disponibilite.libelle}, sans majoration</h3>
+        <p>De nuit comme le week-end, HYDROFLASH intervient en Seine-Maritime (76) et dans l'Eure (27).</p>
+        <a class="btn btn-dark btn-xl" href={e.telephone.lien}><svg class="ic" aria-hidden="true"><use class="u-d" href="#i-tel"/><use class="u-m" href="#i-tel-f"/></svg>Appeler le {e.telephone.affiche}</a>
+      </div>
+    </div>
+  </section>
+
+  <ContactCta />
+</Base>

@@ -1,0 +1,208 @@
+/* =========================================================================
+   HYDROFLASH — VERSION FINALE · page « Urgence débouchage 24 h/24, 7 j/7 » · ORDINATEUR ET TABLETTE (≥ 701 px) = C
+   S'ajoute à socle.css + ordinateur.css (chargé avec media="(min-width: 701px)").
+   ========================================================================= */
+
+.p-urg .spine { top: 156px; }
+
+/* ---------- 1. HERO ---------- */
+.u-hero { overflow: visible; background: linear-gradient(var(--ink) calc(100% - 92px), var(--paper) calc(100% - 92px)); }
+.u-grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+.u-txt { position: relative; z-index: 4; padding: 40px 0 56px; display: flex; flex-direction: column; align-items: flex-start; }
+
+.crumb ol { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; font-family: var(--f-mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--grey-d); }
+.crumb li { display: inline-flex; align-items: center; gap: 10px; }
+.crumb li + li::before { content: "›"; color: var(--o); font-size: 15px; }
+.crumb a { display: inline-block; color: #D8DBE0; text-underline-offset: 3px; padding: 15px 0; margin: -15px 0; }
+.crumb [aria-current] { color: #fff; }
+
+/* Puce de statut « 24 h/24 · 7 j/7 » reliée au flux */
+.u-status { margin-top: 26px; display: inline-flex; gap: 12px; padding: 9px 16px 9px 14px; border-radius: 999px; background: color-mix(in srgb, var(--orange) 10%, transparent); box-shadow: inset 0 0 0 1px var(--o-a55); color: #fff; font-size: 12px; }
+.u-status::before { right: 100%; width: calc(var(--content-left) - var(--spine-x)); }
+.u-status .pulse { width: 9px; height: 9px; }
+
+.u-hero h1 { margin-top: 26px; }
+.u-hero .h1a { font-size: clamp(48px, 5.2vw, 76px); max-width: 9.6em; line-height: .92; }
+.u-hero .h1b { margin-top: 14px; font-size: clamp(26px, 2.8vw, 42px); max-width: none; }
+.u-hero .lead { margin-top: 22px; max-width: 31em; color: #D8DBE0; }
+
+.u-ctas { margin-top: 32px; display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
+.u-call { min-height: 84px; padding: 0 36px 0 14px; gap: 16px; box-shadow: 0 22px 50px -20px var(--o-a55); }
+.u-call .ic-round { width: 56px; height: 56px; }
+.u-call .ic-round .ic { width: 26px; height: 26px; }
+.u-call .btn-txt { gap: 5px; }
+.u-call .l1 { font-size: 22px; font-weight: 700; }
+.u-call .l2 { font-size: 14px; }
+.u-cb { min-height: 64px; padding: 0 26px; font-size: 18px; gap: 10px; }
+.u-cb .ic { width: 20px; height: 20px; }
+.u-info { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 8px 24px; font-family: var(--f-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--grey-d); }
+.u-info li { display: inline-flex; align-items: center; gap: 8px; }
+.u-info li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--o); flex: none; }
+
+/* Visuel : « regard » circulaire (photo de nuit en bichromie) + véhicule HYDROFLASH détouré */
+.u-visual { position: absolute; top: 0; right: 0; bottom: 210px; width: 46vw; max-width: 740px; z-index: 2; pointer-events: none; }
+.u-regard { position: absolute; margin: 0; top: 46px; right: 9%; width: 70%; aspect-ratio: 1; border-radius: 50%; overflow: hidden; background: var(--o); }
+.u-regard img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.3) brightness(.9); mix-blend-mode: multiply; }
+.u-regard::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(closest-side, rgba(14, 15, 18, 0) 55%, rgba(14, 15, 18, .65) 100%), linear-gradient(180deg, rgba(14, 15, 18, 0) 45%, rgba(14, 15, 18, .8) 100%); }
+.u-ring { position: absolute; top: calc(46px - 22px); right: calc(9% - 22px); width: calc(70% + 44px); aspect-ratio: 1; overflow: visible; }
+.u-ring circle { fill: none; vector-effect: non-scaling-stroke; }
+.u-ring .r-track { stroke: #2A2E35; stroke-width: 14; }
+.u-ring .r-flow { stroke: var(--o); stroke-width: 4; stroke-dasharray: 46 14; transform-origin: 100px 100px; }
+.u-tag { position: absolute; top: 30px; right: 4%; z-index: 3; font-size: 10.5px; color: var(--grey-d); border: 1px solid var(--line-d); padding: 5px 9px; border-radius: 999px; background: var(--ink); }
+.u-truck { left: -8%; right: 2%; bottom: 0; z-index: 4; }
+.u-truck .ill-tag { left: auto; right: 3%; bottom: -34px; }
+
+/* Être rappelé : carte qui chevauche le bas du hero */
+.u-rp-wrap { position: relative; z-index: 5; padding-bottom: 4px; }
+.u-rappel { background: #fff; color: var(--ink2); border-radius: var(--r-lg); padding: 24px 26px; box-shadow: 0 40px 80px -40px rgba(14, 15, 18, .55), 0 0 0 1px rgba(14, 15, 18, .06); display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1fr) auto; gap: 12px 16px; align-items: end; scroll-margin-top: 110px; }
+.u-rp-head { display: flex; align-items: center; gap: 16px; align-self: center; }
+.u-rp-ic { width: 56px; height: 56px; border-radius: 50%; background: var(--ink2); color: var(--o); display: grid; place-items: center; flex: none; }
+.u-rp-ic .ic { width: 24px; height: 24px; }
+.u-rappel h2 { font-size: 30px; font-weight: var(--w-heavy); font-stretch: var(--cond-x); line-height: 1; letter-spacing: -.02em; }
+.u-rp-micro { margin-top: 6px; font-size: 15.5px; color: var(--grey); }
+.u-rp-btn { min-height: 52px; padding: 0 26px; }
+.u-rappel .rgpd { grid-column: 2 / -1; }
+
+/* ---------- 2. EN ATTENDANT LE TECHNICIEN ---------- */
+.u-wait { padding-top: 100px; }
+.u-wait-grid { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 64px; align-items: start; }
+.u-wait-aside { position: sticky; top: 110px; }
+.u-wait-aside .h2 { margin-top: 22px; }
+.u-note { margin-top: 20px; display: inline-flex; padding: 6px 11px; border-radius: 999px; border: 1px dashed #B9BEC6; color: var(--grey); font-family: var(--f-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+.u-wait-list { border-top: 1px solid var(--line); }
+.u-wait-list li { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 24px; align-items: start; padding: 22px 0; border-bottom: 1px solid var(--line); }
+.u-n { width: 64px; height: 64px; border-radius: 18px; background: var(--ink2); color: var(--o); display: grid; place-items: center; font: 600 20px/1 var(--f-mono); letter-spacing: .02em; }
+.u-wait-list p { padding-top: 3px; font-size: 21px; line-height: 1.45; color: var(--grey); }
+.u-wait-list strong { color: var(--ink2); font-weight: 700; }
+
+/* ---------- 3. CE QUI SE PASSE QUAND VOUS APPELEZ (le long du flux) ---------- */
+.u-flow-head { grid-template-columns: minmax(0, 1fr); margin-bottom: 60px; }
+.u-steps { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 34px; }
+.u-steps::before { content: ""; position: absolute; top: 20px; height: 20px; left: calc(var(--spine-x) - var(--content-left)); right: calc(-1 * var(--pad)); background: #3A3F47; border-radius: 0 10px 10px 0; }
+.u-steps::after { content: ""; position: absolute; top: 27px; height: 6px; left: calc(var(--spine-x) - var(--content-left) + 4px); right: calc(-1 * var(--pad)); background: repeating-linear-gradient(90deg, var(--o) 0 38px, transparent 38px 50px); }
+.u-step { position: relative; z-index: 2; padding-top: 88px; }
+.u-node { position: absolute; top: 0; left: 0; width: 60px; height: 60px; border-radius: 50%; background: var(--ink); border: 4px solid var(--o); display: grid; place-items: center; color: #fff; font: 600 16px/1 var(--f-mono); }
+.u-step h3 { font-size: 25px; font-weight: 760; font-stretch: var(--cond); line-height: 1.1; }
+.u-step p { margin-top: 10px; font-size: 16.5px; line-height: 1.5; color: var(--grey-d); }
+
+/* ---------- 4. URGENCES PRISES EN CHARGE (bento de cartes-liens) ---------- */
+.u-cases-head { margin-bottom: 44px; }
+.u-cases-head .h2 { margin-top: 22px; }
+.u-bento { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 16px; }
+.uc a { position: relative; height: 100%; min-height: 236px; display: flex; flex-direction: column; padding: 28px; border-radius: 26px; background: var(--mist); color: var(--ink2); text-decoration: none; overflow: hidden; transition: transform .25s ease, box-shadow .25s ease; }
+.uc a:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+.uc-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.uc-i { font-size: 12px; color: var(--grey); }
+.uc .picto { width: 52px; height: 52px; }
+.uc h3 { margin-top: auto; padding-top: 24px; font-size: 27px; font-weight: 760; font-stretch: var(--cond); line-height: 1.08; }
+.uc-sub { display: block; margin-top: 4px; font: 500 17px/1.3 var(--f-text); letter-spacing: 0; color: var(--grey); }
+.uc-to { margin-top: 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.uc-svc { font-family: var(--f-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; font-weight: 500; color: var(--ink2); }
+.uc-svc .tbc { white-space: normal; text-transform: none; }
+.uc .ar { width: 40px; height: 40px; border-radius: 50%; flex: none; display: grid; place-items: center; background: var(--ink2); color: #fff; transition: transform .2s; }
+.uc .ar .ic { width: 17px; height: 17px; }
+.uc a:hover .ar { transform: translateX(4px); }
+.uc a:focus-visible { outline-offset: 4px; }
+.uc--a { grid-column: 1 / 6; grid-row: 1 / 3; }
+.uc--a a { background: var(--ink2); color: #fff; padding: 34px; }
+.uc--a .uc-i, .uc--a .uc-svc, .uc--f .uc-i, .uc--f .uc-svc { color: var(--grey-d); }
+.uc--a .picto { width: 72px; height: 72px; }
+.uc--a h3 { font-size: clamp(36px, 3.4vw, 50px); font-weight: var(--w-black); font-stretch: var(--cond-x); }
+.uc--a .ar, .uc--f .ar { background: var(--o); color: var(--ink2); }
+.uc-ill { display: block; width: 100%; height: auto; margin-top: 22px; border-radius: 16px; }
+.uc--b { grid-column: 6 / 10; }
+.uc--c { grid-column: 10 / 13; }
+.uc--c a { background: var(--o); }
+.uc--c .uc-i { color: var(--ink2); }
+.uc--d { grid-column: 6 / 9; }
+.uc--e { grid-column: 9 / 13; }
+.uc--f { grid-column: 1 / 13; }
+.uc--f a { min-height: 0; flex-direction: row; align-items: center; gap: 26px; padding: 24px 30px; background: var(--ink2); color: #fff; }
+.uc--f .uc-top { flex-direction: row-reverse; align-items: center; gap: 18px; }
+.uc--f h3 { margin: 0; padding: 0; flex: 1; font-size: 34px; font-stretch: var(--cond-x); }
+.uc--f .uc-to { margin: 0; gap: 18px; }
+
+/* ---------- 5. PRIX + 6. ZONE (carte de principe + vérificateur) ---------- */
+.u-duo-band { background: var(--mist); padding: 96px 0; position: relative; }
+.u-duo { display: grid; grid-template-columns: minmax(0, 1fr); gap: 44px; }
+.u-price { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px 64px; align-items: start; }
+.u-price .h2 { margin-top: 22px; max-width: 11em; }
+.u-ticket { padding: 4px 26px; border-radius: 24px; background: #fff; box-shadow: 0 0 0 1px rgba(14, 15, 18, .06); }
+.u-ticket li { display: grid; grid-template-columns: 24px minmax(0, 1fr) auto; gap: 6px 14px; align-items: center; padding: 19px 0; border-bottom: 1px dashed #C9CDD3; font-size: 18px; font-weight: 600; }
+.u-ticket li:last-child { border-bottom: 0; }
+.u-ticket .ic { width: 22px; height: 22px; color: var(--o-text); }
+.u-ticket .tbc { font-size: 13px; font-weight: 500; justify-self: end; color: var(--grey); }
+.u-ticket .u-ok { justify-self: end; padding: 5px 12px; border-radius: 999px; background: var(--o); color: var(--ink2); font: 600 13px/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; }
+.u-rule { margin-top: 22px; display: flex; gap: 12px; align-items: flex-start; font-size: 16px; color: var(--grey); }
+.u-rule::before { content: ""; width: 26px; height: 4px; margin-top: 10px; background: var(--o); border-radius: 2px; flex: none; }
+.u-zone { scroll-margin-top: 110px; }
+.u-zone .zone-txt { padding: 56px 52px; }
+
+/* ---------- 7. FAQ ---------- */
+.u-faq .faq-aside .h2 em { color: var(--o-text); }
+
+/* ---------- 8. CTA FINAL ---------- */
+.u-final { padding-top: 0; }
+.u-cta { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: center; }
+.u-cta .cta-txt .h2 { font-size: clamp(52px, 6.2vw, 92px); }
+.u-cta .cta-btns { margin-top: 34px; }
+.u-fcall .btn-txt .l1 { font-size: 18px; }
+.u-fcall .btn-txt .l2 { font-size: 12.5px; }
+.u-cta .btn-line .ic { width: 20px; height: 20px; }
+.u-cta-side { position: relative; z-index: 2; display: grid; gap: 20px; padding: 30px; border-radius: 28px; background: var(--ink2); color: #fff; box-shadow: 0 40px 80px -40px rgba(14, 15, 18, .6); }
+.u-live { display: inline-flex; align-items: center; gap: 10px; font-size: 12px; color: #fff; }
+.u-cta-num .mono { display: block; font-size: 11.5px; color: var(--grey-d); }
+.u-cta-num a { display: block; margin-top: 8px; font-family: var(--f-mono); font-size: clamp(28px, 2.9vw, 42px); font-weight: 600; letter-spacing: -.01em; color: var(--o); text-decoration: none; }
+.u-cta-num a:hover { text-decoration: underline; text-underline-offset: .18em; }
+.u-cta-num a:focus-visible { outline-color: var(--o); }
+.u-cta .deco { left: auto; right: -40px; bottom: -70px; transform: scaleX(-1); }
+
+.mbar--urg .btn-call { flex: 1.5; }
+
+/* ---------- Animations ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .u-ring .r-flow { animation: u-spin 14s linear infinite; }
+  .u-steps::after { animation: u-tube 1.6s linear infinite; }
+  .u-status .pulse::after { animation-duration: 1.6s; }
+}
+@keyframes u-spin { to { transform: rotate(360deg); } }
+@keyframes u-tube { to { background-position: 50px 0; } }
+
+/* ================= TABLETTE ================= */
+@media (max-width: 1180px) {
+  .uc--a { grid-column: 1 / 7; }
+  .uc--b { grid-column: 7 / 13; }
+  .uc--c { grid-column: 7 / 13; grid-row: 2; }
+  .uc--d { grid-column: 1 / 7; }
+  .uc--e { grid-column: 7 / 13; }
+}
+@media (max-width: 1080px) {
+  .u-rappel { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .u-rp-head, .u-rp-btn, .u-rappel .rgpd { grid-column: 1 / -1; }
+  .u-visual { bottom: 342px; }
+  .u-price { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 900px) {
+  .u-grid { grid-template-columns: minmax(0, 1fr); }
+  .u-txt { padding: 36px 0 26px; }
+  .u-visual { position: relative; width: auto; max-width: none; height: 330px; bottom: auto; margin-bottom: 44px; }
+  .u-regard { top: 10px; right: 8%; width: 280px; }
+  .u-ring { top: -8px; right: calc(8% - 18px); width: 316px; }
+  .u-tag { top: 0; right: 2%; }
+  .u-truck { left: 2%; right: auto; width: min(80%, 620px); bottom: 0; }
+  .u-truck .ill-tag { left: 6%; }
+  .u-hero { background: linear-gradient(var(--ink) calc(100% - 150px), var(--paper) calc(100% - 150px)); }
+  .u-wait { padding-top: 76px; }
+  .u-wait-grid { grid-template-columns: minmax(0, 1fr); gap: 26px; }
+  .u-wait-aside { position: static; }
+  .u-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 24px; }
+  .u-steps::before, .u-steps::after { display: none; }
+  .u-cta { grid-template-columns: minmax(0, 1fr); gap: 26px; }
+  .u-duo-band { padding: 76px 0; }
+  .u-zone .zone-txt { padding: 40px 32px 20px; }
+  .mbar.mbar--urg.is-off { transform: translateX(-50%); opacity: 1; visibility: visible; pointer-events: auto; }
+}
+@media (max-width: 760px) {
+  .u-bento { grid-template-columns: minmax(0, 1fr); }
+  .u-bento .uc { grid-column: auto; grid-row: auto; }
+}

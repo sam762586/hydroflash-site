@@ -1,0 +1,69 @@
+---
+/** Gabarit commun : <head> (SEO, robots selon l'environnement), en-tête, menu, pied de page, barre d'appel.
+ *  Feuilles : socle (global) + ordinateur (≥ 701 px, style C) + mobile (≤ 700 px, style A) + feuilles de page. */
+import '@fontsource-variable/archivo/standard.css';
+import '@fontsource/jetbrains-mono/400.css';
+import '@fontsource/jetbrains-mono/500.css';
+import '@fontsource/jetbrains-mono/600.css';
+import '../styles/socle.css';
+import cssOrdi from '../styles/ordinateur.css?url';
+import cssMobile from '../styles/mobile.css?url';
+import Sprite from '../components/Sprite.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import MobileBar from '../components/MobileBar.astro';
+import JsonLd from '../components/JsonLd.astro';
+import { PROD, SITE_URL } from '../lib/env';
+import { entreprise as e } from '../data/entreprise';
+
+interface Props {
+  titre: string; description: string; classeBody?: string; noindex?: boolean;
+  feuilles?: { ordi?: string; mobile?: string }[]; jsonld?: object | object[]; barre?: 'standard' | 'urgence';
+  image?: string;
+}
+const { titre, description, classeBody = 'p-page', noindex = false, feuilles = [], jsonld, barre = 'standard', image = '/og-image.jpg' } = Astro.props;
+const base = e.siteUrl || SITE_URL;
+const canonical = new URL(Astro.url.pathname, base).href;
+const robots = !PROD || noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large';
+---
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{titre}</title>
+  <meta name="description" content={description}>
+  <link rel="canonical" href={canonical}>
+  <meta name="robots" content={robots}>
+  <meta name="theme-color" content="#14161A">
+  <meta name="format-detection" content="telephone=yes">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:site_name" content="HYDROFLASH">
+  <meta property="og:title" content={titre}>
+  <meta property="og:description" content={description}>
+  <meta property="og:url" content={canonical}>
+  <meta property="og:image" content={new URL(image, base).href}>
+  <link rel="stylesheet" href={cssOrdi} media="(min-width: 701px)">
+  <link rel="stylesheet" href={cssMobile} media="(max-width: 700px)">
+  {feuilles.map((f) => <>
+    {f.ordi && <link rel="stylesheet" href={f.ordi} media="(min-width: 701px)">}
+    {f.mobile && <link rel="stylesheet" href={f.mobile} media="(max-width: 700px)">}
+  </>)}
+  {jsonld && <JsonLd data={jsonld} />}
+</head>
+<body class={classeBody} data-tel={e.telephone.lien} data-num={e.telephone.affiche}>
+  <a class="sr" href="#contenu">Aller au contenu</a>
+  <Sprite />
+  <Header />
+  <main id="contenu">
+    <span class="spine d-only" aria-hidden="true"></span>
+    <slot />
+  </main>
+  <Footer />
+  <MobileBar variante={barre} />
+  <script is:inline src="/js/hf.js" defer></script>
+</body>
+</html>

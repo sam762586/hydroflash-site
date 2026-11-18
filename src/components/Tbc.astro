@@ -1,0 +1,8 @@
+---
+/** Étiquette « à confirmer » : visible en préproduction uniquement. En production, rien n'est rendu
+ *  (le contenu non confirmé est masqué, et `npm run verifier` liste ce qui manque). */
+import { PROD } from '../lib/env';
+interface Props { label?: string }
+const { label = 'à confirmer' } = Astro.props;
+---
+{!PROD && <span class="tbc" data-tbc>{label}</span>}

@@ -1,0 +1,18 @@
+/** Prestations — ordre du marquage du véhicule (choix HYDROFLASH), puis entretien. */
+export type Service = {
+  slug: string; url: string; titre: string; court: string; picto: string; resume: string; numero: string;
+};
+export const services: Service[] = [
+  { numero: '01', slug: 'debouchage', url: '/debouchage-canalisation/', titre: 'Débouchage de canalisation', court: 'Débouchage', picto: 'debouchage',
+    resume: 'Évier, WC, douche, colonne ou branchement : nous localisons le bouchon et rétablissons l\'écoulement.' },
+  { numero: '02', slug: 'curage', url: '/curage-canalisation/', titre: 'Curage de canalisation', court: 'Curage', picto: 'curage',
+    resume: 'Nettoyage en profondeur des canalisations à l\'eau sous haute pression pour retirer graisses, dépôts et sédiments.' },
+  { numero: '03', slug: 'detartrage', url: '/detartrage-canalisation/', titre: 'Détartrage de canalisation', court: 'Détartrage', picto: 'detartrage',
+    resume: 'Retrait mécanique des dépôts calcaires et des concrétions qui réduisent le diamètre utile de vos conduites.' },
+  { numero: '04', slug: 'passage-camera', url: '/inspection-camera-canalisation/', titre: 'Passage caméra', court: 'Passage caméra', picto: 'inspection-camera',
+    resume: 'Inspection vidéo de la canalisation pour localiser le bouchon ou le défaut et contrôler le résultat. Photos remises sur clé USB.' },
+  { numero: '05', slug: 'pompage', url: '/pompage-vidange/', titre: 'Pompage', court: 'Pompage', picto: 'pompage',
+    resume: 'Pompage et vidange de regards, bacs et ouvrages d\'assainissement.' },
+  { numero: '06', slug: 'entretien', url: '/entretien-reseaux-assainissement/', titre: 'Entretien des réseaux', court: 'Entretien des réseaux', picto: 'entretien',
+    resume: 'Interventions préventives planifiées pour limiter les bouchons et préserver vos installations.' },
+];

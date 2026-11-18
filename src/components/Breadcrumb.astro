@@ -1,0 +1,14 @@
+---
+/** Fil d'Ariane visible + données structurées BreadcrumbList. items : [{label, href?}] (le dernier = page courante) */
+import JsonLd from './JsonLd.astro';
+import { SITE_URL } from '../lib/env';
+interface Props { items: { label: string; href?: string }[] }
+const { items } = Astro.props;
+const all = [{ label: 'Accueil', href: '/' }, ...items];
+const ld = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: all.map((it, i) => ({
+  '@type': 'ListItem', position: i + 1, name: it.label, ...(it.href ? { item: new URL(it.href, SITE_URL).href } : {}) })) };
+---
+<nav class="crumb" aria-label="Fil d'Ariane">
+  <ol>{all.map((it, i) => <li>{i < all.length - 1 && it.href ? <a href={it.href}>{it.label}</a> : <span aria-current="page">{it.label}</span>}</li>)}</ol>
+</nav>
+<JsonLd data={ld} />

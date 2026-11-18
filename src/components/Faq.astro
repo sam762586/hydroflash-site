@@ -1,0 +1,25 @@
+---
+/** Bloc FAQ (accordéons). items : [{ q, a }] — a peut contenir du HTML simple. */
+import { entreprise as e } from '../data/entreprise';
+interface Props { items: { q: string; a: string }[]; titre?: string; intro?: string; label?: string; id?: string; ouvrirPremier?: boolean; replierMobile?: boolean; lienTout?: { href: string; label: string } }
+const { items, titre = 'Questions fréquentes', intro, label = 'Questions', id = 't-faq', ouvrirPremier = true, replierMobile = false, lienTout } = Astro.props;
+---
+<section class="sec faq-sec" aria-labelledby={id} data-faq-fold={replierMobile ? '' : undefined}>
+  <div class="wrap faq-grid">
+    <div class="faq-aside reveal">
+      <p class="sec-label">{label}</p>
+      <h2 class="h2" id={id}>{titre}</h2>
+      {intro && <p class="d-only">{intro}</p>}
+      <a class="btn btn-dark d-only" href={e.telephone.lien}><svg class="ic" aria-hidden="true"><use class="u-d" href="#i-tel"/><use class="u-m" href="#i-tel-f"/></svg>Une autre question&nbsp;? Appelez-nous</a>
+    </div>
+    <div class="faq reveal">
+      {items.map((it, i) => (
+        <details open={ouvrirPremier && i === 0}>
+          <summary><span class="q-n">Q.{String(i + 1).padStart(2, '0')}</span>{it.q}<span class="tog" aria-hidden="true"></span></summary>
+          <p class="ans" set:html={it.a} />
+        </details>
+      ))}
+      {lienTout && <a class="faq-all" href={lienTout.href}>{lienTout.label} <svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></a>}
+    </div>
+  </div>
+</section>
