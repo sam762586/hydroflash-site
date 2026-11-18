@@ -51,3 +51,47 @@ npm run build:prod   # PRODUCTION : HF_ENV=production SITE_URL=https://… ; éc
 `/detartrage-canalisation/` · `/inspection-camera-canalisation/` (« Passage caméra ») · `/pompage-vidange/` ·
 `/entretien-reseaux-assainissement/` · `/professionnels/` · `/zones-intervention/` (+ `/seine-maritime-76/`, `/eure-27/`) ·
 `/a-propos/` · `/conseils/` · `/contact/` (+ `/contact/merci/`, noindex) · pages légales · `/plan-du-site/` · 404.
+
+## Mise en ligne (hébergement mutualisé PHP : o2switch ou OVHcloud, choix en cours)
+
+Prérequis : informations obligatoires renseignées dans `src/data/entreprise.ts` (raison sociale, forme juridique,
+SIRET, RCS/RM, adresse, directeur de publication, hébergeur, médiateur, durée de conservation des demandes),
+accord du client pour l'hébergement (service payant), accès au domaine `hydroflash.fr`.
+
+1. `npm run build:prod` — construit en production **et** lance `scripts/verifier-production.mjs` :
+   la commande échoue s'il manque une information obligatoire, s'il reste une valeur provisoire
+   (« à confirmer », `data-tbc`…), un lien interne cassé, un robots.txt bloquant ou le bandeau de préproduction.
+   Vérifier un autre dossier : `node scripts/verifier-production.mjs <dossier>`.
+2. Envoyer **tout** le contenu de `dist/` (fichiers cachés compris : `.htaccess`, `.user.ini`, `.well-known/`)
+   dans la racine web (`public_html/` chez o2switch, `www/` chez OVHcloud).
+3. Copier `server/config.exemple.php` **hors de la racine web** sous le nom `config-hydroflash.php`
+   (ou chemin indiqué par `SetEnv HF_CONFIG …`), `chmod 600`, puis renseigner `expediteur`, `secret`,
+   `dossier_donnees` (et le bloc SMTP si une boîte au nom du domaine est créée). PHP 8.1+ avec GD.
+4. HTTPS : certificat Let's Encrypt du panneau d'hébergement, puis contrôler les en-têtes et redirections
+   (le `.htaccess` n'a pas encore été testé sur l'Apache de l'hébergeur) :
+   ```bash
+   curl -sI http://hydroflash.fr/ | head -5        # 301 vers https://hydroflash.fr/
+   curl -sI https://www.hydroflash.fr/ | head -5   # 301 vers https://hydroflash.fr/
+   curl -sI https://hydroflash.fr/ | grep -i "content-security\|strict-transport\|x-content-type"
+   curl -s -o /dev/null -w "%{http_code}\n" https://hydroflash.fr/.user.ini   # 404 attendu
+   ```
+5. Envoyer une vraie demande depuis `/contact/` et depuis « Être rappelé » : réception sur hydroflash@gmail.com,
+   pièce jointe photo, page `/contact/merci/`.
+6. Déclarer `https://hydroflash.fr/sitemap-index.xml` dans Google Search Console ; relier la fiche Google
+   (même nom, même numéro 07 62 88 28 39) dès qu'elle existe.
+7. Délivrabilité conseillée : boîte e-mail au nom du domaine + enregistrements SPF, DKIM et DMARC, envoi en SMTP.
+
+## Contrôles qualité (18/11/2026, préproduction)
+
+| Contrôle | Outil | Résultat |
+|---|---|---|
+| Accessibilité automatique WCAG 2.2 A/AA | axe-core, 26 pages × 1440 / 390 px (`../_outils/site_a11y.cjs`) | 0 défaut |
+| Liens, images, polices, scripts | parcours Playwright de toutes les pages | 0 erreur |
+| Performance mobile (médiane de 3, gzip comme le `.htaccess`) | Lighthouse 13.6 | accueil 98, urgence 96, débouchage 100, contact 100 |
+| Performance ordinateur | Lighthouse 13.6 | 100 sur les 4 pages |
+| Accessibilité / bonnes pratiques / SEO (build production) | Lighthouse 13.6 | 100 / 100 / 100 |
+| LCP mobile simulé (4G lente) | Lighthouse 13.6 | accueil 2,5 s, urgence 2,6 s (objectif < 2,5 s) ; autres pages 0,9 s |
+
+Mesures de laboratoire : les valeurs réelles (terrain) se suivent après la mise en ligne (Search Console).
+Un audit manuel RGAA reste à faire (la déclaration d'accessibilité indique « non conforme » d'ici là).
+Aperçu cliquable relatif : `python3 ../_outils/apercu_relatif.py dist <sortie>`.
