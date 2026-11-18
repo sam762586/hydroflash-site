@@ -1,0 +1,128 @@
+# =============================================================================
+# HYDROFLASH — configuration Apache (hébergement mutualisé : o2switch ou OVHcloud, choix en cours)
+# Copié tel quel à la racine de dist/ par Astro (dossier public/).
+# Domaine canonique : https://hydroflash.fr (sans www) — www.hydroflash.fr est redirigé en 301.
+# Après mise en ligne : vérifier les en-têtes (curl -I https://hydroflash.fr/) et les redirections.
+# =============================================================================
+
+Options -Indexes -MultiViews
+DirectoryIndex index.html
+AddDefaultCharset utf-8
+ErrorDocument 404 /404.html
+ErrorDocument 403 /404.html
+
+# --- Types MIME et jeux de caractères -----------------------------------------
+<IfModule mod_mime.c>
+  AddType font/woff2 .woff2
+  AddType image/svg+xml .svg
+  AddType image/webp .webp
+  AddType image/avif .avif
+  AddType application/manifest+json .webmanifest
+  AddCharset utf-8 .html .css .js .json .txt .xml .svg .webmanifest
+</IfModule>
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # HTTPS détecté directement ou derrière le proxy de l'hébergeur (X-Forwarded-Proto).
+  RewriteCond %{HTTPS} =on [OR]
+  RewriteCond %{HTTP:X-Forwarded-Proto} =https
+  RewriteRule ^ - [E=HF_HTTPS:1]
+
+  # 1) www.hydroflash.fr → https://hydroflash.fr (une seule redirection 301, chemin et paramètres conservés).
+  RewriteCond %{HTTP_HOST} ^www\.hydroflash\.fr\.?$ [NC]
+  RewriteRule ^ https://hydroflash.fr%{REQUEST_URI} [R=301,L,NE]
+
+  # 2) HTTP → HTTPS pour tout autre hôte (hydroflash.fr, ou sous-domaine de préproduction).
+  RewriteCond %{ENV:HF_HTTPS} !=1
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L,NE]
+
+  # 3) Fichiers et dossiers cachés (.git, .env, .user.ini…) : 404, sauf /.well-known/ (security.txt, certificats).
+  RewriteRule (^|/)\.(?!well-known(/|$)) - [R=404,L]
+
+  # 4) Anciennes adresses.
+  RewriteRule ^devis/?$ https://%{HTTP_HOST}/contact/ [R=301,L]
+
+  # 5) Barre oblique finale sur les dossiers (toutes les pages sont en /page/).
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^(.+[^/])$ https://%{HTTP_HOST}/$1/ [R=301,L]
+</IfModule>
+
+# --- Fichiers sensibles : jamais servis ---------------------------------------
+<FilesMatch "\.(?:bak|old|orig|save|swp|tmp|dist|sql|sqlite3?|db|log|ini|conf|cfg|env|sh|inc|tpl|twig|ya?ml|lock|md|map|ts|astro|po|mo)$|~$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
+# --- PHP : seul le script du formulaire peut être exécuté ---------------------
+<FilesMatch "\.(?:php[0-9]?|phtml|phar|pht|phps)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+<Files "envoi-demande.php">
+  <IfModule mod_authz_core.c>
+    Require all granted
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order deny,allow
+    Allow from all
+  </IfModule>
+</Files>
+
+# --- En-têtes de sécurité -----------------------------------------------------
+<IfModule mod_headers.c>
+  # CSP : tout est servi par le site (polices, scripts, images, données des communes).
+  # Aucun style ni script en ligne dans les pages (vérifié au build) : CSP stricte, sans 'unsafe-inline'.
+  # Les blocs JSON-LD (type application/ld+json) ne sont pas exécutés et ne sont pas concernés.
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests"
+  # HSTS : 1 an (ignoré par les navigateurs sur HTTP). Démarrage prudent possible avec max-age=300 quelques jours.
+  # includeSubDomains : à garder seulement si TOUS les sous-domaines sont en HTTPS. « preload » plus tard.
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+  Header always set Cross-Origin-Opener-Policy "same-origin"
+  Header always set X-Frame-Options "DENY"
+  Header always unset X-Powered-By
+  Header unset X-Powered-By
+
+  # Préproduction (sous-domaine) : décommenter, et protéger l'accès par mot de passe (AuthType Basic,
+  # fichier .htpasswd HORS de la racine web).
+  # Header always set X-Robots-Tag "noindex, nofollow"
+
+  # --- Cache ---
+  # Pages HTML : toujours revalidées (mises à jour visibles immédiatement).
+  <FilesMatch "\.html?$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+  # Fichiers non hachés (logo, pictos, script hf.js, données) : durée courte.
+  <FilesMatch "\.(?:svg|png|jpe?g|webp|avif|gif|ico)$">
+    Header set Cache-Control "public, max-age=604800"
+  </FilesMatch>
+  <FilesMatch "\.(?:js|json|txt|xml|webmanifest)$">
+    Header set Cache-Control "public, max-age=3600"
+  </FilesMatch>
+  # /assets/ : fichiers produits par Astro, au nom haché (le nom change à chaque modification) : 1 an.
+  <If "%{REQUEST_URI} =~ m#^/assets/#">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </If>
+</IfModule>
+
+# --- Compression --------------------------------------------------------------
+# AddOutputFilterByType est fourni par mod_filter (Apache 2.4) : les deux modules sont requis.
+<IfModule mod_deflate.c>
+  <IfModule mod_filter.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml text/javascript application/javascript application/json application/ld+json application/xml application/manifest+json image/svg+xml
+  </IfModule>
+</IfModule>

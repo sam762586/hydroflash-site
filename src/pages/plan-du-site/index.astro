@@ -1,0 +1,93 @@
+---
+/* Plan du site, généré au build :
+   - pages statiques connues (liste ci-dessous) + prestations (src/data/services.ts)
+     + départements (entreprise.zone) + conseils publiés (conseilsPublies()) + pages légales (nav.legal) ;
+   - chaque URL n'est listée que si une route correspondante existe dans src/pages
+     (fichier ou route dynamique) : jamais de lien vers une page absente. */
+import fs from 'node:fs';
+import path from 'node:path';
+import Base from '../../layouts/Base.astro';
+import SousHero from '../../components/SousHero.astro';
+import { FEUILLE_CONTENU } from '../../lib/feuilles';
+import { services } from '../../data/services';
+import { nav } from '../../data/navigation';
+import { entreprise as e } from '../../data/entreprise';
+import { conseilsPublies } from '../../lib/conseils';
+import legalOrdi from '../../styles/pages/legal-ordinateur.css?url';
+import legalMobile from '../../styles/pages/legal-mobile.css?url';
+
+/** Routes présentes dans src/pages. `statique` : fichiers sans paramètre ; `toutes` : y compris les routes
+ *  dynamiques ([x] = un segment, [...x] = zéro ou plusieurs). Les pages fixes exigent une route statique
+ *  (une route dynamique comme [prestation].astro ne prouve pas leur existence) ; les pages issues des
+ *  données (prestations, départements, conseils) acceptent une route dynamique. */
+function routesPresentes(): { statique: (url: string) => boolean; toutes: (url: string) => boolean } {
+  let fichiers: string[];
+  try { fichiers = fs.readdirSync(path.resolve('src/pages'), { recursive: true }) as string[]; }
+  catch { return { statique: () => true, toutes: () => true }; } // dossier illisible : pas de filtre
+  const motifs = fichiers
+    .map((f) => f.split(path.sep).join('/'))
+    .filter((f) => /\.(astro|md|mdx|html)$/.test(f) && !f.split('/').some((s) => s.startsWith('_')))
+    .map((f) => {
+      const segments = f.replace(/\.(astro|md|mdx|html)$/, '').replace(/(^|\/)index$/, '').split('/').filter(Boolean);
+      const re = segments.map((s) => /^\[\.\.\..+\]$/.test(s) ? '(?:/.*)?' : '/' + (/^\[.+\]$/.test(s) ? '[^/]+' : s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))).join('');
+      return { re: new RegExp(`^${re}/?$`), dynamique: segments.some((s) => s.startsWith('[')) };
+    });
+  const teste = (url: string, liste: typeof motifs) => { const u = url.replace(/\/$/, '') || '/'; return liste.some((m) => m.re.test(u)); };
+  return { statique: (url) => teste(url, motifs.filter((m) => !m.dynamique)), toutes: (url) => teste(url, motifs) };
+}
+const routes = routesPresentes();
+
+type Lien = { label: string; href: string; sous?: Lien[]; donnees?: boolean };
+const conseils = await conseilsPublies();
+const filtrer = (liste: Lien[]): Lien[] => liste
+  .filter((l) => (l.donnees ? routes.toutes : routes.statique)(l.href))
+  .map((l) => ({ ...l, sous: l.sous ? filtrer(l.sous) : undefined }));
+
+const groupes: { titre: string; liens: Lien[] }[] = [
+  { titre: 'Urgence et services', liens: filtrer([
+    { label: 'Accueil', href: '/' },
+    { label: 'Urgence débouchage 24 h/24', href: nav.urgence.href },
+    { label: 'Nos services', href: '/services/', sous: services.map((s) => ({ label: s.titre, href: s.url, donnees: true })) },
+  ]) },
+  { titre: 'HYDROFLASH', liens: filtrer([
+    { label: 'Professionnels et syndics', href: '/professionnels/' },
+    { label: 'Zones d\'intervention', href: '/zones-intervention/', sous: e.zone.departements.map((d) => ({ label: `${d.nom} (${d.code})`, href: `/zones-intervention/${d.slug}/`, donnees: true })) },
+    { label: 'À propos', href: '/a-propos/' },
+    ...(conseils.length ? [{ label: 'Conseils', href: '/conseils/', donnees: true, sous: conseils.map((c) => ({ label: c.data.titre, href: `/conseils/${c.id}/`, donnees: true })) }] : []),
+    { label: 'Contact et devis', href: '/contact/' },
+  ]) },
+  { titre: 'Informations légales', liens: filtrer(nav.legal.map((l) => ({ label: l.label, href: l.href }))) },
+];
+---
+<Base
+  titre="Plan du site | HYDROFLASH"
+  description="Toutes les pages du site HYDROFLASH : urgence 24 h/24, prestations d'assainissement, zones d'intervention, contact, devis et informations légales."
+  feuilles={[FEUILLE_CONTENU, { ordi: legalOrdi, mobile: legalMobile }]}
+>
+  <SousHero
+    ariane={[{ label: 'Plan du site' }]}
+    surtitre="Navigation"
+    titre="Plan du site"
+    intro="Toutes les pages du site, classées par rubrique."
+    actions={false}
+    compact
+  />
+
+  <section class="sec sec-sm" aria-label="Plan du site">
+    <div class="wrap pds-grid">
+      {groupes.filter((g) => g.liens.length).map((g, i) => (
+        <section class="pds-grp" aria-labelledby={`pds-${i}`}>
+          <h2 id={`pds-${i}`}>{g.titre}</h2>
+          <ul>
+            {g.liens.map((l) => (
+              <li>
+                <a href={l.href}>{l.label}</a>
+                {l.sous && l.sous.length > 0 && <ul class="pds-sub">{l.sous.map((s) => <li><a href={s.href}>{s.label}</a></li>)}</ul>}
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </div>
+  </section>
+</Base>

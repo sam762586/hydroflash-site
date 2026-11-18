@@ -1,0 +1,46 @@
+---
+/* Confirmation d'envoi du formulaire (non indexée). Aucun délai promis au-delà du « rappel immédiat » (confirmé). */
+import Base from '../../layouts/Base.astro';
+import SousHero from '../../components/SousHero.astro';
+import { FEUILLE_CONTENU } from '../../lib/feuilles';
+import { services } from '../../data/services';
+import { entreprise as e } from '../../data/entreprise';
+import contactOrdi from '../../styles/pages/contact-ordinateur.css?url';
+import contactMobile from '../../styles/pages/contact-mobile.css?url';
+/* Espaces insécables dans « 24 h/24 · 7 j/7 » (évite « 24 / h/24 » en fin de ligne). */
+const dispo = e.disponibilite.libelle.replace(/(\d) /g, '$1\u00a0');
+---
+<Base
+  titre="Demande envoyée | HYDROFLASH"
+  description="Votre demande a bien été envoyée à HYDROFLASH : nous vous rappelons immédiatement."
+  feuilles={[FEUILLE_CONTENU, { ordi: contactOrdi, mobile: contactMobile }]}
+  noindex
+>
+  <SousHero
+    ariane={[{ label: 'Contact', href: '/contact/' }, { label: 'Demande envoyée' }]}
+    surtitre="Demande envoyée"
+    titre="Votre demande est bien envoyée."
+    titreFin="Nous vous rappelons immédiatement."
+    intro="Merci&nbsp;! Gardez votre téléphone à portée de main&nbsp;: nous vous appelons pour faire le point sur votre problème."
+    actions={false}
+    compact
+  />
+
+  <section class="sec sec-sm" aria-labelledby="t-direct">
+    <div class="wrap c-grid2">
+      <div class="callout callout-o mc-call">
+        <h2 id="t-direct">Besoin de nous parler tout de suite&nbsp;?</h2>
+        <p>Inutile d'attendre notre rappel&nbsp;: appelez-nous directement, {dispo}.</p>
+        <a class="btn btn-dark btn-xl" href={e.telephone.lien}><svg class="ic" aria-hidden="true"><use class="u-d" href="#i-tel"/><use class="u-m" href="#i-tel-f"/></svg>Appeler le {e.telephone.affiche}</a>
+      </div>
+      <nav class="mc-nav" aria-labelledby="t-suite">
+        <h2 class="ct-h2" id="t-suite">En attendant</h2>
+        <ul class="mc-links">
+          <li><a href="/urgence-debouchage-24h/">Urgence&nbsp;: les bons gestes en attendant notre arrivée <svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></a></li>
+          <li><a href="/services/">Nos {services.length} prestations <svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></a></li>
+          <li><a href="/">Retour à l'accueil <svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></a></li>
+        </ul>
+      </nav>
+    </div>
+  </section>
+</Base>

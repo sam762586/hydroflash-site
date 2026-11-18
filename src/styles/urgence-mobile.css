@@ -48,8 +48,9 @@
 .u-call .l1 { font: 900 24px/1 var(--f-display); font-stretch: 72%; letter-spacing: .04em; }
 .u-call .l2 { font-size: 28px; margin-top: 6px; }
 @media (prefers-reduced-motion: no-preference) {
-  .u-call .ic-round { animation: u-ring 2.4s ease-out infinite; }
-  @keyframes u-ring { 0% { box-shadow: 0 0 0 0 rgba(20, 22, 26, .5); } 70%, 100% { box-shadow: 0 0 0 14px rgba(20, 22, 26, 0); } }
+  .u-call .ic-round { position: relative; isolation: isolate; }
+  .u-call .ic-round::after { content: ""; position: absolute; inset: 0; border-radius: 50%; z-index: -1; background: rgba(20, 22, 26, .5); animation: u-ring 2.4s ease-out infinite; pointer-events: none; }
+  @keyframes u-ring { 0% { transform: scale(1); opacity: 1; } 70%, 100% { transform: scale(1.5); opacity: 0; } }
 }
 .u-cb { --h: 56px; width: 100%; font-size: 17px; background: rgba(7, 8, 10, .55); }
 .u-cb[aria-expanded="true"] { background: #fff; color: var(--ink2); }
@@ -64,6 +65,7 @@
 .u-rappel h2 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .u-rp-micro { font-size: 16px; color: var(--grey-d); }
 .u-rappel .rgpd { order: 4; grid-column: 1 / -1; margin-top: -4px; }
+.u-rappel .form-msg { order: 2; grid-column: 1 / -1; } /* message d'envoi, sous le bouton */
 
 .u-info { display: flex; flex-direction: column; gap: 4px; margin-top: 16px; color: var(--grey-d); font-size: 16px; }
 .u-info li { display: flex; align-items: center; gap: 9px; }

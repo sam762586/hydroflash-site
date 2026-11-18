@@ -13,7 +13,7 @@ export const entreprise = {
   // ——— Confirmé ———
   telephone: { affiche: '07 62 88 28 39', lien: 'tel:+33762882839', international: '+33762882839' },
   email: 'hydroflash@gmail.com',
-  disponibilite: { libelle: '24 h/24, 7 j/7', court: '24 h/24 · 7 j/7' },
+  disponibilite: { libelle: '24\u00a0h/24, 7\u00a0j/7', court: '24\u00a0h/24 · 7\u00a0j/7' }, // espaces insécables
   sansMajoration: true, // de nuit ni de week-end
   rappel: 'immédiat', // demande « Être rappelé »
   zone: {
@@ -27,7 +27,7 @@ export const entreprise = {
   vehicule: { type: 'Pick-up à caisson', couleur: 'RAL 2009', marquage: 'à venir' },
 
   // ——— Non confirmé (null) ———
-  siteUrl: null as string | null, // nom de domaine (ex. https://www.hydroflash.fr) — à confirmer
+  siteUrl: 'https://hydroflash.fr' as string | null, // confirmé le 18/11/2026 (version sans www ; www redirigé)
   adresse: null as null | { rue: string; cp: string; ville: string }, // base / dépôt
   accueilClients: null as boolean | null,
   raisonSociale: null as string | null,
@@ -51,5 +51,5 @@ export const entreprise = {
 
 /** Champs obligatoires pour une mise en ligne (mentions légales LCEN, NAP) */
 export const champsObligatoiresProduction = [
-  'siteUrl', 'raisonSociale', 'formeJuridique', 'siret', 'directeurPublication', 'hebergeur', 'mediateur', 'dureeConservationDemandes',
+  'siteUrl', 'raisonSociale', 'formeJuridique', 'siret', 'rcsOuRm', 'adresse', 'directeurPublication', 'hebergeur', 'mediateur', 'dureeConservationDemandes',
 ] as const;

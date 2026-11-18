@@ -1,0 +1,56 @@
+/* HYDROFLASH — pages Contact, Demande envoyée, À propos et 404 : rendu smartphone (style A), ≤ 700 px.
+   Complète contenu-mobile.css. */
+
+.bg-mist { background: var(--mist); }
+.on-dark { background: var(--ink0); color: #fff; }
+.on-dark .sec-label, .on-dark .h2 em { color: var(--o); }
+
+/* ——— Contact ——— */
+.ct-sec { background: var(--mist); }
+.ct-grid { display: grid; gap: 30px; }
+.ct-call { padding: 22px 16px 20px; background: var(--ink2); color: #fff; border-radius: var(--radius); border-top: 6px solid var(--o); }
+.ct-call .sec-label { color: var(--o); margin-bottom: 6px; }
+.ct-h { font: 900 36px/.95 var(--f-display); font-stretch: 66%; text-transform: uppercase; }
+.ct-btn { width: 100%; margin-top: 16px; }
+.ct-pts { margin-top: 16px; display: grid; gap: 4px; font-size: 15.5px; color: #D8DBE0; }
+.ct-pts li { display: flex; align-items: center; gap: 10px; }
+.ct-pts li::before { content: ""; width: 8px; height: 8px; background: var(--o); transform: rotate(45deg); flex: none; }
+
+.ct-h2 { font: 900 28px/1 var(--f-display); font-stretch: 70%; text-transform: uppercase; }
+.ct-h2b { color: var(--o-text); }
+.ct-infos .ct-h2 { margin-bottom: 12px; }
+.ct-a { color: var(--ink2); font-weight: 700; text-decoration-color: var(--o); text-decoration-thickness: 2px; text-underline-offset: 3px; display: inline-block; padding: 4px 0; overflow-wrap: anywhere; }
+.ct-form-l { margin: 8px 0 18px; color: var(--grey); }
+
+.ct-next { padding: 22px 16px 6px; background: #fff; border: 2px solid var(--ink2); border-radius: var(--radius); }
+.ct-next .ct-h2 { margin-bottom: 16px; }
+.ct-steps { display: grid; counter-reset: s; }
+.ct-steps li { counter-increment: s; position: relative; padding: 0 0 20px 54px; }
+.ct-steps li::before { content: counter(s); position: absolute; left: 0; top: 0; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--ink2); color: var(--o); font: 900 20px/1 var(--f-display); }
+.ct-steps li:not(:last-child)::after { content: ""; position: absolute; left: 18px; top: 44px; bottom: 4px; width: 4px; background: var(--o); }
+.ct-steps h3 { padding-top: 8px; font: 900 20px/1.05 var(--f-display); font-stretch: 78%; text-transform: uppercase; }
+.ct-steps p { margin-top: 6px; color: var(--grey); font-size: 16px; line-height: 1.45; }
+
+.ct-urg-btns { display: grid; gap: 10px; margin-top: 18px; }
+.ct-urg-btns .btn { width: 100%; margin-top: 0; }
+
+/* ——— Demande envoyée ——— */
+.mc-nav .ct-h2 { margin-bottom: 8px; }
+.mc-links { display: grid; border-top: 1px solid var(--line); }
+.mc-links a { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 56px; padding: 6px 0; border-bottom: 1px solid var(--line); font-weight: 700; text-decoration: none; color: var(--ink2); }
+.mc-links a .ic { width: 20px; height: 20px; color: var(--o-text); }
+
+/* ——— À propos ——— */
+.ap-prose { margin-top: 14px; }
+.ap-kv a { color: var(--ink2); font-weight: 700; text-decoration-color: var(--o); text-decoration-thickness: 2px; text-underline-offset: 3px; overflow-wrap: anywhere; }
+.ap-small { margin-top: 20px; }
+.ap-small img { width: 100%; height: auto; }
+.ap-small figcaption { margin-top: 8px; font-size: 13px; color: var(--grey-d); }
+.ap-lead { margin-top: 12px; color: var(--grey); }
+.on-dark .prose { color: #fff; }
+
+/* ——— 404 ——— */
+.nf-a { color: var(--ink2); font-weight: 700; text-decoration-color: var(--o); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+.nf-ctas { margin-top: 24px; display: grid; gap: 10px; }
+.nf-ctas .btn { width: 100%; }
+.nw { white-space: nowrap; }

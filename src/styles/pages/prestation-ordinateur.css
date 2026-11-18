@@ -1,0 +1,105 @@
+/* HYDROFLASH — pages prestations ([prestation].astro) et page Professionnels — ordinateur/tablette (style C « Next »), ≥ 701 px.
+   Complète contenu-ordinateur.css (FEUILLE_CONTENU) sans le modifier. Préfixe : .pr- */
+
+/* ——— Signes d'alerte ——— */
+.pr-signes { background: var(--mist); }
+.pr-checks { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 36px; }
+.pr-checks li { padding: 24px 8px 26px 44px; border-top: 1px solid var(--mist2); font-size: 18px; line-height: 1.5; }
+.pr-checks li::before { top: 24px; }
+
+/* ——— Notre méthode : texte + visuel / informations pratiques ——— */
+.pr-methode .c-grid2 { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 80px; }
+.pr-methode-txt .h2 { margin-top: 14px; max-width: 12.5em; }
+.pr-prose { margin-top: 34px; }
+.pr-prose > p:first-child { font-size: 20px; line-height: 1.6; }
+.pr-prose h3 { margin-top: 1.7em; padding-top: 20px; border-top: 1px solid var(--line); font-size: 25px; font-weight: var(--w-heavy); line-height: 1.1; }
+.pr-prose h2 { padding-top: 24px; border-top: 4px solid var(--ink2); }
+.pr-aside { display: grid; gap: 18px; }
+.pr-fig img { width: 100%; height: auto; border-radius: 24px; background: var(--mist2); }
+.pr-fig--photo img { aspect-ratio: 4 / 3; object-fit: cover; }
+.pr-fig figcaption { margin-top: 10px; font-family: var(--f-mono); font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--grey); }
+.pr-infos { position: relative; border-radius: 24px; padding: 26px 28px 28px; background: var(--ink2); color: #fff; overflow: hidden; }
+.pr-infos-t { display: flex; align-items: center; gap: 10px; font-family: var(--f-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; font-weight: 500; color: var(--o); }
+.pr-infos-t::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--o); }
+.pr-infos dl { margin: 14px 0 0; }
+.pr-infos dl > div { display: grid; grid-template-columns: minmax(120px, 160px) minmax(0, 1fr); gap: 4px 18px; padding: 11px 0; border-top: 1px solid var(--line-d); }
+.pr-infos dt { padding-top: 3px; font-family: var(--f-mono); font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--grey-d); }
+.pr-infos dd { margin: 0; font-size: 16px; font-weight: 600; line-height: 1.4; }
+.pr-infos dd .tbc { font-size: 12px; color: var(--grey-d); }
+.pr-infos-btn { margin-top: 18px; width: 100%; }
+
+/* ——— Déroulé ——— */
+.pr-etapes .c-head { margin-bottom: 40px; }
+.pr-etapes .steps-c li { padding: 28px 26px 30px; }
+.pr-etapes .steps-c h3 { font-size: 23px; }
+
+/* ——— Bandeau urgence (bandeau intermédiaire unique) ——— */
+.pr-urg-sec { padding: 88px 0 0; }
+.pr-urg { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 24px 36px; padding: 40px 44px; border-radius: 28px; }
+.pr-urg > * { position: relative; z-index: 1; }
+.pr-urg::after { content: ""; position: absolute; right: -90px; top: -120px; width: 300px; height: 300px; border-radius: 50%; border: 36px solid rgba(20, 22, 26, .08); pointer-events: none; }
+.pr-urg-ic { width: 76px; height: 76px; }
+.pr-urg h2 { font-size: clamp(28px, 2.6vw, 38px); font-weight: var(--w-heavy); font-stretch: var(--cond); line-height: 1.02; letter-spacing: -.01em; }
+.pr-urg p { margin-top: 10px; max-width: 44em; font-size: 17px; }
+.pr-urg .btn { margin-top: 0; white-space: nowrap; }
+.pr-nw { white-space: nowrap; }
+
+/* ——— Pour qui ——— */
+.pr-cibles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 40px; }
+.pr-cibles > li { padding-top: 26px; border-top: 4px solid var(--ink2); }
+.pr-cibles img { width: 56px; height: 56px; }
+.pr-cibles h3 { margin-top: 18px; font-size: 28px; font-weight: var(--w-heavy); font-stretch: var(--cond); line-height: 1.05; }
+.pr-cibles p { margin-top: 10px; color: var(--grey); font-size: 17px; line-height: 1.55; }
+.pr-pro { margin-top: 44px; }
+.pr-pro a, .pr-lien { display: inline-flex; align-items: center; gap: 14px; min-height: 44px; font-weight: 700; font-size: 18px; color: var(--ink2); text-decoration: underline; text-decoration-color: var(--o); text-decoration-thickness: 2px; text-underline-offset: 6px; }
+.pr-pro .ic, .pr-lien .ic { width: 32px; height: 32px; padding: 8px; border-radius: 50%; background: var(--o); color: var(--ink2); transition: transform .2s; }
+.pr-pro a:hover .ic, .pr-lien:hover .ic { transform: translateX(4px); }
+
+/* ——— Prestations liées ——— */
+.pr-liees { background: var(--mist); }
+.pr-liees .card { background: #fff; }
+
+/* ——— Page Professionnels ——— */
+.pro-profils { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.pro-profil { display: flex; flex-direction: column; padding: 32px 30px 34px; border-radius: 26px; background: var(--mist); }
+.pro-profil img { width: 56px; height: 56px; }
+.pro-profil h3 { margin-top: 20px; font-size: 30px; font-weight: var(--w-heavy); font-stretch: var(--cond); line-height: 1.02; }
+.pro-profil > p { margin-top: 12px; color: var(--grey); font-size: 17px; line-height: 1.5; }
+.pro-profil .checks { margin-top: 22px; padding-top: 22px; border-top: 1px solid var(--mist2); }
+.pro-profil .checks li { font-size: 16.5px; }
+.pro-profil--dark { background: var(--ink2); color: #fff; }
+.pro-profil--dark > p { color: var(--grey-d); }
+.pro-profil--dark .checks { border-color: var(--line-d); }
+.pro-profil--dark .checks li { color: #fff; }
+.pro-trace .c-grid2 { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 72px; }
+.pro-trace .h2 { margin-top: 14px; }
+.pro-trace .prose { margin-top: 28px; }
+.pro-fig { margin-top: 36px; }
+.pro-devis { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 24px 40px; padding: 44px 48px; border-radius: 28px; }
+.pro-devis h2 { font-size: clamp(30px, 3vw, 44px); }
+.pro-devis p { max-width: 40em; }
+.pro-devis .pro-devis-btns { display: flex; flex-wrap: wrap; gap: 12px; }
+.pro-devis .btn { margin-top: 0; }
+.pro-devis .btn-ghost { color: #fff; }
+
+@media (max-width: 1100px) {
+  .pr-checks, .pro-profils { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pr-cibles { gap: 0 28px; }
+  .pr-cards3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .pr-cards3 .card { padding: 24px; }
+  .pr-methode .c-grid2, .pro-trace .c-grid2 { grid-template-columns: minmax(0, 1fr); gap: 48px; }
+  .pr-aside { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
+  .pr-urg { grid-template-columns: auto minmax(0, 1fr); }
+  .pr-urg .btn { grid-column: 2; justify-self: start; }
+  .pro-devis { grid-template-columns: minmax(0, 1fr); }
+  .pro-profil:last-child { grid-column: 1 / -1; }
+}
+@media (max-width: 900px) {
+  .pr-checks, .pr-cibles, .pr-cards3 { grid-template-columns: minmax(0, 1fr); }
+  .pr-cibles > li + li { margin-top: 28px; }
+  .pr-aside { grid-template-columns: minmax(0, 1fr); }
+  .pr-urg { grid-template-columns: minmax(0, 1fr); padding: 34px 32px; }
+  .pr-urg .btn { grid-column: auto; }
+  .pro-profils { grid-template-columns: minmax(0, 1fr); }
+}
+.pr-cibles-sec .h2 em { white-space: nowrap; }

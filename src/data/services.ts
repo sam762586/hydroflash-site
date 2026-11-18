@@ -1,9 +1,10 @@
 /** Prestations — ordre du marquage du véhicule (choix HYDROFLASH), puis entretien. */
 export type Service = {
   slug: string; url: string; titre: string; court: string; picto: string; resume: string; numero: string;
+  typeFormulaire?: string; // libellé dans le champ « Type de problème » (par défaut : court)
 };
 export const services: Service[] = [
-  { numero: '01', slug: 'debouchage', url: '/debouchage-canalisation/', titre: 'Débouchage de canalisation', court: 'Débouchage', picto: 'debouchage',
+  { numero: '01', slug: 'debouchage', url: '/debouchage-canalisation/', titre: 'Débouchage de canalisation', court: 'Débouchage', picto: 'debouchage', typeFormulaire: 'Bouchon',
     resume: 'Évier, WC, douche, colonne ou branchement : nous localisons le bouchon et rétablissons l\'écoulement.' },
   { numero: '02', slug: 'curage', url: '/curage-canalisation/', titre: 'Curage de canalisation', court: 'Curage', picto: 'curage',
     resume: 'Nettoyage en profondeur des canalisations à l\'eau sous haute pression pour retirer graisses, dépôts et sédiments.' },

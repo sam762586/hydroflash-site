@@ -1,0 +1,263 @@
+---
+/* URGENCE DÉBOUCHAGE 24 h/24 — portage du prototype validé (03_CONCEPTS/concept-final/urgence.html) :
+   style C ≥ 701 px (ordinateur.css + urgence-ordinateur.css), style A ≤ 700 px (mobile.css + urgence-mobile.css).
+   « Être rappelé » : vrai formulaire (même envoi que FormulaireDemande), id="rappel" utilisé par hf.js.
+   Règle : toute information non confirmée passe par <Tbc /> (préproduction) et le bloc est masqué en production. */
+import { Picture } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import Tbc from '../../components/Tbc.astro';
+import { FEUILLE_URGENCE } from '../../lib/feuilles';
+import { entreprise as e } from '../../data/entreprise';
+import { services } from '../../data/services';
+import { schemaService } from '../../lib/schema';
+import { PROD } from '../../lib/env';
+import grillesNuit from '../../assets/photos/grilles-nuit.webp';
+import vehiculeDetoure from '../../assets/photos/vehicule-marque-detoure.png';
+
+const svc = Object.fromEntries(services.map((s) => [s.slug, s]));
+const tel = e.telephone.affiche.replace(/ /g, ' ');
+const nb = (t: string) => t.replace(/(\d) ([hj])/g, '$1 $2'); // « 24 h/24 » insécable
+/** Affichage d'une donnée : 'ok' = confirmée · 'tbc' = non confirmée (étiquette en préproduction) · null = masquée */
+const aff = (v: unknown) => (v === false ? null : v != null ? 'ok' : PROD ? null : 'tbc');
+const devis = aff(e.devisAvantIntervention);
+const factu = aff(e.principeFacturation);
+const delai = aff(e.delaiIntervention);
+const FORMATS = ['avif', 'webp'] as const;
+const description = `WC qui déborde, canalisation bouchée ? Intervention ${e.disponibilite.libelle}${e.sansMajoration ? ', sans majoration,' : ''} en Seine-Maritime (76) et dans l'Eure (27). Appelez le ${e.telephone.affiche}.`;
+---
+<Base
+  titre="Débouchage en urgence 24h/24, 7j/7 – 76 et 27 | HYDROFLASH"
+  description={description}
+  classeBody="p-urg"
+  barre="urgence"
+  feuilles={[FEUILLE_URGENCE]}
+  jsonld={schemaService('Débouchage en urgence 24 h/24', '/urgence-debouchage-24h/', `Débouchage de canalisations en urgence, ${e.disponibilite.libelle}, sans majoration de nuit ni de week-end, en Seine-Maritime (76) et dans l'Eure (27).`)}
+>
+  <!-- 1. HERO -->
+  <section class="hero u-hero" aria-labelledby="h1">
+    <div class="hero-bg m-only" aria-hidden="true">
+      <Picture src={grillesNuit} alt="" widths={[480, 720, 960]} sizes="(max-width: 700px) 150vw, 1px" quality={50} formats={FORMATS} fallbackFormat="jpg" loading="eager" fetchpriority="high" />
+    </div>
+    <svg class="hero-flux m-only" viewBox="-1 -1 114 126" aria-hidden="true"><use href="#flux-outline"/></svg>
+    <div class="wrap u-grid">
+      <div class="u-txt">
+        <Breadcrumb items={[{ label: 'Urgence débouchage 24 h/24' }]} />
+        <p class="eyebrow u-status"><span class="pulse" aria-hidden="true"></span>Urgence débouchage · {nb(e.disponibilite.court)}</p>
+        <h1 id="h1"><span class="h1a">Canalisation bouchée en pleine nuit&nbsp;?</span> <span class="h1b">Appelez <span class="h1-brand">HYDROFLASH</span>, <em>{nb(e.disponibilite.libelle)}.</em></span></h1>
+        <p class="lead">WC qui déborde, évier bloqué, regard qui refoule&nbsp;: HYDROFLASH est joignable jour et nuit pour déboucher vos canalisations, en Seine-Maritime (76) et dans l'Eure (27).</p>
+        <div class="u-ctas">
+          <a class="btn btn-call u-call" href={e.telephone.lien}><span class="ic-round"><svg class="ic" aria-hidden="true"><use class="u-d" href="#i-tel"/><use class="u-m" href="#i-tel-f"/></svg></span><span class="btn-txt"><span class="l1">Appeler maintenant</span><span class="l2">{tel}</span></span></a>
+          <a class="btn btn-ghost u-cb" href="#rappel" data-rappel aria-controls="rappel"><svg class="ic" aria-hidden="true"><use href="#i-cb"/></svg>Être rappelé</a>
+        </div>
+        <ul class="u-info" aria-label="Conditions">
+          {e.sansMajoration && <li><span>Sans majoration, de nuit comme le week-end</span></li>}
+          {delai && <li><span>Délai d'intervention{delai === 'ok' ? <>&nbsp;: {e.delaiIntervention}</> : <> <Tbc /></>}</span></li>}
+        </ul>
+      </div>
+    </div>
+
+    <div class="u-visual">
+      <figure class="u-regard d-only">
+        <Picture src={grillesNuit} alt="" widths={[480, 800, 1200]} sizes="(max-width: 700px) 1px, (max-width: 900px) 420px, min(48vw, 780px)" formats={FORMATS} fallbackFormat="jpg" loading="eager" />
+      </figure>
+      <svg class="u-ring d-only" viewBox="0 0 200 200" aria-hidden="true"><circle class="r-track" cx="100" cy="100" r="96"/><circle class="r-flow" cx="100" cy="100" r="96"/></svg>
+      <span class="u-tag mono d-only">Photo d'ambiance · libre de droits</span>
+      <div class="truck u-truck">
+        <Picture src={vehiculeDetoure} alt={`Véhicule d'intervention HYDROFLASH : pick-up orange à cabine simple et caisson à compartiments, avec le marquage HYDROFLASH et le ${e.telephone.affiche} (visuel du marquage à venir)`} widths={[480, 800, 1200, 1720]} sizes="(max-width: 700px) 86vw, (max-width: 900px) min(80vw, 620px), min(49vw, 900px)" formats={FORMATS} fallbackFormat="png" loading="eager" fetchpriority="high" />
+        <span class="ill-tag mono d-only">Véhicule HYDROFLASH — visuel du marquage à venir</span>
+      </div>
+    </div>
+
+    <!-- Être rappelé : mini-formulaire 2 champs (ordinateur : carte qui chevauche le hero · smartphone : volet sous le bouton).
+         Envoi : /envoi-demande.php (comme FormulaireDemande) ; préproduction : envoi simulé (data-preprod). -->
+    <div class="wrap u-rp-wrap">
+      <form class="u-rappel" id="rappel" method="post" action="/envoi-demande.php" aria-labelledby="t-rappel" data-demande data-preprod={PROD ? undefined : ''} novalidate>
+        <div class="u-rp-head">
+          <span class="u-rp-ic" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-cb"/></svg></span>
+          <div>
+            <h2 id="t-rappel">Être rappelé</h2>
+            <p class="u-rp-micro">Rappel {e.rappel}</p>
+          </div>
+        </div>
+        <label class="fld"><span>Nom</span><input type="text" id="rp-nom" name="nom" autocomplete="name" placeholder="Votre nom" required maxlength="80"></label>
+        <label class="fld"><span>Téléphone</span><input type="tel" name="tel" autocomplete="tel" inputmode="tel" placeholder="06 00 00 00 00" required maxlength="20"></label>
+        <div class="hp" aria-hidden="true"><label>Ne pas remplir<input type="text" name="site_web" tabindex="-1" autocomplete="off"></label></div>
+        <input type="hidden" name="t0" value="">
+        <input type="hidden" name="origine" value={Astro.url.pathname}>
+        <button class="btn btn-call u-rp-btn" type="submit">Me rappeler <svg class="ic d-only" aria-hidden="true"><use href="#i-ar"/></svg></button>
+        <p class="form-msg" data-form-msg tabindex="-1" role="status" aria-live="polite"></p>
+        <p class="rgpd">Vos informations servent uniquement à traiter votre demande. <a href="/confidentialite/">Politique de confidentialité</a></p>
+      </form>
+    </div>
+    <p class="stamp u-stamp m-only">Véhicule HYDROFLASH — visuel du marquage à venir · Fond&nbsp;: photo libre de droits</p>
+  </section>
+
+  <!-- 2. EN ATTENDANT LE TECHNICIEN -->
+  <section class="sec u-wait" aria-labelledby="t-wait">
+    <div class="wrap u-wait-grid">
+      <div class="u-wait-aside">
+        <p class="sec-label"><span class="sl-n">02 — </span>En attendant</p>
+        <h2 class="h2" id="t-wait">En attendant <em>le technicien</em></h2>
+        <p class="u-note">Conseils de sécurité · informations générales</p>
+      </div>
+      <ol class="u-wait-list">
+        <li><span class="u-n" aria-hidden="true">01</span><p><strong>Arrêtez d'utiliser les points d'eau concernés</strong><span class="w-sep">&nbsp;: </span><span class="w-d">ne tirez plus la chasse, ne faites plus couler l'eau.</span></p></li>
+        <li><span class="u-n" aria-hidden="true">02</span><p><strong>Si l'eau déborde, coupez l'arrivée d'eau</strong><span class="w-sep">&nbsp;: </span><span class="w-d">robinet d'arrêt du WC ou robinet général.</span></p></li>
+        <li><span class="u-n" aria-hidden="true">03</span><p><strong>N'utilisez pas de déboucheur chimique</strong><span class="w-sep">&nbsp;: </span><span class="w-d">risque de brûlure, de dégâts sur les canalisations, et danger pour le technicien.</span></p></li>
+        <li><span class="u-n" aria-hidden="true">04</span><p><strong>Protégez-vous et protégez le sol</strong><span class="w-sep">&nbsp;: </span><span class="w-d">gants en cas de refoulement d'eaux usées, objets de valeur à l'écart.</span></p></li>
+        <li><span class="u-n" aria-hidden="true">05</span><p><strong>Repérez, si possible, l'accès au regard extérieur</strong><span class="w-sep">&nbsp;: </span><span class="w-d">cela fait gagner du temps sur place.</span></p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 3. CE QUI SE PASSE QUAND VOUS APPELEZ -->
+  <section class="sec on-dark u-flow proc-sec" aria-labelledby="t-flow">
+    <div class="wrap">
+      <div class="sec-head u-flow-head">
+        <div>
+          <p class="sec-label"><span class="sl-n">03 — </span>Votre appel</p>
+          <h2 class="h2" id="t-flow">Ce qui se passe <em>quand vous appelez</em></h2>
+        </div>
+      </div>
+      <ol class="u-steps">
+        <li class="u-step"><span class="u-node" aria-hidden="true" data-n="1">01</span><h3>Vous décrivez la situation</h3><p>Quels points d'eau, depuis quand, accès au logement ou au regard.</p></li>
+        <li class="u-step"><span class="u-node" aria-hidden="true" data-n="2">02</span><h3>Nous vous indiquons les conditions d'intervention</h3>
+          {factu ? (
+            <p>{factu === 'ok' ? e.principeFacturation : <>Principe de facturation <Tbc /></>}, sans majoration de nuit ni de week-end, annoncé avant tout déplacement.</p>
+          ) : (
+            <p>Sans majoration de nuit ni de week-end.</p>
+          )}
+        </li>
+        <li class="u-step"><span class="u-node" aria-hidden="true" data-n="3">03</span><h3>Sur place, le technicien localise le bouchon</h3>
+          <p>Passage caméra si nécessaire{devis ? <>, devis présenté avant d'agir{devis === 'tbc' && <> <Tbc /></>}</> : null}.</p>
+        </li>
+        <li class="u-step"><span class="u-node" aria-hidden="true" data-n="4">04</span><h3>Débouchage et contrôle</h3><p>Vérification de l'écoulement, remise en ordre, conseils pour éviter la récidive.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 4. URGENCES PRISES EN CHARGE -->
+  <section class="sec u-cases" aria-labelledby="t-cases">
+    <div class="wrap">
+      <div class="u-cases-head">
+        <p class="sec-label"><span class="sl-n">04 — </span>Urgences</p>
+        <h2 class="h2" id="t-cases">Urgences <em>prises en charge</em></h2>
+      </div>
+      <ul class="u-bento">
+        <li class="uc uc--a"><a href={svc.debouchage.url}>
+          <span class="uc-top"><span class="mono uc-i">U—01</span><img class="picto" src="/img/pictos/debouchage-blanc.svg" alt="" width="56" height="56"></span><img class="uc-ill" src="/img/illus/scene-debouchage-coupe.svg" alt="" width="1400" height="700" loading="lazy">
+          <h3>WC bouché ou qui déborde</h3>
+          <span class="uc-to"><span class="uc-svc">Débouchage</span><span class="ar"><svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></span></span>
+        </a></li>
+        <li class="uc uc--b"><a href={svc.debouchage.url}>
+          <span class="uc-top"><span class="mono uc-i">U—02</span><picture><source media="(max-width: 700px)" srcset="/img/pictos/particulier-blanc.svg"><img class="picto" src="/img/pictos/particulier-noir.svg" alt="" width="56" height="56"></picture></span>
+          <h3>Évier, douche, baignoire bloqués</h3>
+          <span class="uc-to"><span class="uc-svc">Débouchage</span><span class="ar"><svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></span></span>
+        </a></li>
+        <li class="uc uc--c"><a href={svc.curage.url}>
+          <span class="uc-top"><span class="mono uc-i">U—03</span><picture><source media="(max-width: 700px)" srcset="/img/pictos/curage-blanc.svg"><img class="picto" src="/img/pictos/curage-sur-orange.svg" alt="" width="56" height="56"></picture></span>
+          <h3>Regard ou canalisation principale qui refoule</h3>
+          <span class="uc-to"><span class="uc-svc">Débouchage · Curage</span><span class="ar"><svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></span></span>
+        </a></li>
+        <li class="uc uc--d"><a href="/professionnels/">
+          <span class="uc-top"><span class="mono uc-i">U—04</span><picture><source media="(max-width: 700px)" srcset="/img/pictos/syndic-blanc.svg"><img class="picto" src="/img/pictos/syndic-noir.svg" alt="" width="56" height="56"></picture></span>
+          <h3>Colonne d'immeuble bouchée <span class="uc-sub">(syndics, gardiens)</span></h3>
+          <span class="uc-to"><span class="uc-svc">Débouchage · Professionnels</span><span class="ar"><svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></span></span>
+        </a></li>
+        <li class="uc uc--e"><a href={svc.pompage.url}>
+          <span class="uc-top"><span class="mono uc-i">U—05</span><picture><source media="(max-width: 700px)" srcset="/img/pictos/pompage-blanc.svg"><img class="picto" src="/img/pictos/pompage-noir.svg" alt="" width="56" height="56"></picture></span>
+          <h3>Local ou sous-sol inondé par refoulement</h3>
+          <span class="uc-to"><span class="uc-svc">Pompage{aff(e.typesOuvragesPompage) === 'tbc' && <> <Tbc label="types d'ouvrages à confirmer" /></>}</span><span class="ar"><svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></span></span>
+        </a></li>
+        <li class="uc uc--f"><a href={svc['passage-camera'].url}>
+          <span class="uc-top"><span class="mono uc-i">U—06</span><img class="picto" src="/img/pictos/inspection-camera-blanc.svg" alt="" width="56" height="56"></span>
+          <h3>Bouchon qui revient</h3>
+          <span class="uc-to"><span class="uc-svc">Passage caméra · Curage</span><span class="ar"><svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></span></span>
+        </a></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 5. PRIX + 6. ZONE -->
+  <div class="u-duo-band">
+    <div class="wrap u-duo">
+      <section class="u-price" aria-labelledby="t-price">
+        <div class="u-price-head">
+          <p class="sec-label"><span class="sl-n">05 — </span>Prix</p>
+          <h2 class="h2" id="t-price">Prix&nbsp;: ce que nous annonçons <em>avant de venir</em></h2>
+        </div>
+        <div class="u-price-body">
+          <ul class="u-ticket">
+            {devis && <li><svg class="ic" aria-hidden="true"><use href="#i-doc"/></svg><span>Devis présenté avant intervention</span>{devis === 'tbc' && <Tbc />}</li>}
+            {factu && <li><svg class="ic" aria-hidden="true"><use href="#i-doc"/></svg><span>Principe de facturation{factu === 'ok' && <>&nbsp;: {e.principeFacturation}</>}</span>{factu === 'tbc' && <Tbc />}</li>}
+            {e.sansMajoration && <li class="u-tk-ok"><svg class="ic" aria-hidden="true"><use href="#i-moon"/></svg><span>Majoration de nuit / week-end&nbsp;:</span><span class="u-ok">aucune</span></li>}
+          </ul>
+          {!PROD && <p class="u-rule">Aucun montant n'est affiché tant qu'il n'est pas validé par HYDROFLASH.</p>}
+        </div>
+      </section>
+
+      <section class="u-zone zone-panel" id="zone" aria-labelledby="t-zone">
+        <div class="zone-txt">
+          <p class="sec-label sec-label-nb"><span class="sl-n">06 — </span>Zone</p>
+          <h2 class="h2" id="t-zone">Zone d'urgence</h2>
+          <p class="lead">Nous intervenons en urgence en <strong>Seine-Maritime (76)</strong> et dans l'<strong>Eure (27)</strong>.</p>
+          <p class="cp-q" id="cpu-q">Intervenez-vous chez moi&nbsp;?</p>
+          <form class="cp-form" data-cp data-res="cpu-res" data-map="cpu-rep" novalidate aria-labelledby="cpu-q">
+            <div class="cp-field"><label for="cpu-in">Votre code postal</label><input id="cpu-in" name="cp" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="5" placeholder="Ex. 76000" aria-describedby={PROD ? undefined : 'cpu-note'}></div>
+            <button class="btn btn-call" type="submit">Vérifier</button>
+          </form>
+          <div class="cp-res" id="cpu-res" aria-live="polite"></div>
+          {!PROD && <p class="cp-note" id="cpu-note">Couverture de chaque commune&nbsp;: <Tbc /></p>}
+          <div class="reperes" id="cpu-rep">
+            <p class="rp-t mono">Villes repères</p>
+            <div class="rp-grp" data-dep="76"><p class="rp-d" title="Seine-Maritime"><span class="sr">Seine-Maritime </span>76</p><ul class="communes" aria-label="Seine-Maritime"><li>Rouen</li><li>Le Havre</li><li>Dieppe</li><li>Fécamp</li><li>Elbeuf</li></ul></div>
+            <div class="rp-grp" data-dep="27"><p class="rp-d" title="Eure"><span class="sr">Eure </span>27</p><ul class="communes" aria-label="Eure"><li>Évreux</li><li>Vernon</li><li>Louviers</li><li>Bernay</li><li>Pont-Audemer</li><li>Gisors</li></ul></div>
+          </div>
+        </div>
+        <figure class="zmap">
+          <div class="zmap-crop"><img src="/img/illus/carte-zone-76-27-sombre.svg" alt="Carte de principe de la zone d'intervention : la Seine-Maritime (76) au nord, l'Eure (27) au sud, avec les villes repères Le Havre, Fécamp, Dieppe, Rouen, Pont-Audemer, Louviers, Bernay, Évreux, Vernon et Gisors." width="1120" height="980" loading="lazy"></div>
+          <figcaption class="mono stamp">Carte de principe — contours simplifiés</figcaption>
+        </figure>
+      </section>
+    </div>
+  </div>
+
+  <!-- 7. FAQ URGENCE (balisage propre : titre en deux tons, sans bouton dans la colonne) -->
+  <section class="sec faq-sec u-faq" aria-labelledby="t-faq">
+    <div class="wrap faq-grid">
+      <div class="faq-aside">
+        <p class="sec-label"><span class="sl-n">07 — </span>Questions</p>
+        <h2 class="h2" id="t-faq">Questions fréquentes <em>(urgence)</em></h2>
+      </div>
+      <div class="faq" data-faq-fold>
+        <details open><summary><span class="q-n">Q.01</span>Pouvez-vous intervenir la nuit&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Oui, HYDROFLASH est joignable et intervient {nb(e.disponibilite.libelle)}.</p></details>
+        <details><summary><span class="q-n">Q.02</span>Dans combien de temps arrivez-vous&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Cela dépend de votre adresse et des interventions en cours&nbsp;; une estimation vous est donnée au téléphone{!PROD && <> <Tbc /></>}. Nous n'affichons pas de délai garanti.</p></details>
+        {e.sansMajoration && <details><summary><span class="q-n">Q.03</span>Y a-t-il un supplément la nuit ou le week-end&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Non. Nos interventions sont sans majoration, de nuit comme le week-end.</p></details>}
+        <details><summary><span class="q-n">Q.{e.sansMajoration ? '04' : '03'}</span>Que faire si l'eau continue de monter&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Coupez l'arrivée d'eau générale, n'utilisez plus aucun point d'eau et appelez-nous au <a href={e.telephone.lien}>{tel}</a>.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. DERNIER APPEL À L'ACTION -->
+  <section class="sec u-final cta-sec" aria-labelledby="t-cta">
+    <svg class="final-flux m-only" viewBox="-2 -2 116 128" aria-hidden="true"><use href="#flux-line"/></svg>
+    <div class="wrap">
+      <div class="cta-panel u-cta on-orange">
+        <svg class="deco d-only" viewBox="0 0 520 300" aria-hidden="true"><path d="M-20,90 H250 Q360,90 360,200 V340" fill="none" stroke="#fff" stroke-width="40"/></svg>
+        <div class="cta-txt">
+          <p class="sec-label sec-label-nb d-only">08 — Urgence</p>
+          <h2 class="h2" id="t-cta">Ça déborde&nbsp;? <em>N'attendez pas.</em></h2>
+          <div class="cta-btns">
+            <a class="btn btn-dark btn-xl u-fcall" href={e.telephone.lien}><svg class="ic" aria-hidden="true"><use class="u-d" href="#i-tel"/><use class="u-m" href="#i-tel-f"/></svg><span class="btn-txt"><span class="l1">Appeler<span class="d-only"> maintenant</span></span><span class="l2">{tel}</span></span></a>
+            <a class="btn btn-line btn-xl" href="#rappel" data-rappel aria-controls="rappel"><svg class="ic" aria-hidden="true"><use href="#i-cb"/></svg>Être rappelé</a>
+          </div>
+        </div>
+        <div class="u-cta-side d-only">
+          <p class="u-live mono"><span class="pulse" aria-hidden="true"></span>Joignable {nb(e.disponibilite.court)}</p>
+          <p class="u-cta-num"><span class="mono">Ligne directe</span><a href={e.telephone.lien}>{tel}</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

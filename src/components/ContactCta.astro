@@ -3,7 +3,7 @@
 import { entreprise as e } from '../data/entreprise';
 import FormulaireDemande from './FormulaireDemande.astro';
 interface Props { label?: string; titreD?: string; titreDem?: string; titreM?: string; prestation?: string }
-const { label = 'Contact', titreD = 'Un écoulement qui ne passe plus ?', titreDem = 'Parlons-en maintenant.', titreM = 'Appelez HYDROFLASH.', prestation } = Astro.props;
+const { label = 'Contact', titreD = 'Un écoulement qui ne passe plus\u00a0?', titreDem = 'Parlons-en maintenant.', titreM = 'Appelez HYDROFLASH.', prestation } = Astro.props;
 ---
 <section class="sec cta-sec" id="contact" aria-labelledby="t-cta">
   <svg class="final-flux m-only" viewBox="-2 -2 116 128" aria-hidden="true"><use href="#flux-line"/></svg>

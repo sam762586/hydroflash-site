@@ -2,6 +2,8 @@
 /** Gabarit commun : <head> (SEO, robots selon l'environnement), en-tête, menu, pied de page, barre d'appel.
  *  Feuilles : socle (global) + ordinateur (≥ 701 px, style C) + mobile (≤ 700 px, style A) + feuilles de page. */
 import '@fontsource-variable/archivo/standard.css';
+// Police principale (latin) préchargée : évite le décalage de mise en page à son arrivée (CLS).
+import policeArchivo from '@fontsource-variable/archivo/files/archivo-latin-standard-normal.woff2?url';
 import '@fontsource/jetbrains-mono/400.css';
 import '@fontsource/jetbrains-mono/500.css';
 import '@fontsource/jetbrains-mono/600.css';
@@ -19,9 +21,9 @@ import { entreprise as e } from '../data/entreprise';
 interface Props {
   titre: string; description: string; classeBody?: string; noindex?: boolean;
   feuilles?: { ordi?: string; mobile?: string }[]; jsonld?: object | object[]; barre?: 'standard' | 'urgence';
-  image?: string;
+  image?: string; ogType?: 'website' | 'article';
 }
-const { titre, description, classeBody = 'p-page', noindex = false, feuilles = [], jsonld, barre = 'standard', image = '/og-image.jpg' } = Astro.props;
+const { titre, description, classeBody = 'p-page', noindex = false, feuilles = [], jsonld, barre = 'standard', image = '/og-image.jpg', ogType = 'website' } = Astro.props;
 const base = e.siteUrl || SITE_URL;
 const canonical = new URL(Astro.url.pathname, base).href;
 const robots = !PROD || noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large';
@@ -31,6 +33,7 @@ const robots = !PROD || noindex ? 'noindex, nofollow' : 'index, follow, max-imag
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preload" href={policeArchivo} as="font" type="font/woff2" crossorigin>
   <title>{titre}</title>
   <meta name="description" content={description}>
   <link rel="canonical" href={canonical}>
@@ -39,7 +42,7 @@ const robots = !PROD || noindex ? 'noindex, nofollow' : 'index, follow, max-imag
   <meta name="format-detection" content="telephone=yes">
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-  <meta property="og:type" content="website">
+  <meta property="og:type" content={ogType}>
   <meta property="og:locale" content="fr_FR">
   <meta property="og:site_name" content="HYDROFLASH">
   <meta property="og:title" content={titre}>

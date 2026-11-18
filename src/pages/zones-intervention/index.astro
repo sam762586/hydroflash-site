@@ -1,0 +1,119 @@
+---
+/* Zones d'intervention (hub) : vérificateur de code postal, carte de principe, 2 pages départements.
+   Villes repères en texte (aucune page ville publiée). Couverture de chaque commune : à confirmer. */
+import Base from '../../layouts/Base.astro';
+import SousHero from '../../components/SousHero.astro';
+import Faq from '../../components/Faq.astro';
+import ContactCta from '../../components/ContactCta.astro';
+import VerifCp from './_VerifCp.astro';
+import { FEUILLE_CONTENU } from '../../lib/feuilles';
+import { PROD } from '../../lib/env';
+import { services } from '../../data/services';
+import { entreprise as e } from '../../data/entreprise';
+import { schemaEntreprise } from '../../lib/schema';
+import zonesOrdi from '../../styles/pages/zones-ordinateur.css?url';
+import zonesMobile from '../../styles/pages/zones-mobile.css?url';
+/* Espaces insécables dans « 24 h/24 · 7 j/7 » (évite « 24 / h/24 » en fin de ligne). */
+const dispo = e.disponibilite.libelle.replace(/(\d) /g, '$1\u00a0');
+
+const tbc = (l: string) => (PROD ? '' : ` <span class="tbc">${l}</span>`);
+const tel = `<a class="tel" href="${e.telephone.lien}">${e.telephone.affiche}</a>`;
+const faq = [
+  { q: 'Comment savoir si vous intervenez dans ma commune ?',
+    a: `Saisissez votre code postal dans le vérificateur ci-dessus&nbsp;: il indique si votre commune se trouve en Seine-Maritime (76) ou dans l'Eure (27). En cas de doute, appelez le ${tel}.${tbc('couverture de chaque commune : à confirmer')}` },
+  { q: 'Intervenez-vous en dehors de la Seine-Maritime et de l\'Eure ?',
+    a: `Notre zone d'intervention est la Seine-Maritime (76) et l'Eure (27). Si votre adresse se trouve dans un département voisin, appelez-nous pour en parler.` },
+  { q: 'Le prix change-t-il la nuit ou le week-end ?',
+    a: `Non. HYDROFLASH intervient ${dispo}, sans majoration de nuit ni de week-end, dans les deux départements.` },
+  { q: 'Dans quel délai pouvez-vous intervenir ?',
+    a: `Cela dépend de votre adresse et des interventions en cours&nbsp;: une estimation vous est donnée au téléphone, au ${tel}.${tbc('délai d\'intervention : à confirmer')}` },
+];
+const deps = [
+  { code: '76', nom: 'Seine-Maritime', href: '/zones-intervention/seine-maritime-76/', go: 'Voir la Seine-Maritime',
+    texte: '707 communes et 1 260 964 habitants. Agglomérations de Rouen et du Havre, côte d\'Albâtre, pays de Caux et pays de Bray.' },
+  { code: '27', nom: 'Eure', href: '/zones-intervention/eure-27/', go: 'Voir l\'Eure',
+    texte: '585 communes et 602 714 habitants. Agglomération d\'Évreux, vallée de Seine, ouest de l\'Eure, Vexin normand et plateaux du sud.' },
+];
+---
+<Base
+  titre="Zones d'intervention : Seine-Maritime et Eure | HYDROFLASH"
+  description={`HYDROFLASH intervient en Seine-Maritime (76) et dans l'Eure (27) : débouchage, curage, inspection caméra, pompage. Communes et contact : ${e.telephone.affiche}.`}
+  feuilles={[FEUILLE_CONTENU, { ordi: zonesOrdi, mobile: zonesMobile }]}
+  jsonld={schemaEntreprise()}
+>
+  <SousHero
+    ariane={[{ label: 'Zones d\'intervention' }]}
+    surtitre="Zones d'intervention · 76 · 27"
+    titre="Zones d'intervention"
+    titreFin="Seine-Maritime (76) et Eure (27)."
+    intro={`HYDROFLASH intervient dans deux départements normands, <strong>${dispo}, sans majoration</strong> de nuit ni de week-end. Vérifiez votre code postal ou appelez-nous directement.`}
+    picto="zone"
+  />
+
+  <section class="sec sec-sm zones-sec zh-sec" aria-labelledby="t-verif">
+    <div class="wrap">
+      <div class="zone-panel">
+        <div class="zone-txt">
+          <p class="sec-label sec-label-nb">Vérificateur</p>
+          <h2 class="h2" id="t-verif">Intervenez-vous <em>chez moi&nbsp;?</em></h2>
+          <p class="lead">Saisissez votre code postal&nbsp;: nous vérifions s'il se trouve en <strong>Seine-Maritime (76)</strong> ou dans l'<strong>Eure (27)</strong>.</p>
+          <VerifCp p="cph" labelledby="t-verif" reperes />
+        </div>
+        <figure class="zmap">
+          <div class="zmap-crop"><img src="/img/illus/carte-zone-76-27-sombre.svg" alt="Carte de principe de la zone d'intervention : la Seine-Maritime (76) au nord, l'Eure (27) au sud, avec les villes repères Le Havre, Fécamp, Dieppe, Rouen, Pont-Audemer, Louviers, Bernay, Évreux, Vernon et Gisors." width="1120" height="980" loading="lazy"></div>
+          <figcaption class="mono">Carte de principe — contours simplifiés</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec-sm" aria-labelledby="t-deps">
+    <div class="wrap">
+      <div class="c-head">
+        <div><p class="sec-label">Départements</p><h2 class="h2" id="t-deps">Deux départements, <em>deux territoires</em></h2></div>
+        <p class="lead">La Seine-Maritime, urbaine et concentrée autour de Rouen et du Havre&nbsp;; l'Eure, plus rurale. Chaque page présente les grands secteurs, les communes principales et les questions propres au département.</p>
+      </div>
+      <ul class="zdep">
+        {deps.map((d) => (
+          <li><a class="zdep-card" href={d.href}>
+            <span class="zdep-n" aria-hidden="true">{d.code}</span>
+            <div class="zdep-b">
+              <h3>{d.nom} ({d.code})</h3>
+              <p>{d.texte}</p>
+              <span class="go">{d.go} <svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></span>
+            </div>
+          </a></li>
+        ))}
+      </ul>
+      <p class="note zsrc">Nombre de communes et populations&nbsp;: INSEE, populations légales.</p>
+    </div>
+  </section>
+
+  <section class="sec sec-sm bg-mist zh-same" aria-labelledby="t-same">
+    <div class="wrap c-grid2">
+      <div>
+        <p class="sec-label">Dans le 76 et le 27</p>
+        <h2 class="h2" id="t-same">Les mêmes <em>engagements</em></h2>
+        <p class="lead zh-lead">Dans les deux départements, les conditions sont identiques&nbsp;: un seul numéro, les mêmes prestations, les mêmes horaires.</p>
+      </div>
+      <div>
+        <ul class="checks">
+          <li>Intervention {dispo}, la nuit comme le week-end.</li>
+          <li>Sans majoration de nuit ni de week-end.</li>
+          <li>Un seul numéro&nbsp;: <a class="tel" href={e.telephone.lien}>{e.telephone.affiche}</a>.</li>
+          <li>Rappel immédiat après une demande envoyée depuis le site.</li>
+          <li>Passage caméra&nbsp;: les photos de l'inspection vous sont remises sur clé USB.</li>
+        </ul>
+        <h3 class="zh-h3">Nos prestations</h3>
+        <ul class="chips">
+          {services.map((s) => <li class="li-c"><a href={s.url}>{s.court}</a></li>)}
+          <li class="li-c"><a href="/urgence-debouchage-24h/">Urgence 24&nbsp;h/24</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <Faq items={faq} titre="Zone d'intervention : vos questions" intro="Couverture, horaires, délai : les réponses aux questions que l'on nous pose sur notre zone." />
+
+  <ContactCta />
+</Base>

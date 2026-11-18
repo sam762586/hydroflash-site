@@ -1,0 +1,134 @@
+---
+/* Politique de confidentialité (RGPD, art. 13). Décrit les traitements RÉELS du site :
+   formulaire de demande (public/envoi-demande.php), limitation des envois, journaux de l'hébergeur.
+   Aucun cookie, aucune mesure d'audience. Durée de conservation : entreprise.dureeConservationDemandes. */
+import Base from '../../layouts/Base.astro';
+import SousHero from '../../components/SousHero.astro';
+import Tbc from '../../components/Tbc.astro';
+import { FEUILLE_CONTENU } from '../../lib/feuilles';
+import { PROD } from '../../lib/env';
+import { entreprise as e } from '../../data/entreprise';
+import legalOrdi from '../../styles/pages/legal-ordinateur.css?url';
+import legalMobile from '../../styles/pages/legal-mobile.css?url';
+
+const MAJ = { iso: '2026-11-18', texte: '18 novembre 2026' };
+const adresse = e.adresse ? `${e.adresse.rue}, ${e.adresse.cp} ${e.adresse.ville}` : null;
+const sommaire = [
+  { id: 'responsable', label: 'Responsable du traitement' },
+  { id: 'formulaire', label: 'Demandes envoyées par le formulaire' },
+  { id: 'securite', label: 'Protection contre les envois abusifs' },
+  { id: 'journaux', label: 'Journaux techniques de l\'hébergeur' },
+  { id: 'contact-direct', label: 'Appels et e-mails' },
+  { id: 'cookies', label: 'Cookies' },
+  { id: 'droits', label: 'Vos droits' },
+  { id: 'cnil', label: 'Réclamation auprès de la CNIL' },
+  { id: 'modifications', label: 'Mise à jour de cette politique' },
+];
+---
+<Base
+  titre="Politique de confidentialité | HYDROFLASH"
+  description="Données personnelles traitées par HYDROFLASH via le formulaire de demande : finalité, base légale, destinataires, durée de conservation et exercice de vos droits."
+  feuilles={[FEUILLE_CONTENU, { ordi: legalOrdi, mobile: legalMobile }]}
+>
+  <SousHero
+    ariane={[{ label: 'Politique de confidentialité' }]}
+    surtitre="Données personnelles"
+    titre="Politique de confidentialité"
+    intro="Quelles informations HYDROFLASH reçoit lorsque vous utilisez ce site, pourquoi, pendant combien de temps, et comment exercer vos droits."
+    actions={false}
+    compact
+  />
+
+  <section class="sec sec-sm lg-body" aria-label="Politique de confidentialité">
+    <div class="wrap lg-grid">
+      <nav class="lg-toc" aria-labelledby="toc-t">
+        <p class="lg-toc-t" id="toc-t">Sommaire</p>
+        <ol>{sommaire.map((s) => <li><a href={`#${s.id}`}>{s.label}</a></li>)}</ol>
+        <p class="lg-maj">Mise à jour&nbsp;: <time datetime={MAJ.iso}>{MAJ.texte}</time></p>
+      </nav>
+
+      <div>
+        <div class="callout callout-line lg-bref">
+          <h2>En bref</h2>
+          <ul class="checks">
+            <li>Ce site ne dépose aucun cookie et ne mesure pas votre navigation.</li>
+            <li>Nous recevons des données uniquement si vous remplissez le formulaire de demande.</li>
+            <li>Elles servent seulement à vous rappeler et à traiter votre demande&nbsp;: ni prospection, ni revente.</li>
+            <li>Vous pouvez à tout moment demander à les consulter, les corriger ou les supprimer.</li>
+          </ul>
+        </div>
+
+        <div class="prose">
+          <h2 id="responsable">Responsable du traitement</h2>
+          <dl class="kv">
+            <dt>Responsable</dt><dd>{e.nom}{e.raisonSociale ? <> ({e.raisonSociale})</> : !PROD && <> — raison sociale <Tbc /></>}</dd>
+            {(adresse || !PROD) && <><dt>Adresse</dt><dd>{adresse ?? <Tbc />}</dd></>}
+            <dt>E-mail</dt><dd><a href={`mailto:${e.email}`}>{e.email}</a></dd>
+            <dt>Téléphone</dt><dd><a href={e.telephone.lien}>{e.telephone.affiche}</a></dd>
+          </dl>
+
+          <h2 id="formulaire">Demandes envoyées par le formulaire</h2>
+          <p>Le formulaire «&nbsp;Être rappelé&nbsp;» / «&nbsp;Demande de devis&nbsp;» vous permet de nous décrire votre problème pour que nous vous rappelions.</p>
+          <dl class="kv">
+            <dt>Données reçues</dt>
+            <dd>
+              <ul>
+                <li>votre nom et votre numéro de téléphone (obligatoires pour vous rappeler)&nbsp;;</li>
+                <li>votre code postal, le type de problème, votre message et une photo (facultatifs)&nbsp;;</li>
+                <li>l'adresse de la page du site depuis laquelle la demande est envoyée.</li>
+              </ul>
+              <p>Aucune adresse e-mail ne vous est demandée.</p>
+            </dd>
+            <dt>Finalité</dt><dd>Vous rappeler, établir un devis et organiser l'intervention demandée.</dd>
+            <dt>Base légale</dt><dd>Mesures précontractuelles prises à votre demande, puis exécution du contrat (article 6.1.b du RGPD).</dd>
+            <dt>Destinataires</dt>
+            <dd>
+              <p>HYDROFLASH uniquement. Les données ne sont ni vendues, ni louées, ni utilisées à des fins publicitaires.</p>
+              <p>Prestataires techniques qui les traitent pour notre compte&nbsp;: l'hébergeur du site {e.hebergeur ? <>({e.hebergeur.nom})</> : <Tbc label="hébergeur à confirmer" />}, par lequel transite la demande, et la messagerie Gmail (Google), dans laquelle HYDROFLASH reçoit les demandes.</p>
+            </dd>
+            <dt>Transfert hors de l'Union européenne</dt>
+            <dd>Google peut traiter les messages reçus dans Gmail sur des serveurs situés hors de l'Union européenne, notamment aux États-Unis. Google indique encadrer ces transferts par les garanties prévues par le RGPD (décision d'adéquation ou clauses contractuelles types de la Commission européenne). <Tbc label="garanties à vérifier par HYDROFLASH" /></dd>
+            <dt>Durée de conservation</dt><dd>{e.dureeConservationDemandes ?? <Tbc label="durée à définir par HYDROFLASH" />}</dd>
+            <dt>Photo jointe</dt><dd>La photo est convertie au format JPEG avant l'envoi&nbsp;: ses métadonnées (dont une éventuelle position GPS) sont supprimées. Elle est jointe à l'e-mail adressé à HYDROFLASH et n'est pas conservée sur le serveur du site.</dd>
+            <dt>Copie de secours</dt><dd>Pour qu'une demande ne soit pas perdue en cas de panne de la messagerie, une copie (sans la photo) peut être conservée sur le serveur, hors de l'espace public du site, puis supprimée automatiquement. <Tbc label="activation et durée à confirmer" /></dd>
+          </dl>
+          <p>Aucune décision automatisée n'est prise à partir de ces données.</p>
+
+          <h2 id="securite">Protection contre les envois abusifs</h2>
+          <p>Pour bloquer les envois automatisés (robots, spam), le serveur compte le nombre de demandes envoyées depuis une même connexion. Il ne conserve pas votre adresse IP elle-même, mais une empreinte calculée à partir d'elle, qui ne permet pas de la retrouver directement. Cette empreinte est effacée après 10&nbsp;minutes.</p>
+          <p>Base légale&nbsp;: intérêt légitime d'HYDROFLASH à protéger son service (article 6.1.f du RGPD).</p>
+
+          <h2 id="journaux">Journaux techniques de l'hébergeur</h2>
+          <p>Comme tout serveur, celui qui héberge ce site enregistre des journaux techniques (adresse IP, date et heure, page demandée, type de navigateur). Ils sont tenus par l'hébergeur pour la sécurité et le bon fonctionnement du service, et conservés selon ses règles et ses obligations légales. <Tbc label="durée à confirmer après le choix de l'hébergeur" /></p>
+
+          <h2 id="contact-direct">Appels et e-mails</h2>
+          <p>Les boutons «&nbsp;Appeler&nbsp;» et les liens e-mail ouvrent simplement votre téléphone ou votre messagerie&nbsp;: le site n'enregistre rien. Les informations que vous nous donnez ensuite par téléphone ou par e-mail servent uniquement à traiter votre demande.</p>
+
+          <h2 id="cookies">Cookies</h2>
+          <p>Ce site n'utilise aucun cookie ni autre traceur&nbsp;: pas de mesure d'audience, pas de publicité, pas de réseau social intégré. Détails sur la page <a href="/cookies/">cookies</a>.</p>
+
+          <h2 id="droits">Vos droits</h2>
+          <p>Vous disposez des droits suivants sur vos données&nbsp;:</p>
+          <ul>
+            <li>droit d'accès et de rectification&nbsp;;</li>
+            <li>droit à l'effacement et à la limitation du traitement&nbsp;;</li>
+            <li>droit d'opposition (notamment pour la protection contre les envois abusifs)&nbsp;;</li>
+            <li>droit à la portabilité des données que vous nous avez transmises&nbsp;;</li>
+            <li>droit de définir des directives sur le sort de vos données après votre décès.</li>
+          </ul>
+          <p>Pour les exercer, écrivez à <a href={`mailto:${e.email}`}>{e.email}</a>{adresse ? <> ou par courrier à {e.nom}, {adresse}</> : !PROD && <> ou par courrier <Tbc label="adresse postale à confirmer" /></>}. Nous vous répondons dans un délai d'un mois, qui peut être prolongé de deux mois pour une demande complexe&nbsp;; nous vous en informerions alors. Un justificatif d'identité ne peut vous être demandé qu'en cas de doute raisonnable sur votre identité.</p>
+
+          <h2 id="cnil">Réclamation auprès de la CNIL</h2>
+          <p>Si vous estimez, après nous avoir contactés, que vos droits ne sont pas respectés, vous pouvez adresser une réclamation à la Commission nationale de l'informatique et des libertés (CNIL)&nbsp;:</p>
+          <ul>
+            <li>en ligne, sur <a href="https://www.cnil.fr/" rel="noopener">www.cnil.fr</a>&nbsp;;</li>
+            <li>par courrier&nbsp;: <address>CNIL, 3 place de Fontenoy, TSA 80715, 75334 Paris Cedex 07</address></li>
+          </ul>
+
+          <h2 id="modifications">Mise à jour de cette politique</h2>
+          <p>Cette politique sera mise à jour avant toute évolution des traitements (par exemple l'ajout d'une mesure d'audience). Dernière mise à jour&nbsp;: <time datetime={MAJ.iso}>{MAJ.texte}</time>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

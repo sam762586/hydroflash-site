@@ -21,6 +21,10 @@
 .shero-micro span::before { content: ""; width: 8px; height: 8px; background: var(--o); transform: rotate(45deg); flex: none; }
 
 /* ——— Sections ——— */
+/* sections sombres et grises */
+.on-dark { background: var(--ink); color: #fff; }
+.bg-mist { background: var(--mist); }
+.on-dark .sec-label, .on-dark .h2 em { color: var(--o); }
 .sec-sm { padding: 40px 0; }
 .c-head { margin-bottom: 22px; }
 .c-head .h2 { margin-top: 8px; }

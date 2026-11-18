@@ -1,0 +1,62 @@
+---
+/* Liste des conseils : /conseils/.
+   Choix de routage : route « reste » [...page] plutôt qu'index.astro, pour que la page NE SOIT PAS GÉNÉRÉE
+   quand aucun article n'est publié (production : seuls les articles relu: true le sont, cf. conseilsPublies()).
+   getStaticPaths renvoie alors [] : pas de /conseils/ vide, ni dans dist ni dans le sitemap (le menu et le pied
+   de page masquent déjà le lien). Le paramètre `page` est réservé à une pagination future (/conseils/2/). */
+import Base from '../../layouts/Base.astro';
+import SousHero from '../../components/SousHero.astro';
+import ContactCta from '../../components/ContactCta.astro';
+import Tbc from '../../components/Tbc.astro';
+import { FEUILLE_CONTENU } from '../../lib/feuilles';
+import { conseilsPublies } from '../../lib/conseils';
+import conseilsOrdi from '../../styles/pages/conseils-ordinateur.css?url';
+import conseilsMobile from '../../styles/pages/conseils-mobile.css?url';
+
+export async function getStaticPaths() {
+  const articles = await conseilsPublies();
+  return articles.length ? [{ params: { page: undefined } }] : [];
+}
+
+const articles = await conseilsPublies();
+const dateFr = (d: Date) => d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+---
+<Base
+  titre="Conseils canalisations et assainissement | HYDROFLASH"
+  description="Conseils pratiques pour comprendre vos canalisations, réagir face à un bouchon et prévenir les mauvaises surprises, par HYDROFLASH, en Seine-Maritime et dans l'Eure."
+  feuilles={[FEUILLE_CONTENU, { ordi: conseilsOrdi, mobile: conseilsMobile }]}
+>
+  <SousHero
+    ariane={[{ label: 'Conseils' }]}
+    surtitre="Conseils pratiques"
+    titre="Conseils"
+    titreFin="pour vos canalisations."
+    intro="Comprendre ce qui se passe dans vos évacuations, savoir quoi faire en attendant le professionnel et éviter les erreurs qui aggravent un bouchon."
+    actions={false}
+    compact
+  />
+
+  <section class="sec sec-sm" aria-labelledby="t-articles">
+    <div class="wrap">
+      <div class="c-head">
+        <div><p class="sec-label">Articles</p><h2 class="h2" id="t-articles">Nos <em>conseils</em></h2></div>
+        <p class="lead">Des explications simples pour comprendre vos évacuations, bien réagir face à un bouchon et savoir quand appeler.</p>
+      </div>
+      <ul class="cs-list">
+        {articles.map((a) => (
+          <li>
+            <a class="cs-card" href={`/conseils/${a.id}/`}>
+              <time class="cs-date" datetime={a.data.date.toISOString().slice(0, 10)}>{dateFr(a.data.date)}</time>
+              <h3>{a.data.titre}</h3>
+              <p>{a.data.resume}</p>
+              {!a.data.relu && <Tbc label="à relire" />}
+              <span class="cs-go">Lire l'article <svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <ContactCta />
+</Base>

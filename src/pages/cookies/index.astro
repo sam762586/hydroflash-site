@@ -1,0 +1,69 @@
+---
+/* Cookies et traceurs. État réel du site : aucun cookie, aucun traceur, aucun stockage local,
+   polices auto-hébergées, aucun contenu tiers. À mettre à jour AVANT l'ajout d'une mesure d'audience. */
+import Base from '../../layouts/Base.astro';
+import SousHero from '../../components/SousHero.astro';
+import Tbc from '../../components/Tbc.astro';
+import { FEUILLE_CONTENU } from '../../lib/feuilles';
+import { PROD, SITE_URL } from '../../lib/env';
+import { entreprise as e } from '../../data/entreprise';
+import legalOrdi from '../../styles/pages/legal-ordinateur.css?url';
+import legalMobile from '../../styles/pages/legal-mobile.css?url';
+
+const MAJ = { iso: '2026-11-18', texte: '18 novembre 2026' };
+const domaine = new URL(e.siteUrl || SITE_URL).host;
+const sommaire = [
+  { id: 'situation', label: 'Ce que fait ce site' },
+  { id: 'definition', label: 'Qu\'est-ce qu\'un traceur ?' },
+  { id: 'evolution', label: 'Si cela change' },
+  { id: 'navigateur', label: 'Gérer les cookies dans votre navigateur' },
+];
+---
+<Base
+  titre="Cookies et traceurs | HYDROFLASH"
+  description={`Le site ${domaine} n'utilise aucun cookie ni traceur : pas de mesure d'audience, pas de publicité, pas de contenu tiers. Explications et engagements.`}
+  feuilles={[FEUILLE_CONTENU, { ordi: legalOrdi, mobile: legalMobile }]}
+>
+  <SousHero
+    ariane={[{ label: 'Cookies' }]}
+    surtitre="Cookies et traceurs"
+    titre="Aucun cookie,"
+    titreFin="aucun traceur."
+    intro="Ce site ne dépose aucun cookie et ne suit pas votre navigation. C'est pourquoi aucune bannière de consentement ne vous est présentée."
+    actions={false}
+    compact
+  />
+
+  <section class="sec sec-sm lg-body" aria-label="Cookies et traceurs">
+    <div class="wrap lg-grid">
+      <nav class="lg-toc" aria-labelledby="toc-t">
+        <p class="lg-toc-t" id="toc-t">Sommaire</p>
+        <ol>{sommaire.map((s) => <li><a href={`#${s.id}`}>{s.label}</a></li>)}</ol>
+        <p class="lg-maj">Mise à jour&nbsp;: <time datetime={MAJ.iso}>{MAJ.texte}</time></p>
+      </nav>
+
+      <div class="prose">
+        <h2 id="situation">Ce que fait ce site</h2>
+        <ul>
+          <li><strong>Aucune mesure d'audience</strong>&nbsp;: nous ne comptons pas les visites et n'utilisons aucun outil de statistiques.</li>
+          <li><strong>Aucune publicité</strong> et aucun pixel de suivi.</li>
+          <li><strong>Aucun contenu tiers</strong>&nbsp;: pas de bouton de réseau social, pas de vidéo ni de carte intégrée provenant d'un autre site.</li>
+          <li><strong>Polices hébergées sur le site</strong>&nbsp;: l'affichage des textes ne fait appel à aucun service extérieur.</li>
+          <li><strong>Rien n'est enregistré dans votre navigateur</strong>&nbsp;: ni cookie, ni stockage local.</li>
+        </ul>
+        <p>Le formulaire de demande fonctionne lui aussi sans cookie. Ce que deviennent les informations que vous y saisissez est expliqué dans la <a href="/confidentialite/">politique de confidentialité</a>.</p>
+        {!PROD && <p class="note"><Tbc label="à vérifier après le choix de l'hébergeur" /> Certains hébergeurs ajoutent un cookie technique de protection contre les robots&nbsp;: à contrôler sur le site en ligne avant publication de cette page.</p>}
+
+        <h2 id="definition">Qu'est-ce qu'un traceur&nbsp;?</h2>
+        <p>Un cookie est un petit fichier enregistré par un site dans votre navigateur. Avec les autres traceurs (stockage local, pixels, empreinte du navigateur), il peut servir à mesurer la fréquentation, à mémoriser des préférences ou à suivre votre navigation à des fins publicitaires. Leur utilisation est encadrée par l'article 82 de la loi Informatique et Libertés&nbsp;: sauf exceptions, elle nécessite votre consentement préalable.</p>
+
+        <h2 id="evolution">Si cela change</h2>
+        <p>Si HYDROFLASH ajoute un jour un outil de mesure d'audience ou tout autre service susceptible de déposer un traceur, cette page et la politique de confidentialité seront mises à jour <strong>avant</strong> sa mise en service. Si cet outil nécessite votre consentement, il ne sera activé qu'après votre accord, que vous pourrez retirer à tout moment aussi simplement que vous l'avez donné.</p>
+
+        <h2 id="navigateur">Gérer les cookies dans votre navigateur</h2>
+        <p>Tous les navigateurs permettent de consulter, de bloquer et de supprimer les cookies, dans leurs réglages de confidentialité. Vous pouvez ainsi vérifier par vous-même qu'aucun cookie n'est déposé par {domaine}. La CNIL publie des conseils pour maîtriser votre navigateur sur <a href="https://www.cnil.fr/" rel="noopener">www.cnil.fr</a>.</p>
+        <p>Une question&nbsp;? Écrivez-nous à <a href={`mailto:${e.email}`}>{e.email}</a>.</p>
+      </div>
+    </div>
+  </section>
+</Base>

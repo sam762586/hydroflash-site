@@ -1,0 +1,139 @@
+---
+/* À propos : uniquement des faits confirmés (data/entreprise.ts, CLAUDE.md).
+   Histoire, équipe, chiffres, matériel détaillé : non confirmés → blocs visibles en préproduction seulement ({!PROD && …}). */
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import SousHero from '../components/SousHero.astro';
+import ContactCta from '../components/ContactCta.astro';
+import Tbc from '../components/Tbc.astro';
+import { FEUILLE_CONTENU } from '../lib/feuilles';
+import { PROD } from '../lib/env';
+import { services } from '../data/services';
+import { entreprise as e } from '../data/entreprise';
+import { schemaEntreprise } from '../lib/schema';
+import contactOrdi from '../styles/pages/contact-ordinateur.css?url';
+import contactMobile from '../styles/pages/contact-mobile.css?url';
+import vehiculeMarque from '../assets/photos/vehicule-marque-atelier.jpg';
+import vehiculeLivraison from '../assets/photos/vehicule-livraison.webp';
+/* Espaces insécables dans « 24 h/24 · 7 j/7 » (évite « 24 / h/24 » en fin de ligne). */
+const dispo = e.disponibilite.libelle.replace(/(\d) /g, '$1\u00a0');
+---
+<Base
+  titre="À propos : spécialiste de l'assainissement | HYDROFLASH"
+  description={`HYDROFLASH, spécialiste de l'assainissement en Seine-Maritime (76) et dans l'Eure (27) : débouchage, curage, passage caméra, pompage. ${dispo}, sans majoration.`}
+  feuilles={[FEUILLE_CONTENU, { ordi: contactOrdi, mobile: contactMobile }]}
+  jsonld={schemaEntreprise()}
+>
+  <SousHero
+    ariane={[{ label: 'À propos' }]}
+    surtitre="À propos · HYDROFLASH"
+    titre="Spécialiste de l'assainissement,"
+    titreFin="en Seine-Maritime et dans l'Eure."
+    intro={`HYDROFLASH débouche, cure, détartre, inspecte par passage caméra, pompe et entretient les canalisations et réseaux d'assainissement, <strong>${dispo}, sans majoration</strong> de nuit ni de week-end.`}
+    picto="technicien"
+  />
+
+  <section class="sec sec-sm" aria-labelledby="t-qui">
+    <div class="wrap c-grid2">
+      <div>
+        <p class="sec-label">Qui sommes-nous</p>
+        <h2 class="h2" id="t-qui">Un seul métier&nbsp;: <em>l'assainissement</em></h2>
+        <div class="prose ap-prose">
+          <p>HYDROFLASH est une entreprise spécialisée dans l'assainissement&nbsp;: tout ce qui permet aux eaux usées de s'écouler, de l'évier jusqu'au réseau. Nous intervenons chez les particuliers comme chez les professionnels et les syndics de copropriété.</p>
+          <p>Notre zone d'intervention couvre deux départements normands, la <a href="/zones-intervention/seine-maritime-76/">Seine-Maritime (76)</a> et l'<a href="/zones-intervention/eure-27/">Eure (27)</a>, avec un seul numéro, joignable {dispo}.</p>
+        </div>
+      </div>
+      <dl class="kv ap-kv">
+        <dt>Métier</dt><dd>Assainissement&nbsp;: débouchage, curage, détartrage, passage caméra, pompage, entretien des réseaux</dd>
+        <dt>Zone</dt><dd>{e.zone.libelle}</dd>
+        <dt>Disponibilité</dt><dd>Intervention {dispo}</dd>
+        <dt>Nuit et week-end</dt><dd>Sans majoration</dd>
+        <dt>Téléphone</dt><dd><a class="tel" href={e.telephone.lien}>{e.telephone.affiche}</a></dd>
+        <dt>E-mail</dt><dd><a href={`mailto:${e.email}`}>{e.email}</a></dd>
+      </dl>
+    </div>
+  </section>
+
+  {!PROD && (
+    <section class="sec sec-sm bg-mist ap-tbc" aria-labelledby="t-hist">
+      <div class="wrap">
+        <div class="c-head">
+          <div><p class="sec-label">Préproduction uniquement</p><h2 class="h2" id="t-hist">Histoire, équipe <em>et chiffres</em></h2></div>
+          <p class="lead">Ces informations ne sont pas encore confirmées par HYDROFLASH&nbsp;: ce bloc n'apparaît pas sur le site en ligne.</p>
+        </div>
+        <dl class="kv">
+          <dt>Histoire</dt><dd>Année de création, parcours du fondateur <Tbc /></dd>
+          <dt>Équipe</dt><dd>Nombre de techniciens, qualifications <Tbc /></dd>
+          <dt>Chiffres clés</dt><dd>Interventions, clients, ancienneté <Tbc /></dd>
+          <dt>Matériel</dt><dd>Hydrocureuse haute pression, caméra d'inspection, pompage (modèles, capacités) <Tbc /></dd>
+          <dt>Base d'intervention</dt><dd>Adresse de la base ou du dépôt <Tbc /></dd>
+          <dt>Entreprise</dt><dd>Raison sociale, SIRET, assurance responsabilité civile professionnelle <Tbc /></dd>
+        </dl>
+      </div>
+    </section>
+  )}
+
+  <section class="sec sec-sm" aria-labelledby="t-presta">
+    <div class="wrap">
+      <div class="c-head">
+        <div><p class="sec-label">Prestations</p><h2 class="h2" id="t-presta">Six prestations, <em>un interlocuteur</em></h2></div>
+        <p class="lead">Du bouchon d'évier au réseau d'une copropriété&nbsp;: nous identifions l'origine du problème et choisissons la technique adaptée.</p>
+      </div>
+      <ul class="cards cards-3">
+        {services.map((s) => (
+          <li class="li-c"><a class="card" href={s.url}>
+            <span class="num">{s.numero}</span>
+            <img src={`/img/pictos/${s.picto}-noir.svg`} alt="" width="48" height="48" loading="lazy" />
+            <h3>{s.titre}</h3>
+            <p>{s.resume}</p>
+            <span class="go">Découvrir <svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></span>
+          </a></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec sec-sm on-dark" aria-labelledby="t-veh">
+    <div class="wrap c-grid2 is-rev ap-veh">
+      <div>
+        <p class="sec-label">Véhicule d'intervention</p>
+        <h2 class="h2" id="t-veh">Un véhicule <em>reconnaissable</em></h2>
+        <div class="prose ap-prose">
+          <p>Notre véhicule d'intervention est un pick-up à cabine simple, équipé d'un caisson à compartiments, de couleur orange (RAL&nbsp;2009, orange signalisation).</p>
+          <p>Son marquage est à venir&nbsp;: le logo HYDROFLASH, le numéro <span class="tel">{e.telephone.affiche}</span>, la mention «&nbsp;Intervention 24h/24 · 7j/7&nbsp;» et nos prestations&nbsp;: débouchage, curage, détartrage, passage caméra, pompage.</p>
+        </div>
+      </div>
+      <div class="ap-imgs">
+        <div class="media">
+          <figure>
+            <Image src={vehiculeMarque} alt={`Pick-up HYDROFLASH orange à caisson : logo, numéro ${e.telephone.affiche}, mention « Intervention 24h/24 · 7j/7 » et liste des prestations sur le flanc.`} widths={[600, 900, 1300, 1740]} sizes="(max-width: 700px) 100vw, (max-width: 1100px) 90vw, 760px" loading="lazy" />
+            <figcaption>Véhicule HYDROFLASH — visuel du marquage à venir</figcaption>
+          </figure>
+        </div>
+        <figure class="ap-small">
+          <Image src={vehiculeLivraison} alt="Le pick-up HYDROFLASH orange à caisson, photographié avant la pose du marquage." widths={[460, 915]} sizes="(max-width: 700px) 100vw, 400px" loading="lazy" />
+          <figcaption>Photo réelle — le véhicule avant marquage</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec-sm bg-mist" aria-labelledby="t-eng">
+    <div class="wrap c-grid2">
+      <div>
+        <p class="sec-label">Engagements</p>
+        <h2 class="h2" id="t-eng">Ce sur quoi <em>vous pouvez compter</em></h2>
+        <p class="lead ap-lead">Des engagements simples et vérifiables. Le délai d'intervention, lui, vous est indiqué au téléphone, selon votre adresse.</p>
+      </div>
+      <ul class="checks">
+        <li><strong>Intervention {dispo}</strong>, la nuit comme le week-end.</li>
+        <li><strong>Sans majoration</strong> de nuit ni de week-end.</li>
+        <li><strong>Rappel immédiat</strong> après une demande envoyée depuis le site.</li>
+        <li><strong>Passage caméra</strong>&nbsp;: les photos de l'inspection vous sont remises sur clé USB.</li>
+        <li><strong>Un seul numéro</strong>, partout&nbsp;: <a class="tel" href={e.telephone.lien}>{e.telephone.affiche}</a>.</li>
+      </ul>
+    </div>
+  </section>
+
+  <ContactCta />
+</Base>

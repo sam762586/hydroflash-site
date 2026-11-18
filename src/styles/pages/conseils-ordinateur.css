@@ -1,0 +1,47 @@
+/* HYDROFLASH — conseils (liste + article), rendu ordinateur / tablette (style C), ≥ 701 px.
+   Complète contenu-ordinateur.css (.prose, .callout, .cards). */
+
+/* ——— Liste des articles ——— */
+.cs-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.cs-list > li { display: flex; }
+.cs-card { flex: 1 1 auto; display: flex; flex-direction: column; gap: 12px; padding: 28px; border-radius: 24px; background: var(--mist); color: var(--ink2); text-decoration: none; transition: background .2s, color .2s, transform .2s; }
+.cs-date { font-family: var(--f-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--grey); }
+.cs-card h3 { font-size: 26px; font-weight: var(--w-heavy); font-stretch: var(--cond); line-height: 1.05; }
+.cs-card p { color: var(--grey); font-size: 16.5px; line-height: 1.5; }
+.cs-card .tbc { align-self: flex-start; font-size: 12px; }
+.cs-go { margin-top: auto; padding-top: 8px; display: inline-flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15.5px; }
+.cs-go .ic { width: 30px; height: 30px; padding: 7px; border-radius: 50%; background: var(--ink2); color: #fff; transition: background .2s, color .2s; }
+a.cs-card:hover, a.cs-card:focus-visible { background: var(--ink2); color: #fff; transform: translateY(-3px); }
+a.cs-card:hover p, a.cs-card:focus-visible p, a.cs-card:hover .cs-date, a.cs-card:focus-visible .cs-date { color: var(--grey-d); }
+a.cs-card:hover .cs-go .ic, a.cs-card:focus-visible .cs-go .ic { background: var(--o); color: var(--ink2); }
+
+/* ——— Article ——— */
+.cs-art { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 360px); gap: 72px; align-items: start; }
+.cs-relu { margin-bottom: 32px; padding: 16px 20px; border: 2px dashed var(--o-text); border-radius: 16px; font-size: 16px; line-height: 1.5; }
+.cs-relu .tbc { margin-right: 8px; }
+.cs-meta { margin-bottom: 26px; font-family: var(--f-mono); font-size: 12.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--grey); }
+.cs-art .prose h2 { scroll-margin-top: 110px; }
+.cs-aside { position: sticky; top: 110px; display: grid; gap: 20px; }
+.cs-aside .callout { padding: 30px 30px 32px; }
+.cs-aside .callout h2 { font-size: 28px; }
+.cs-aside .callout .btn { width: 100%; }
+.cs-aside .callout .btn + .btn { margin-top: 10px; }
+.cs-autres { padding: 24px 26px; border-radius: 24px; border: 1.5px solid var(--line); }
+.cs-autres h2 { font-family: var(--f-mono); font-size: 12px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--grey); }
+.cs-autres ul { margin-top: 10px; }
+.cs-autres li + li { border-top: 1px solid var(--line); }
+.cs-autres a { display: block; padding: 12px 0; color: var(--ink2); font-weight: 650; font-size: 16.5px; line-height: 1.35; text-decoration: none; }
+.cs-autres a:hover { color: var(--o-text); }
+
+/* ——— Prestations liées (cartes partagées .cards / .card) ——— */
+.cs-rel > li { display: flex; }
+.cs-rel > li > .card { flex: 1 1 auto; }
+
+@media (max-width: 1100px) {
+  .cs-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cs-art { grid-template-columns: minmax(0, 1fr); gap: 44px; }
+  .cs-aside { position: static; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+}
+@media (max-width: 860px) {
+  .cs-aside { grid-template-columns: minmax(0, 1fr); }
+}

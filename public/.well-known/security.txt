@@ -1,0 +1,5 @@
+# HYDROFLASH — signalement de vulnérabilités (RFC 9116)
+Contact: mailto:hydroflash@gmail.com
+Expires: 2027-11-18T00:00:00.000Z
+Preferred-Languages: fr
+Canonical: https://hydroflash.fr/.well-known/security.txt

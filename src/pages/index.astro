@@ -1,0 +1,358 @@
+---
+/* ACCUEIL — portage du prototype validé (03_CONCEPTS/concept-final/index.html) :
+   style C ≥ 701 px (ordinateur.css), style A ≤ 700 px (mobile.css).
+   Règle : toute information non confirmée passe par <Tbc /> (préproduction) et le bloc est masqué en production. */
+import { Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import ContactCta from '../components/ContactCta.astro';
+import Tbc from '../components/Tbc.astro';
+import { entreprise as e } from '../data/entreprise';
+import { services } from '../data/services';
+import { schemaEntreprise } from '../lib/schema';
+import { PROD } from '../lib/env';
+import tunnelLumiere from '../assets/photos/tunnel-lumiere.webp';
+import grillesNuit from '../assets/photos/grilles-nuit.webp';
+import vehiculeDetoure from '../assets/photos/vehicule-marque-detoure.png';
+import vehiculeAtelier from '../assets/photos/vehicule-marque-atelier.jpg';
+import vehiculeLivraison from '../assets/photos/vehicule-livraison.webp';
+
+const svc = Object.fromEntries(services.map((s) => [s.slug, s]));
+const tel = e.telephone.affiche.replace(/ /g, ' ');
+const nb = (t: string) => t.replace(/(\d) ([hj])/g, '$1 $2'); // « 24 h/24 » insécable
+/** Affichage d'une donnée : 'ok' = confirmée · 'tbc' = non confirmée (étiquette en préproduction) · null = masquée */
+const aff = (v: unknown) => (v === false ? null : v != null ? 'ok' : PROD ? null : 'tbc');
+const devis = aff(e.devisAvantIntervention);
+const factu = aff(e.principeFacturation);
+const FORMATS = ['avif', 'webp'] as const;
+const avis = !PROD; // aucun avis réel connecté : section masquée en production (numérotation ajustée)
+const nFaq = avis ? '07' : '06';
+const nContact = avis ? '08' : '07';
+const altVehicule = `Véhicule d'intervention HYDROFLASH : pick-up orange à cabine simple et caisson à compartiments, avec le marquage HYDROFLASH et le ${e.telephone.affiche} (visuel du marquage à venir)`;
+---
+<Base
+  titre="Débouchage 24h/24 en Seine-Maritime (76) et Eure (27) | HYDROFLASH"
+  description={`Canalisation bouchée ? Débouchage, curage, détartrage, passage caméra et pompage ${e.disponibilite.libelle} en Seine-Maritime (76) et Eure (27). Appelez le ${e.telephone.affiche}.`}
+  classeBody="p-home"
+  jsonld={schemaEntreprise()}
+>
+  <!-- HERO -->
+  <section class="hero" aria-labelledby="h1">
+    <div class="hero-bg m-only" aria-hidden="true">
+      <Picture src={grillesNuit} alt="" widths={[480, 720, 960]} sizes="(max-width: 700px) 150vw, 1px" quality={50} formats={FORMATS} fallbackFormat="jpg" loading="eager" fetchpriority="high" />
+    </div>
+    <svg class="hero-flux m-only" viewBox="-1 -1 114 126" aria-hidden="true"><use href="#flux-outline"/></svg>
+    <div class="wrap hero-grid">
+      <div class="hero-txt">
+        <p class="eyebrow"><span class="dot" aria-hidden="true"></span>Assainissement · Canalisations · <span class="eb-zone">{e.zone.libelle}</span></p>
+        <h1 id="h1"><span class="h1a">Canalisation bouchée&nbsp;?</span> <span class="h1b"><span class="h1-brand">HYDROFLASH</span> <em>débloque</em> la&nbsp;situation.</span></h1>
+        <p class="lead">Débouchage, curage, détartrage, passage caméra et pompage&nbsp;: HYDROFLASH intervient sur vos canalisations et réseaux d'assainissement, pour les particuliers, les professionnels, les syndics et les gestionnaires d'immeubles, en Seine-Maritime et dans l'Eure.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-call btn-xl hero-call" href={e.telephone.lien}><span class="ic-round"><svg class="ic" aria-hidden="true"><use class="u-d" href="#i-tel"/><use class="u-m" href="#i-tel-f"/></svg></span><span class="btn-txt"><span class="l1">Appeler HYDROFLASH</span><span class="l2">{tel}</span></span></a>
+          <a class="btn btn-ghost btn-xl" href="/contact/#devis"><svg class="ic m-only" aria-hidden="true"><use href="#i-doc"/></svg>Demander un devis <svg class="ic d-only" aria-hidden="true"><use href="#i-ar"/></svg></a>
+        </div>
+        <div class="aud" role="group" aria-label="Vous êtes">
+          <span class="mono aud-lbl" aria-hidden="true">Vous êtes</span>
+          <a class="aud-l is-on" href="/" aria-current="page"><img class="aud-ic" src="/img/pictos/particulier-blanc.svg" alt="" width="26" height="26">Particulier</a>
+          <a class="aud-l" href="/professionnels/"><img class="aud-ic" src="/img/pictos/syndic-blanc.svg" alt="" width="26" height="26">Syndic &amp; pro<span class="d-only">fessionnel</span></a>
+        </div>
+        <ul class="hero-micro">
+          <li><span class="pulse" aria-hidden="true"></span><span>Disponible <b>{nb(e.disponibilite.court)}{e.sansMajoration && ' · sans majoration'}</b></span></li>
+          {devis && <li>Devis avant intervention{devis === 'tbc' && <> <Tbc /></>}</li>}
+        </ul>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <figure class="pipe-frame d-only">
+        <Picture src={tunnelLumiere} alt="" widths={[480, 800, 1200]} sizes="(max-width: 700px) 1px, (max-width: 900px) 75vw, min(52vw, 800px)" formats={FORMATS} fallbackFormat="jpg" loading="eager" />
+        <figcaption class="mono">Photo d'ambiance · libre de droits</figcaption>
+      </figure>
+      <svg class="flux-svg d-only" viewBox="0 0 680 540" preserveAspectRatio="xMinYMin slice" aria-hidden="true">
+        <path class="pipe" d="M34,560 V320 A286,286 0 0 1 320,34 H720"/>
+        <path class="water" d="M34,560 V320 A286,286 0 0 1 320,34 H720"/>
+      </svg>
+      <div class="truck">
+        <Picture src={vehiculeDetoure} alt={altVehicule} widths={[480, 800, 1200, 1720]} sizes="(max-width: 700px) 104vw, (max-width: 900px) min(76vw, 640px), min(52vw, 900px)" formats={FORMATS} fallbackFormat="png" loading="eager" fetchpriority="high" />
+        <span class="ill-tag mono d-only">Véhicule HYDROFLASH — visuel du marquage à venir</span>
+      </div>
+    </div>
+    <p class="stamp hero-stamp m-only">Véhicule HYDROFLASH — visuel du marquage à venir · Fond&nbsp;: photo libre de droits</p>
+  </section>
+
+  <!-- RÉASSURANCE -->
+  <section class="reass" aria-labelledby="t-reass">
+    <div class="wrap">
+      <h2 class="sr" id="t-reass">Nos engagements</h2>
+      <ul class="reass-card">
+        <li class="reass-item"><picture><source media="(max-width: 700px)" srcset="/img/pictos/permanence-24h-sur-orange.svg"><img class="picto" src="/img/pictos/permanence-24h-noir.svg" alt="" width="48" height="48"></picture><span class="mono r-idx r-idx--plain">R—01 · Permanence</span><h3>Disponible {nb(e.disponibilite.libelle)}</h3><p><span class="r-desc">Jour et nuit, pour vos urgences</span> {e.sansMajoration && <span class="r-tag r-ok">Sans majoration</span>}</p></li>
+        {!PROD && <>
+          <li class="reass-item"><picture><source media="(max-width: 700px)" srcset="/img/pictos/materiel-sur-orange.svg"><img class="picto" src="/img/pictos/materiel-noir.svg" alt="" width="48" height="48"></picture><span class="mono r-idx"><span class="r-n">R—02 · </span><Tbc /></span><h3>Matériel professionnel</h3><p><span class="r-desc">Haute pression, pompage <Tbc label="équipements à confirmer" /></span></p></li>
+          <li class="reass-item"><picture><source media="(max-width: 700px)" srcset="/img/pictos/devis-sur-orange.svg"><img class="picto" src="/img/pictos/devis-noir.svg" alt="" width="48" height="48"></picture><span class="mono r-idx"><span class="r-n">R—03 · </span><Tbc /></span><h3>Devis clair</h3><p><span class="r-desc">Prix présenté avant intervention</span></p></li>
+          <li class="reass-item"><picture><source media="(max-width: 700px)" srcset="/img/pictos/technicien-sur-orange.svg"><img class="picto" src="/img/pictos/technicien-noir.svg" alt="" width="48" height="48"></picture><span class="mono r-idx"><span class="r-n">R—04 · </span><Tbc /></span><h3>Technicien spécialisé</h3><p><span class="r-desc">Assainissement et réseaux</span></p></li>
+        </>}
+      </ul>
+      <div class="price-note">
+        <p class="pn-q"><span class="mono">Transparence</span><strong>Comment est établi le prix&nbsp;?</strong></p>
+        <ul>
+          {devis && <li><svg class="ic" aria-hidden="true"><use href="#i-doc"/></svg><span>Devis présenté avant intervention{devis === 'tbc' && <> <Tbc /></>}</span></li>}
+          {factu && <li><svg class="ic" aria-hidden="true"><use href="#i-doc"/></svg><span>{factu === 'ok' ? e.principeFacturation : <>Principe de facturation <Tbc /></>}</span></li>}
+          {e.sansMajoration && <li class="pn-ok"><svg class="ic" aria-hidden="true"><use href="#i-moon"/></svg><span><b>Sans majoration</b> de nuit ni de week-end</span></li>}
+        </ul>
+        <a class="pn-link" href="#faq">Comprendre nos prix <svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></a>
+      </div>
+      {!PROD && <p class="reass-note mono d-only">24&nbsp;h/24, 7&nbsp;j/7 et sans majoration&nbsp;: confirmés par HYDROFLASH · autres engagements affichés après validation</p>}
+    </div>
+  </section>
+
+  <!-- PRESTATIONS -->
+  <section class="sec svc-sec" id="services" aria-labelledby="t-services">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div>
+          <p class="sec-label"><span class="sl-n">02 — </span>Prestations</p>
+          <h2 class="h2" id="t-services">Six interventions, <em>un seul objectif&nbsp;:</em> que ça s'écoule.</h2>
+        </div>
+        <div>
+          <p class="lead d-only">Du débouchage au pompage, HYDROFLASH couvre toute la chaîne d'intervention{aff(e.typesOuvragesPompage) === 'tbc' && <> <span class="tbc-wrap"><Tbc label="périmètre du pompage à confirmer" /></span></>}&nbsp;: un seul interlocuteur, et la bonne technique selon la canalisation, l'accès et l'origine du problème.</p>
+          <p class="chain mono d-only" aria-label="Chaîne d'intervention"><span>Débouchage</span><i></i><span>Curage</span><i></i><span>Détartrage</span><i></i><span>Passage caméra</span><i></i><span>Pompage</span><i></i><span>Entretien</span></p>
+          <a class="link-arrow m-only" href="/services/">Toutes nos prestations <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+
+      <div class="bento">
+        <article class="svc svc--xl reveal">
+          <div class="svc-top"><span class="mono idx">01<span class="idx-n"> — Débouchage</span></span><img class="picto" src="/img/pictos/debouchage-blanc.svg" alt="" width="80" height="80"></div>
+          <figure class="svc-ill"><img src="/img/illus/buse-haute-pression.svg" alt="Illustration conceptuelle : buse haute pression, jets arrière et jet avant d'attaque du bouchon" width="800" height="400" loading="lazy"></figure>
+          <h3>Débouchage de canalisation</h3>
+          <p class="svc-long">Évier, WC, douche, colonne ou branchement&nbsp;: nous localisons le bouchon et rétablissons l'écoulement.</p>
+          <p class="svc-short">Évier, WC, douche, colonne, branchement.</p>
+          <a class="svc-link" href={svc.debouchage.url}><span class="svc-lt">Découvrir le débouchage</span> <span class="ar"><svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></span></a>
+        </article>
+        <article class="svc svc--b reveal">
+          <div class="svc-top"><span class="mono idx">02<span class="idx-n"> — Curage</span></span><picture><source media="(max-width: 700px)" srcset="/img/pictos/curage-blanc.svg"><img class="picto" src="/img/pictos/curage-noir.svg" alt="" width="56" height="56"></picture></div>
+          <div class="svc-row"><h3>Curage</h3><p class="svc-long">Nettoyage en profondeur des canalisations à l'eau sous haute pression pour retirer graisses, dépôts et sédiments.</p></div>
+          <p class="svc-short">Nettoyage à l'eau sous haute pression.</p>
+          <a class="svc-link" href={svc.curage.url}><span class="svc-lt">Découvrir le curage</span> <span class="ar"><svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></span></a>
+        </article>
+        <article class="svc svc--c reveal">
+          <div class="svc-top"><span class="mono idx">03<span class="idx-n"> — Détartrage</span></span><picture><source media="(max-width: 700px)" srcset="/img/pictos/detartrage-blanc.svg"><img class="picto" src="/img/pictos/detartrage-noir.svg" alt="" width="56" height="56"></picture></div>
+          <div class="svc-row"><h3>Détartrage</h3><p class="svc-long">Retrait mécanique des dépôts calcaires et des concrétions qui réduisent le diamètre utile de vos conduites.</p></div>
+          <p class="svc-short">Retrait des dépôts calcaires.</p>
+          <a class="svc-link" href={svc.detartrage.url}><span class="svc-lt">Découvrir le détartrage</span> <span class="ar"><svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></span></a>
+        </article>
+        <article class="svc svc--f reveal">
+          <div class="svc-top"><span class="mono idx">04<span class="idx-n"> — Passage caméra</span></span><img class="picto" src="/img/pictos/inspection-camera-blanc.svg" alt="" width="56" height="56"></div>
+          <figure class="svc-screen">
+            <img src="/img/illus/inspection-camera-vue.svg" alt="Illustration conceptuelle : vue intérieure d'une canalisation filmée lors d'un passage caméra, zone à traiter repérée" width="800" height="500" loading="lazy">
+            <figcaption class="mono">Illustration conceptuelle · vue caméra</figcaption>
+          </figure>
+          <h3>Passage caméra</h3>
+          <p class="svc-long">Inspection caméra de la canalisation&nbsp;: nous localisons précisément le bouchon ou le défaut, vérifions l'état du réseau et contrôlons le résultat après curage.</p>
+          <p class="svc-tbc">{e.passageCamera.livrable}</p>
+          <p class="svc-short">Localiser le bouchon, contrôler le réseau.</p>
+          <a class="svc-link" href={svc['passage-camera'].url}><span class="svc-lt">Découvrir le passage caméra</span> <span class="ar"><svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></span></a>
+        </article>
+        <article class="svc svc--d reveal">
+          <div class="svc-top"><span class="mono idx">05<span class="idx-n"> — Pompage</span></span><picture><source media="(max-width: 700px)" srcset="/img/pictos/pompage-blanc.svg"><img class="picto" src="/img/pictos/pompage-noir.svg" alt="" width="56" height="56"></picture></div>
+          <h3>Pompage</h3>
+          <p class="svc-long">Pompage et vidange de regards, bacs et ouvrages d'assainissement.{aff(e.typesOuvragesPompage) === 'tbc' && <> <span class="tbc-wrap"><Tbc label="types d'ouvrages et agrément à confirmer" /></span></>}</p>
+          <p class="svc-short">Regards, bacs, ouvrages{aff(e.typesOuvragesPompage) === 'tbc' && <> <Tbc /></>}.</p>
+          <a class="svc-link" href={svc.pompage.url}><span class="svc-lt">Découvrir le pompage</span> <span class="ar"><svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></span></a>
+        </article>
+        <article class="svc svc--e reveal">
+          <div class="svc-top"><span class="mono idx">06<span class="idx-n"> — Entretien des réseaux</span></span><picture><source media="(max-width: 700px)" srcset="/img/pictos/entretien-blanc.svg"><img class="picto" src="/img/pictos/entretien-sur-orange.svg" alt="" width="56" height="56"></picture></div>
+          <div class="svc-row"><h3>Entretien des réseaux</h3><p class="svc-long">Interventions préventives planifiées pour limiter les bouchons et préserver vos installations, en maison, en copropriété ou en local professionnel.</p></div>
+          <p class="svc-short">Interventions préventives planifiées.</p>
+          <a class="svc-link" href={svc.entretien.url}><span class="svc-lt">Découvrir l'entretien</span> <span class="ar"><svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></span></a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- SAVOIR-FAIRE -->
+  <section class="sec about" id="apropos" aria-labelledby="t-about">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div>
+          <p class="sec-label"><span class="sl-n">03 — </span>Savoir-faire</p>
+          <h2 class="h2" id="t-about">Un spécialiste de l'assainissement, <em>équipé pour chaque situation.</em></h2>
+        </div>
+        <div class="about-txt">
+          <p class="lead">HYDROFLASH est une entreprise spécialisée dans l'assainissement et les interventions sur les réseaux de canalisations.</p>
+          <p class="muted d-only">Notre méthode&nbsp;: identifier l'origine du problème, choisir la technique adaptée et laisser une installation propre et fonctionnelle.</p>
+          <ol class="method m-only">
+            <li><b>Identifier l'origine</b></li>
+            <li><b>Choisir la bonne technique</b></li>
+            <li><b>Laisser une installation propre</b></li>
+          </ol>
+          {!PROD && (
+            <div class="equip-box">
+              <h3 class="equip-h m-only">Équipements</h3>
+              <ul class="equip">
+                <li><strong>Véhicule d'intervention équipé</strong><Tbc label="équipement à confirmer" /></li>
+                <li><strong>Haute pression</strong><Tbc label="caractéristiques à confirmer" /></li>
+                <li><strong>Pompage / aspiration</strong><Tbc /></li>
+                <li><strong>Outillage de débouchage mécanique</strong><Tbc /></li>
+                <li class="equip-wide"><img src="/img/pictos/inspection-camera-noir.svg" alt="" width="36" height="36"><strong>Matériel de passage caméra</strong><Tbc label="caractéristiques à confirmer" /></li>
+              </ul>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <figure class="bp reveal">
+        <div class="bp-frame">
+          <Picture src={vehiculeDetoure} alt="Le véhicule d'intervention HYDROFLASH vu de profil, avec repères : gyrophares, marquage, caisson à compartiments, équipement embarqué (visuel du marquage à venir)" widths={[480, 800, 1200, 1720]} sizes="(max-width: 960px) 92vw, 900px" formats={FORMATS} fallbackFormat="png" />
+          <!-- Repères en % de la photo détourée (1720 × 672) : --x / --y, à recaler si le visuel change -->
+          <span class="co co--up co--r" data-co="1"><span class="num">1</span><span class="co-l"><b>Gyrophares</b>Signalisation lumineuse</span></span>
+          <span class="co co--up" data-co="2"><span class="num">2</span><span class="co-l"><b>Marquage à venir</b>Logo officiel + {tel}</span></span>
+          <span class="co co--down co--r" data-co="3"><span class="num">3</span><span class="co-l"><b>Caisson à compartiments</b>Rangement latéral du matériel</span></span>
+          {!PROD && <span class="co co--down co--r" data-co="4"><span class="num">4</span><span class="co-l"><b>Équipement embarqué</b><Tbc /></span></span>}
+        </div>
+        <figcaption class="bp-tag mono">Véhicule HYDROFLASH — visuel du marquage à venir · repères de principe</figcaption>
+        <ol class="bp-legend">
+          <li>Gyrophares — signalisation lumineuse</li>
+          <li>Marquage à venir&nbsp;: logo officiel + {tel}</li>
+          <li>Caisson à compartiments — rangement latéral du matériel</li>
+          {!PROD && <li>Équipement embarqué <Tbc /></li>}
+        </ol>
+      </figure>
+
+      <div class="veh reveal">
+        <figure class="veh-photo">
+          <Picture src={vehiculeAtelier} alt={`Le véhicule d'intervention HYDROFLASH dans un atelier : pick-up orange à caisson, avec le marquage HYDROFLASH et le ${e.telephone.affiche} (visuel du marquage à venir)`} widths={[480, 800, 1200, 1740]} sizes="(max-width: 700px) calc(100vw - 32px), (max-width: 1180px) calc(100vw - 64px), min(62vw, 880px)" formats={FORMATS} fallbackFormat="jpg" />
+          <figcaption class="mono stamp"><b>Véhicule HYDROFLASH</b> — visuel du marquage à venir</figcaption>
+        </figure>
+        <div class="veh-txt">
+          <p class="mono">Notre véhicule d'intervention</p>
+          <h3>Un pick-up à caisson, <em>bientôt marqué HYDROFLASH.</em></h3>
+          <figure class="veh-raw">
+            <Picture src={vehiculeLivraison} alt="Photo réelle du même véhicule à sa livraison, avant marquage" widths={[132, 264, 400]} sizes="132px" formats={FORMATS} fallbackFormat="jpg" />
+            <figcaption class="mono">Photo réelle — véhicule HYDROFLASH à sa livraison, avant marquage</figcaption>
+          </figure>
+          <ul>
+            <li>Cabine simple, caisson à compartiments</li>
+            {!PROD && <li>Équipement embarqué <Tbc /></li>}
+          </ul>
+        </div>
+      </div>
+
+      {!PROD && (
+        <div class="keyfig reveal" role="group" aria-label="Chiffres clés à confirmer">
+          <div><strong>[—]</strong><span>Chiffre clé <Tbc /></span></div>
+          <div><strong>[—]</strong><span>Chiffre clé <Tbc /></span></div>
+          <div><strong>[—]</strong><span>Chiffre clé <Tbc /></span></div>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- DÉROULÉ -->
+  <section class="sec on-dark proc-sec" aria-labelledby="t-steps">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div>
+          <p class="sec-label"><span class="sl-n">04 — </span>Méthode</p>
+          <h2 class="h2" id="t-steps">Comment se déroule <em>une intervention&nbsp;?</em></h2>
+        </div>
+        <p class="lead">Quatre étapes, du premier appel au contrôle final de l'écoulement.</p>
+      </div>
+      <div class="steps reveal">
+        <svg class="steps-svg" viewBox="0 0 1280 260" aria-hidden="true">
+          <path class="body" d="M0,40 H270 Q320,40 320,90 V150 Q320,200 370,200 H590 Q640,200 640,150 V90 Q640,40 690,40 H910 Q960,40 960,90 V150 Q960,200 1010,200 H1280"/>
+          <path class="bore" d="M0,40 H270 Q320,40 320,90 V150 Q320,200 370,200 H590 Q640,200 640,150 V90 Q640,40 690,40 H910 Q960,40 960,90 V150 Q960,200 1010,200 H1280"/>
+          <path class="core" d="M0,40 H270 Q320,40 320,90 V150 Q320,200 370,200 H590 Q640,200 640,150 V90 Q640,40 690,40 H910 Q960,40 960,90 V150 Q960,200 1010,200 H1280"/>
+        </svg>
+        <ol>
+          <li class="step"><span class="node" aria-hidden="true" data-n="1">01</span><p class="mono st-l">Étape 01 · Contact</p><h3>Vous nous contactez</h3><p><span class="d-only">Par téléphone ou via le formulaire, décrivez le problème&nbsp;: type d'évacuation, symptômes, accès.</span><span class="m-only">Par téléphone ou formulaire&nbsp;: évacuation, symptômes, accès.</span></p></li>
+          <li class="step"><span class="node" aria-hidden="true" data-n="2">02</span><p class="mono st-l">Étape 02 · Devis</p><h3>Diagnostic et devis</h3>
+            {devis ? (
+              <p><span class="d-only">Nous qualifions l'intervention, avec un passage caméra si nécessaire, et vous présentons un devis clair avant de commencer</span><span class="m-only">Passage caméra si nécessaire, devis clair avant de commencer</span>{devis === 'tbc' && <> <Tbc /></>}.</p>
+            ) : (
+              <p><span class="d-only">Nous qualifions l'intervention, avec un passage caméra si nécessaire.</span><span class="m-only">Passage caméra si nécessaire.</span></p>
+            )}
+          </li>
+          <li class="step"><span class="node" aria-hidden="true" data-n="3">03</span><p class="mono st-l">Étape 03 · Intervention</p><h3>Intervention</h3><p><span class="d-only">Le technicien intervient avec le matériel adapté&nbsp;: débouchage, curage, détartrage ou pompage.</span><span class="m-only">Matériel adapté&nbsp;: débouchage, curage, détartrage ou pompage.</span></p></li>
+          <li class="step"><span class="node" aria-hidden="true" data-n="4">04</span><p class="mono st-l">Étape 04 · Contrôle</p><h3>Contrôle et conseils</h3><p><span class="d-only">Vérification de l'écoulement, remise en ordre des lieux et conseils pour éviter que le problème ne se reproduise.</span><span class="m-only">Écoulement vérifié, lieux remis en ordre, conseils anti-récidive.</span></p></li>
+        </ol>
+      </div>
+      <div class="steps-foot">{!PROD && <span>Déroulé à valider avec HYDROFLASH.</span>}<a class="btn btn-call btn-sm" href={e.telephone.lien}><svg class="ic" aria-hidden="true"><use class="u-d" href="#i-tel"/><use class="u-m" href="#i-tel-f"/></svg>Commencer par un appel</a></div>
+    </div>
+  </section>
+
+  <!-- ZONES -->
+  <section class="sec zones-sec" id="zones" aria-labelledby="t-zones">
+    <div class="wrap">
+      <div class="zone-panel reveal">
+        <div class="zone-txt">
+          <p class="sec-label sec-label-nb"><span class="sl-n">05 — </span>Territoire</p>
+          <h2 class="h2" id="t-zones">Zones d'intervention</h2>
+          <p class="lead">Nous intervenons en <strong>Seine-Maritime (76)</strong> et dans l'<strong>Eure (27)</strong>.</p>
+          <p class="cp-q" id="cpz-q">Intervenez-vous chez moi&nbsp;?</p>
+          <form class="cp-form" data-cp data-res="cpz-res" data-map="cpz-rep" novalidate aria-labelledby="cpz-q">
+            <div class="cp-field"><label for="cpz-in">Votre code postal</label><input id="cpz-in" name="cp" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="5" placeholder="Ex. 76000" aria-describedby={PROD ? undefined : 'cpz-note'}></div>
+            <button class="btn btn-call" type="submit">Vérifier</button>
+          </form>
+          <div class="cp-res" id="cpz-res" aria-live="polite"></div>
+          {!PROD && <p class="cp-note" id="cpz-note">Couverture de chaque commune&nbsp;: <Tbc /></p>}
+          <div class="reperes" id="cpz-rep">
+            <p class="rp-t mono">Villes repères</p>
+            <div class="rp-grp" data-dep="76"><p class="rp-d" title="Seine-Maritime"><span class="sr">Seine-Maritime </span>76</p><ul class="communes" aria-label="Seine-Maritime"><li>Rouen</li><li>Le Havre</li><li>Dieppe</li><li>Fécamp</li><li>Elbeuf</li></ul></div>
+            <div class="rp-grp" data-dep="27"><p class="rp-d" title="Eure"><span class="sr">Eure </span>27</p><ul class="communes" aria-label="Eure"><li>Évreux</li><li>Vernon</li><li>Louviers</li><li>Bernay</li><li>Pont-Audemer</li><li>Gisors</li></ul></div>
+          </div>
+        </div>
+        <figure class="zmap">
+          <div class="zmap-crop"><img src="/img/illus/carte-zone-76-27-sombre.svg" alt="Carte de principe de la zone d'intervention : la Seine-Maritime (76) au nord, l'Eure (27) au sud, avec les villes repères Le Havre, Fécamp, Dieppe, Rouen, Pont-Audemer, Louviers, Bernay, Évreux, Vernon et Gisors." width="1120" height="980" loading="lazy"></div>
+          <figcaption class="mono stamp">Carte de principe — contours simplifiés</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- AVIS : section masquée en production tant qu'aucun avis réel et vérifiable n'est connecté -->
+  {avis && (
+    <section class="sec bg-mist avis-sec" aria-labelledby="t-avis">
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <div>
+            <p class="sec-label"><span class="sl-n">06 — </span>Avis</p>
+            <h2 class="h2" id="t-avis">Avis clients</h2>
+          </div>
+          <p class="lead d-only">Cet espace accueillera uniquement des avis réels et vérifiables, par exemple issus de la fiche Google Business Profile d'HYDROFLASH.</p>
+        </div>
+        <div class="avis-band m-only"><span class="q" aria-hidden="true">“</span><p><strong>Avis vérifiés à intégrer</strong>Uniquement des avis réels et vérifiables. Source&nbsp;: Google Business Profile <Tbc label="à connecter" /></p></div>
+        <div class="reviews d-only reveal">
+          {['01', '02', '03'].map((n) => (
+            <article class="review"><p class="mono"><span>Avis vérifié à intégrer</span><span>{n}</span></p><div class="skel"><i></i><i></i><i></i></div><p class="who"><b></b><span>Source&nbsp;: <Tbc label="fiche Google à connecter" /></span></p></article>
+          ))}
+        </div>
+        <p class="avis-rule d-only">Aucun témoignage fictif, aucune note inventée&nbsp;: les avis s'afficheront automatiquement depuis leur source.</p>
+      </div>
+    </section>
+  )}
+
+  <!-- FAQ (balisage propre à l'accueil : numérotation de section et sélection mobile .faq-home) -->
+  <section class="sec faq-sec faq-home" id="faq" aria-labelledby="t-faq">
+    <div class="wrap faq-grid">
+      <div class="faq-aside reveal">
+        <p class="sec-label"><span class="sl-n">{nFaq} — </span>Questions</p>
+        <h2 class="h2" id="t-faq">Questions fréquentes</h2>
+        <p class="d-only">Bouchons, curage, prix, interventions&nbsp;: les réponses aux questions que l'on nous pose le plus.</p>
+        <a class="btn btn-dark d-only" href={e.telephone.lien}><svg class="ic" aria-hidden="true"><use class="u-d" href="#i-tel"/><use class="u-m" href="#i-tel-f"/></svg>Une autre question&nbsp;? Appelez-nous</a>
+      </div>
+      <div class="faq reveal">
+        <details open><summary><span class="q-n">Q.01</span>Comment savoir si ma canalisation est bouchée&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Écoulement lent, remontées d'eau, gargouillements ou mauvaises odeurs sont les signes les plus courants. Si plusieurs évacuations sont touchées en même temps, le bouchon se situe probablement plus loin, sur la canalisation principale.</p></details>
+        <details><summary><span class="q-n">Q.02</span>Quelle différence entre débouchage et curage&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Le débouchage supprime un bouchon pour rétablir l'écoulement. Le curage nettoie toute la paroi de la canalisation à haute pression, pour retirer les dépôts accumulés et limiter les récidives.</p></details>
+        <details><summary><span class="q-n">Q.03</span>Combien coûte une intervention&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Le prix dépend du type d'intervention, de l'accès et du matériel nécessaire.{devis && <> HYDROFLASH vous présente un devis avant intervention.</>}{!PROD && <> <Tbc label="Grille tarifaire à confirmer" /></>}</p></details>
+        <details><summary><span class="q-n">Q.04</span>Intervenez-vous en urgence&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Oui, HYDROFLASH est joignable et intervient {nb(e.disponibilite.libelle)}, en Seine-Maritime et dans l'Eure{e.sansMajoration && ', sans majoration de nuit ni de week-end'}.</p></details>
+        <details><summary><span class="q-n">Q.05</span>À quoi sert le passage caméra&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Il permet de voir l'intérieur de la canalisation sans rien casser&nbsp;: localiser un bouchon, des racines, un affaissement ou une contre-pente, et vérifier le résultat après un curage. {e.passageCamera.livrable}</p></details>
+        <details><summary><span class="q-n">Q.06</span>Les produits déboucheurs chimiques sont-ils une bonne solution&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Ils peuvent abîmer certaines canalisations et restent souvent inefficaces sur les bouchons profonds. En cas de bouchon persistant, mieux vaut faire appel à un professionnel.</p></details>
+        <details><summary><span class="q-n">Q.07</span>À quelle fréquence entretenir ses canalisations&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Cela dépend de l'usage&nbsp;: une maison, une copropriété et un restaurant n'ont pas les mêmes besoins. Une fréquence adaptée vous est conseillée après diagnostic.</p></details>
+        <details><summary><span class="q-n">Q.08</span>Travaillez-vous avec les syndics et les professionnels&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Oui, HYDROFLASH s'adresse aux particuliers comme aux professionnels, syndics et gestionnaires immobiliers.{!PROD && <> <Tbc label="Modalités à confirmer" /></>}</p></details>
+        <a class="faq-all" href="/services/">Questions par prestation <svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <ContactCta label={`${nContact} — Contact`} />
+</Base>

@@ -1,0 +1,113 @@
+---
+/* Article de conseil : /conseils/<id>/ (id = nom du fichier Markdown de src/content/conseils/).
+   Production : seuls les articles relu: true sont générés (conseilsPublies()). Préproduction : tous,
+   avec un bandeau « article à relire par HYDROFLASH ».
+   JSON-LD Article : éditeur (publisher) HYDROFLASH, sans auteur (aucun auteur réel identifié à ce jour). */
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import SousHero from '../../components/SousHero.astro';
+import ContactCta from '../../components/ContactCta.astro';
+import Tbc from '../../components/Tbc.astro';
+import { FEUILLE_CONTENU } from '../../lib/feuilles';
+import { conseilsPublies } from '../../lib/conseils';
+import { SITE_URL } from '../../lib/env';
+import { services } from '../../data/services';
+import { entreprise as e } from '../../data/entreprise';
+import conseilsOrdi from '../../styles/pages/conseils-ordinateur.css?url';
+import conseilsMobile from '../../styles/pages/conseils-mobile.css?url';
+
+export async function getStaticPaths() {
+  const articles = await conseilsPublies();
+  return articles.map((article) => ({ params: { slug: article.id }, props: { article, autres: articles.filter((a) => a.id !== article.id).slice(0, 4) } }));
+}
+
+const { article, autres } = Astro.props;
+const { Content } = await render(article);
+const d = article.data;
+const base = e.siteUrl || SITE_URL;
+const url = new URL(`/conseils/${article.id}/`, base).href;
+const iso = d.date.toISOString().slice(0, 10);
+const dateFr = d.date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+// Prestations liées : slug de services.ts (« curage ») ou segment d'URL (« curage-canalisation »)
+const liees = d.prestationsLiees
+  .map((x) => services.find((s) => s.slug === x || s.url === `/${x}/`))
+  .filter((s): s is (typeof services)[number] => Boolean(s));
+const esc = (t: string) => t.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c] as string);
+
+const jsonld = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: d.titre,
+  description: d.seoDescription,
+  datePublished: iso,
+  dateModified: iso,
+  inLanguage: 'fr-FR',
+  url,
+  mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+  publisher: { '@type': 'Organization', name: e.nom, url: new URL('/', base).href, logo: { '@type': 'ImageObject', url: new URL('/img/logo/hf-logo.svg', base).href } },
+};
+---
+<Base
+  titre={d.seoTitre}
+  description={d.seoDescription}
+  feuilles={[FEUILLE_CONTENU, { ordi: conseilsOrdi, mobile: conseilsMobile }]}
+  jsonld={jsonld}
+  ogType="article"
+>
+  <SousHero
+    ariane={[{ label: 'Conseils', href: '/conseils/' }, { label: d.titre }]}
+    surtitre="Conseil pratique"
+    titre={d.titre}
+    intro={esc(d.resume)}
+    actions={false}
+    compact
+  />
+
+  <section class="sec sec-sm" aria-label="Article">
+    <div class="wrap cs-art">
+      <article aria-labelledby="h1">
+        {!d.relu && <p class="cs-relu"><Tbc label="article à relire par HYDROFLASH" /> Texte proposé en préproduction&nbsp;: il ne sera publié qu'après relecture et validation par HYDROFLASH.</p>}
+        <p class="cs-meta">Publié le <time datetime={iso}>{dateFr}</time></p>
+        <div class="prose"><Content /></div>
+      </article>
+
+      <aside class="cs-aside" aria-label="Besoin d'un professionnel">
+        <div class="callout callout-o">
+          <h2>Besoin d'un professionnel&nbsp;?</h2>
+          <p>HYDROFLASH intervient {e.disponibilite.libelle}{e.sansMajoration && <>, sans majoration de nuit ni de week-end</>}, en {e.zone.libelle}. Décrivez-nous la situation&nbsp;: nous vous orientons dès le téléphone.</p>
+          <a class="btn btn-dark btn-xl" href={e.telephone.lien}><svg class="ic" aria-hidden="true"><use class="u-d" href="#i-tel"/><use class="u-m" href="#i-tel-f"/></svg>Appeler le {e.telephone.affiche}</a>
+          <a class="btn btn-line" href="/contact/#devis">Demander un devis</a>
+        </div>
+        {autres.length > 0 && (
+          <nav class="cs-autres" aria-labelledby="t-autres">
+            <h2 id="t-autres">Autres conseils</h2>
+            <ul>{autres.map((a) => <li><a href={`/conseils/${a.id}/`}>{a.data.titre}</a></li>)}</ul>
+          </nav>
+        )}
+      </aside>
+    </div>
+  </section>
+
+  {liees.length > 0 && (
+    <section class="sec sec-sm" aria-labelledby="t-liees">
+      <div class="wrap">
+        <div class="c-head">
+          <div><p class="sec-label">Prestations</p><h2 class="h2" id="t-liees">Prestations <em>liées</em></h2></div>
+        </div>
+        <ul class="cards cs-rel">
+          {liees.map((s) => (
+            <li><a class="card" href={s.url}>
+              <span class="num">{s.numero}</span>
+              <img src={`/img/pictos/${s.picto}-noir.svg`} alt="" width="48" height="48" loading="lazy" />
+              <h3>{s.titre}</h3>
+              <p>{s.resume}</p>
+              <span class="go">Découvrir <svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></span>
+            </a></li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <ContactCta />
+</Base>

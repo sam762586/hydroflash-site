@@ -1,0 +1,51 @@
+---
+/* Page 404 (non indexée) : message clair, appel, devis, liens vers les 6 prestations. */
+import Base from '../layouts/Base.astro';
+import SousHero from '../components/SousHero.astro';
+import { FEUILLE_CONTENU } from '../lib/feuilles';
+import { services } from '../data/services';
+import { entreprise as e } from '../data/entreprise';
+import contactOrdi from '../styles/pages/contact-ordinateur.css?url';
+import contactMobile from '../styles/pages/contact-mobile.css?url';
+/* Espaces insécables dans « 24 h/24 · 7 j/7 » (évite « 24 / h/24 » en fin de ligne). */
+const dispo = e.disponibilite.libelle.replace(/(\d) /g, '$1\u00a0');
+---
+<Base
+  titre="Page introuvable | HYDROFLASH"
+  description={`Cette page n'existe pas ou a été déplacée. Besoin d'HYDROFLASH ? Appelez le ${e.telephone.affiche}, ${dispo}.`}
+  feuilles={[FEUILLE_CONTENU, { ordi: contactOrdi, mobile: contactMobile }]}
+  noindex
+>
+  <SousHero
+    ariane={[{ label: 'Page introuvable' }]}
+    surtitre="Erreur 404"
+    titre="Page introuvable."
+    titreFin="Cette adresse n'existe pas ou a changé."
+    intro={`Si votre problème est urgent, appelez-nous directement&nbsp;: <strong>${dispo}</strong>, sans majoration de nuit ni de week-end. Sinon, retrouvez nos prestations ci-dessous.`}
+    compact
+  />
+
+  <section class="sec sec-sm" aria-labelledby="t-presta">
+    <div class="wrap">
+      <div class="c-head">
+        <div><p class="sec-label">Nos prestations</p><h2 class="h2" id="t-presta">Ce que vous cherchiez <em>est <span class="nw">peut-être</span> ici</em></h2></div>
+        <p class="lead">Ou consultez <a class="nf-a" href="/">l'accueil</a>, nos <a class="nf-a" href="/zones-intervention/">zones d'intervention</a> et la page <a class="nf-a" href="/urgence-debouchage-24h/">urgence 24&nbsp;h/24</a>.</p>
+      </div>
+      <ul class="cards cards-3">
+        {services.map((s) => (
+          <li class="li-c"><a class="card" href={s.url}>
+            <span class="num">{s.numero}</span>
+            <img src={`/img/pictos/${s.picto}-noir.svg`} alt="" width="48" height="48" loading="lazy" />
+            <h3>{s.titre}</h3>
+            <p>{s.resume}</p>
+            <span class="go">Découvrir <svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></span>
+          </a></li>
+        ))}
+      </ul>
+      <div class="nf-ctas">
+        <a class="btn btn-call btn-xl" href={e.telephone.lien}><svg class="ic" aria-hidden="true"><use class="u-d" href="#i-tel"/><use class="u-m" href="#i-tel-f"/></svg>Appeler le {e.telephone.affiche}</a>
+        <a class="btn btn-line btn-xl" href="/contact/#devis"><svg class="ic" aria-hidden="true"><use href="#i-doc"/></svg>Demander un devis</a>
+      </div>
+    </div>
+  </section>
+</Base>

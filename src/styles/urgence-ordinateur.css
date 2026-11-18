@@ -62,6 +62,7 @@
 .u-rp-micro { margin-top: 6px; font-size: 15.5px; color: var(--grey); }
 .u-rp-btn { min-height: 52px; padding: 0 26px; }
 .u-rappel .rgpd { grid-column: 2 / -1; }
+.u-rappel .form-msg { grid-column: 2 / -1; } /* message d'envoi (formulaire réel) */
 
 /* ---------- 2. EN ATTENDANT LE TECHNICIEN ---------- */
 .u-wait { padding-top: 100px; }
@@ -178,7 +179,7 @@
 }
 @media (max-width: 1080px) {
   .u-rappel { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .u-rp-head, .u-rp-btn, .u-rappel .rgpd { grid-column: 1 / -1; }
+  .u-rp-head, .u-rp-btn, .u-rappel .rgpd, .u-rappel .form-msg { grid-column: 1 / -1; }
   .u-visual { bottom: 342px; }
   .u-price { grid-template-columns: minmax(0, 1fr); }
 }

@@ -1,0 +1,204 @@
+---
+/* PROFESSIONNELS ET SYNDICS — syndics de copropriété, gestionnaires immobiliers, commerces et restauration.
+ * Uniquement des informations confirmées (src/data/entreprise.ts) ; le reste passe par <Tbc /> et disparaît en production.
+ * Devis détaillé = action principale dans le contenu (CONVERSION_UX § 4.1, exception « professionnels »). */
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import SousHero from '../../components/SousHero.astro';
+import Faq from '../../components/Faq.astro';
+import ContactCta from '../../components/ContactCta.astro';
+import Tbc from '../../components/Tbc.astro';
+import { FEUILLE_CONTENU } from '../../lib/feuilles';
+import { schemaService } from '../../lib/schema';
+import { PROD } from '../../lib/env';
+import { services } from '../../data/services';
+import { entreprise as e } from '../../data/entreprise';
+import cssOrdi from '../../styles/pages/prestation-ordinateur.css?url';
+import cssMobile from '../../styles/pages/prestation-mobile.css?url';
+import photoGants from '../../assets/photos/gants-technicien.webp';
+
+const zoneEn = e.zone.departements.map((z) => `${/^[AEIOUYÉÈ]/i.test(z.nom) ? `dans l’${z.nom}` : `en ${z.nom}`} (${z.code})`).join(' et ');
+const dispo = e.disponibilite.libelle;
+const dispoCourt = e.disponibilite.court.replace(/(\d+) ([hj])/g, '$1 $2');
+const livrable = e.passageCamera.livrable.replace(/'/g, '’');
+const minuscule = (s: string) => s.charAt(0).toLowerCase() + s.slice(1);
+const tbcHtml = (label: string) => (PROD ? '' : ` <span class="tbc" data-tbc>${label}</span>`);
+const majoration = e.sansMajoration ? ', sans majoration de nuit ni de week-end' : '';
+
+const description = `Colonnes, parties communes, cuisines : débouchage, curage, détartrage, passage caméra et entretien des réseaux pour syndics et pros, ${dispo} (76, 27).`;
+
+/* Prestations vues côté professionnels (textes propres à cette page) */
+const textesPro: Record<string, string> = {
+  '/debouchage-canalisation/': 'Colonnes, collecteurs, évacuations de cuisine : rétablir l’écoulement en parties communes comme dans les locaux.',
+  '/curage-canalisation/': 'Nettoyage des colonnes et des collecteurs pour espacer les bouchons, en curatif comme en préventif.',
+  '/detartrage-canalisation/': 'Chutes et colonnes entartrées des immeubles anciens, en fonte notamment.',
+  '/inspection-camera-canalisation/': `Localiser un désordre et en garder la trace : ${minuscule(livrable)}`,
+  '/pompage-vidange/': 'Regards et ouvrages d’assainissement en cours, sous-sols et sites d’activité.',
+  '/entretien-reseaux-assainissement/': 'Interventions préventives planifiées sur vos immeubles et vos locaux.',
+};
+
+type Info = { k: string; v?: string; lien?: string; tbc?: boolean };
+const infos: Info[] = [
+  { k: 'Disponibilité', v: `Intervention ${e.disponibilite.court}` },
+  ...(e.sansMajoration ? [{ k: 'Majoration', v: 'Aucune, de nuit comme le week-end' }] : []),
+  { k: 'Zone', v: e.zone.libelle },
+  { k: 'Passage caméra', v: 'Photos remises sur clé USB' },
+  { k: 'Téléphone', v: e.telephone.affiche, lien: e.telephone.lien },
+  { k: 'E-mail', v: e.email, lien: `mailto:${e.email}` },
+  { k: 'Documents remis', tbc: true },
+  { k: 'Contrat d’entretien', tbc: true },
+  { k: 'Rapport écrit, vidéo', tbc: true },
+  ...(e.assuranceRcPro ? [{ k: 'Assurance RC pro', v: e.assuranceRcPro }] : [{ k: 'Assurance RC pro', tbc: true }]),
+].filter((i) => !(PROD && i.tbc));
+
+const faq = [
+  { q: 'Intervenez-vous dans les parties communes comme dans les logements ?',
+    a: 'Oui : colonnes, collecteurs, regards de cour et sous-sols, mais aussi évacuations privatives des logements. Les modalités d’accès (gardien, codes, clés, présence des occupants) sont à préciser lors de votre demande.' },
+  { q: 'Pouvez-vous intervenir en dehors des heures d’ouverture d’un commerce ?',
+    a: `HYDROFLASH intervient ${dispo}${majoration}. Indiquez vos contraintes d’horaires lors de votre demande afin d’organiser l’intervention au moment le plus adapté.` },
+  { q: 'Quels documents remettez-vous après une intervention ?',
+    a: `Après un passage caméra, ${minuscule(livrable)} Elles documentent l’état du réseau au jour de l’inspection.${tbcHtml('autres documents (compte rendu, attestation) : à confirmer')}` },
+  { q: 'Comment se planifie l’entretien des réseaux d’un immeuble ?',
+    a: `À partir d’un état des lieux (colonnes, collecteurs, regards, historique des bouchons), les interventions utiles et leur fréquence vous sont proposées, puis ajustées au fil des passages. En savoir plus sur <a href="/entretien-reseaux-assainissement/">l’entretien des réseaux d’assainissement</a>.${tbcHtml('formule contractuelle : à confirmer')}` },
+  { q: 'Comment obtenir un devis pour un immeuble ou un local ?',
+    a: `Utilisez le <a href="#devis">formulaire de demande</a> en précisant l’adresse d’intervention, le type de bien, le problème constaté ou l’entretien souhaité, et joignez une photo si possible. Vous pouvez aussi appeler le <a class="tel" href="${e.telephone.lien}">${e.telephone.affiche}</a>.` },
+];
+---
+<Base
+  titre="Syndics, gestionnaires et professionnels | HYDROFLASH"
+  description={description}
+  feuilles={[FEUILLE_CONTENU, { ordi: cssOrdi, mobile: cssMobile }]}
+  jsonld={schemaService('Assainissement pour syndics, gestionnaires et professionnels', '/professionnels/', description)}
+>
+  <SousHero
+    ariane={[{ label: 'Professionnels et syndics' }]}
+    surtitre="Syndics · Gestionnaires · Commerces"
+    titre="Professionnels et syndics"
+    titreFin="De la colonne d’immeuble à la cuisine professionnelle."
+    intro={`Syndics de copropriété, gestionnaires immobiliers, commerces et restaurants&nbsp;: HYDROFLASH débouche, cure, détartre, inspecte et entretient vos réseaux d’assainissement ${zoneEn}, <strong>${dispo}${majoration}</strong>.`}
+    picto="syndic"
+  />
+
+  <section class="sec sec-sm" aria-labelledby="t-profils">
+    <div class="wrap">
+      <div class="c-head">
+        <div><p class="sec-label">Vos besoins</p><h2 class="h2" id="t-profils">Trois métiers, <em>trois façons de travailler</em></h2></div>
+        <p class="lead">Les contraintes d’un syndic, d’un gestionnaire ou d’un restaurateur ne sont pas les mêmes. Voici ce que HYDROFLASH prend en charge pour chacun.</p>
+      </div>
+      <div class="pro-profils reveal">
+        <article class="pro-profil" aria-labelledby="t-syndics">
+          <img src="/img/pictos/syndic-noir.svg" alt="" width="56" height="56" decoding="async" />
+          <h3 id="t-syndics">Syndics de copropriété</h3>
+          <p>Un incident sur une colonne ou un collecteur touche tous les occupants. Il appelle une intervention efficace en partie commune et une trace de l’état du réseau.</p>
+          <ul class="checks">
+            <li>Débouchage et curage des colonnes d’eaux usées et d’eaux vannes</li>
+            <li>Détartrage des chutes et colonnes anciennes</li>
+            <li>Passage caméra des collecteurs, photos remises sur clé USB</li>
+            <li>Entretien planifié des réseaux des parties communes</li>
+          </ul>
+        </article>
+        <article class="pro-profil pro-profil--dark" aria-labelledby="t-gestion">
+          <img src="/img/pictos/devis-blanc.svg" alt="" width="56" height="56" decoding="async" />
+          <h3 id="t-gestion">Gestionnaires immobiliers et bailleurs</h3>
+          <p>Vous gérez des logements ou des résidences&nbsp;: il vous faut un prestataire joignable à toute heure, chez les occupants comme dans les parties communes.</p>
+          <ul class="checks">
+            <li>Un seul numéro, joignable {dispo}</li>
+            <li>Interventions dans les logements et les parties communes</li>
+            <li>Regards, sous-sols et ouvrages des résidences</li>
+            <li>Demande de devis détaillé en ligne</li>
+          </ul>
+        </article>
+        <article class="pro-profil" aria-labelledby="t-commerces">
+          <img src="/img/pictos/professionnel-noir.svg" alt="" width="56" height="56" decoding="async" />
+          <h3 id="t-commerces">Commerces et restauration</h3>
+          <p>Une évacuation bouchée en plein service, c’est une activité à l’arrêt. Et les graisses de cuisine encrassent vite les canalisations.</p>
+          <ul class="checks">
+            <li>Débouchage des évacuations de cuisine, de plonge et des sanitaires</li>
+            <li>Curage des canalisations chargées en graisses</li>
+            <li>Intervention possible de nuit ou le week-end{e.sansMajoration && ', sans majoration'}</li>
+            <li>Entretien préventif pour espacer les incidents</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec-sm pr-liees" aria-labelledby="t-presta">
+    <div class="wrap">
+      <div class="c-head">
+        <div><p class="sec-label">Prestations</p><h2 class="h2" id="t-presta">Six interventions <em>pour vos réseaux</em></h2></div>
+        <p class="lead">Débouchage d’urgence ou entretien programmé&nbsp;: chaque prestation dispose de sa page détaillée.</p>
+      </div>
+      <ul class="cards cards-3">
+        {services.map((s) => (
+          <li class="li-c"><a class="card" href={s.url}>
+            <span class="num">{s.numero}</span>
+            <img src={`/img/pictos/${s.picto}-noir.svg`} alt="" width="48" height="48" decoding="async" />
+            <h3>{s.titre}</h3>
+            <p>{textesPro[s.url] ?? s.resume}</p>
+            <span class="go">Découvrir <svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></span>
+          </a></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec sec-sm pro-trace" aria-labelledby="t-trace">
+    <div class="wrap c-grid2">
+      <div>
+        <p class="sec-label">Traçabilité</p>
+        <h2 class="h2" id="t-trace">Une trace <em>de l’état de vos réseaux</em></h2>
+        <div class="prose">
+          <p><strong>{livrable}</strong> Pour un syndic ou un gestionnaire, ces images sont précieuses&nbsp;: elles documentent l’état d’une colonne ou d’un collecteur à une date donnée, peuvent être présentées au conseil syndical ou jointes au dossier de l’immeuble, et servent de point de comparaison lors de l’inspection suivante.</p>
+          <p>Elles aident aussi à décider&nbsp;: un tronçon simplement encrassé relève d’un <a href="/curage-canalisation/">curage</a>, une colonne chargée de tartre d’un <a href="/detartrage-canalisation/">détartrage</a>, une canalisation cassée ou affaissée d’une réparation.</p>
+          {!PROD && <p class="note">Autres documents remis (compte rendu, attestation d’intervention)&nbsp;: <Tbc /></p>}
+        </div>
+        <figure class="pr-fig pr-fig--photo pro-fig">
+          <Image src={photoGants} alt="Mains d’un professionnel portant des gants de travail." widths={[480, 720, 960]} sizes="(min-width: 1101px) 50vw, 100vw" loading="lazy" />
+          <figcaption>Photo d’ambiance libre de droits</figcaption>
+        </figure>
+      </div>
+      <aside class="pr-infos c-sticky" aria-labelledby="t-infos">
+        <p class="pr-infos-t" id="t-infos">Informations pratiques</p>
+        <dl>
+          {infos.map((i) => <div><dt>{i.k}</dt><dd>{i.tbc ? <Tbc /> : i.lien ? <a href={i.lien}>{i.v}</a> : i.v}</dd></div>)}
+        </dl>
+        <a class="btn btn-call pr-infos-btn" href="#devis"><svg class="ic" aria-hidden="true"><use href="#i-doc"/></svg>Demander un devis détaillé</a>
+      </aside>
+    </div>
+  </section>
+
+  <section class="sec sec-sm on-dark pr-etapes" aria-labelledby="t-etapes">
+    <div class="wrap">
+      <div class="c-head">
+        <div><p class="sec-label">Comment ça se passe</p><h2 class="h2" id="t-etapes">De la demande <em>à la trace en images</em></h2></div>
+        <p class="lead">Une organisation pensée pour les immeubles occupés et les locaux en activité.</p>
+      </div>
+      <ol class="steps-c reveal">
+        <li><h3>Votre demande</h3><p>Par téléphone ou via le formulaire&nbsp;: adresse d’intervention, type de bien, nature du problème. Ajoutez votre référence de dossier dans le message si besoin.</p></li>
+        <li><h3>L’organisation de l’accès</h3><p>Gardien, codes, clés, locaux techniques&nbsp;: les modalités d’accès sont convenues avec vous avant l’intervention.</p></li>
+        <li><h3>L’intervention</h3><p>Débouchage, curage, détartrage, passage caméra ou pompage, selon ce que révèle le diagnostic.</p></li>
+        <li><h3>La trace</h3><p>{livrable} <Tbc label="autres documents : à confirmer" /></p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="sec sec-sm pro-devis-sec" aria-labelledby="t-devis">
+    <div class="wrap">
+      <div class="callout pro-devis reveal">
+        <div>
+          <h2 id="t-devis">Un immeuble, un local, un réseau à entretenir&nbsp;?</h2>
+          <p>Décrivez votre besoin&nbsp;: adresse, type de bien, problème constaté ou entretien souhaité. Nous vous rappelons immédiatement.</p>
+        </div>
+        <div class="pro-devis-btns">
+          <a class="btn btn-call btn-xl" href="#devis"><svg class="ic" aria-hidden="true"><use href="#i-doc"/></svg>Demander un devis détaillé</a>
+          <a class="btn btn-ghost btn-xl" href={e.telephone.lien}><svg class="ic" aria-hidden="true"><use class="u-d" href="#i-tel"/><use class="u-m" href="#i-tel-f"/></svg>Appeler le {e.telephone.affiche}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Faq items={faq} intro={'Syndics, gestionnaires, commerçants\u00a0: les réponses aux questions que vous vous posez avant de faire appel à nous.'} />
+
+  <ContactCta label="Devis professionnels" titreD={'Un immeuble ou un local à traiter\u00a0?'} titreDem="Demandez un devis détaillé." titreM="Parlons de votre réseau." />
+</Base>

@@ -1,0 +1,136 @@
+---
+/* Mentions légales (LCEN, Code de la consommation). Toutes les données viennent de src/data/entreprise.ts :
+   une valeur null s'affiche « à confirmer » en préproduction ; en production la ligne est masquée
+   (et `npm run verifier` bloque la mise en ligne si un champ obligatoire manque). */
+import Base from '../../layouts/Base.astro';
+import SousHero from '../../components/SousHero.astro';
+import Tbc from '../../components/Tbc.astro';
+import { FEUILLE_CONTENU } from '../../lib/feuilles';
+import { PROD, SITE_URL } from '../../lib/env';
+import { entreprise as e } from '../../data/entreprise';
+import legalOrdi from '../../styles/pages/legal-ordinateur.css?url';
+import legalMobile from '../../styles/pages/legal-mobile.css?url';
+
+const MAJ = { iso: '2026-11-18', texte: '18 novembre 2026' };
+const site = e.siteUrl || SITE_URL;
+const domaine = new URL(site).host;
+type Ligne = { k: string; v: string | null; tbc?: string };
+const visibles = (l: Ligne[]) => l.filter((x) => x.v || !PROD);
+
+const editeur = visibles([
+  { k: 'Raison sociale', v: e.raisonSociale },
+  { k: 'Forme juridique', v: e.formeJuridique },
+  { k: 'Capital social', v: e.capital },
+  { k: 'Siège social', v: e.adresse ? `${e.adresse.rue}, ${e.adresse.cp} ${e.adresse.ville}` : null },
+  { k: 'SIRET', v: e.siret },
+  { k: 'Immatriculation', v: e.rcsOuRm, tbc: 'RCS ou répertoire des métiers — à confirmer' },
+  { k: 'N° de TVA intracommunautaire', v: e.tvaIntracom },
+]);
+
+const photos = [
+  { titre: 'Grilles d\'évacuation sur chaussée mouillée, de nuit', url: 'https://www.pexels.com/photo/metal-drainages-on-the-wet-asphalt-road-6240578/' },
+  { titre: 'Grille de regard vue de dessus', url: 'https://www.pexels.com/photo/sewer-entrance-cap-13961561/' },
+  { titre: 'Canalisations apparentes sur mur carrelé', url: 'https://www.pexels.com/photo/photograph-of-pipes-near-white-tiles-9658236/' },
+  { titre: 'Mains gantées d\'un professionnel', url: 'https://www.pexels.com/photo/anonymous-worker-in-heavy-duty-gloves-3846440/' },
+  { titre: 'Buse béton d\'un réseau d\'eaux pluviales', url: 'https://www.pexels.com/photo/concrete-storm-drain-culvert-18928152/' },
+  { titre: 'Galerie béton avec lumière en fond', url: 'https://www.pexels.com/photo/concrete-tunnel-3043424/' },
+];
+
+const sommaire = [
+  { id: 'editeur', label: 'Éditeur du site' },
+  { id: 'publication', label: 'Directeur de la publication' },
+  { id: 'hebergement', label: 'Hébergement' },
+  { id: 'mediation', label: 'Médiation de la consommation' },
+  { id: 'propriete', label: 'Propriété intellectuelle' },
+  { id: 'credits', label: 'Crédits et licences' },
+  { id: 'donnees', label: 'Données personnelles et cookies' },
+];
+---
+<Base
+  titre="Mentions légales | HYDROFLASH"
+  description={`Mentions légales du site ${domaine} : éditeur, directeur de la publication, hébergeur, médiateur de la consommation, propriété intellectuelle et crédits.`}
+  feuilles={[FEUILLE_CONTENU, { ordi: legalOrdi, mobile: legalMobile }]}
+>
+  <SousHero
+    ariane={[{ label: 'Mentions légales' }]}
+    surtitre="Informations légales"
+    titre="Mentions légales"
+    intro="Qui édite et héberge ce site, à qui appartiennent ses contenus et comment régler un litige : les informations prévues par la loi pour la confiance dans l'économie numérique (LCEN) et le Code de la consommation."
+    actions={false}
+    compact
+  />
+
+  <section class="sec sec-sm lg-body" aria-label="Mentions légales">
+    <div class="wrap lg-grid">
+      <nav class="lg-toc" aria-labelledby="toc-t">
+        <p class="lg-toc-t" id="toc-t">Sommaire</p>
+        <ol>{sommaire.map((s) => <li><a href={`#${s.id}`}>{s.label}</a></li>)}</ol>
+        <p class="lg-maj">Mise à jour&nbsp;: <time datetime={MAJ.iso}>{MAJ.texte}</time></p>
+      </nav>
+
+      <div class="prose">
+        <h2 id="editeur">Éditeur du site</h2>
+        <p>Le site <a href={site}>{domaine}</a> est édité par&nbsp;:</p>
+        <dl class="kv">
+          <dt>Nom commercial</dt><dd>{e.nom}</dd>
+          {editeur.map((l) => <><dt>{l.k}</dt><dd>{l.v ?? <Tbc label={l.tbc} />}</dd></>)}
+          <dt>Téléphone</dt><dd><a href={e.telephone.lien}>{e.telephone.affiche}</a></dd>
+          <dt>E-mail</dt><dd><a href={`mailto:${e.email}`}>{e.email}</a></dd>
+        </dl>
+
+        <h2 id="publication">Directeur de la publication</h2>
+        <p>{e.directeurPublication ? <>Directeur ou directrice de la publication&nbsp;: {e.directeurPublication}.</> : <>Directeur ou directrice de la publication&nbsp;: <Tbc /></>}</p>
+
+        <h2 id="hebergement">Hébergement</h2>
+        {e.hebergeur ? (
+          <dl class="kv">
+            <dt>Hébergeur</dt><dd>{e.hebergeur.nom}</dd>
+            <dt>Adresse</dt><dd>{e.hebergeur.adresse}</dd>
+            <dt>Téléphone</dt><dd>{e.hebergeur.telephone}</dd>
+          </dl>
+        ) : (
+          <p>Le site est hébergé en France par un hébergeur mutualisé&nbsp;: <Tbc label="hébergeur à confirmer (nom, adresse, téléphone)" /></p>
+        )}
+
+        <h2 id="mediation">Médiation de la consommation</h2>
+        <p>Conformément aux articles L.&nbsp;612-1 et suivants du Code de la consommation, si vous êtes un consommateur et qu'un litige vous oppose à HYDROFLASH, vous pouvez recourir gratuitement à un médiateur de la consommation, après avoir tenté de résoudre le litige directement avec HYDROFLASH par une réclamation écrite.</p>
+        {e.mediateur ? (
+          <dl class="kv">
+            <dt>Médiateur</dt><dd>{e.mediateur.nom}</dd>
+            <dt>Adresse</dt><dd>{e.mediateur.adresse}</dd>
+            <dt>Site internet</dt><dd><a href={e.mediateur.site} rel="noopener">{e.mediateur.site}</a></dd>
+          </dl>
+        ) : (
+          <p>Médiateur de la consommation dont relève HYDROFLASH&nbsp;: <Tbc label="médiateur à confirmer (nom, adresse, site)" /></p>
+        )}
+
+        <h2 id="propriete">Propriété intellectuelle</h2>
+        <p>Le nom et le logo HYDROFLASH, ainsi que les textes, pictogrammes, illustrations et la mise en page de ce site, sont la propriété d'HYDROFLASH ou utilisés avec l'autorisation de leurs auteurs. Toute reproduction ou représentation, totale ou partielle, sans autorisation écrite préalable est interdite (Code de la propriété intellectuelle, article L.&nbsp;122-4).</p>
+        <p>Les éléments fournis par des tiers (photographies, polices de caractères, données) restent soumis à leur propre licence, indiquée ci-dessous.</p>
+
+        <h2 id="credits">Crédits et licences</h2>
+        <dl class="kv">
+          <dt>Photographies d'illustration</dt>
+          <dd>
+            <p>Photos libres issues de Pexels (licence Pexels). Ce sont des images d'illustration&nbsp;: aucune ne montre une intervention réalisée par HYDROFLASH. <Tbc label="licence à revérifier" /></p>
+            <ul>{photos.map((p) => <li><a href={p.url} rel="noopener">{p.titre}</a></li>)}</ul>
+          </dd>
+          <dt>Véhicule HYDROFLASH</dt>
+          <dd>Photo et visuel de marquage fournis par HYDROFLASH. Le marquage du véhicule est à venir.</dd>
+          <dt>Pictogrammes et illustrations</dt>
+          <dd>Créations vectorielles réalisées pour HYDROFLASH. Ce sont des schémas d'illustration, pas des représentations d'interventions réelles.</dd>
+          <dt>Polices de caractères</dt>
+          <dd>Archivo (The Archivo Project Authors) et JetBrains Mono (The JetBrains Mono Project Authors), sous licence SIL Open Font License 1.1. Elles sont hébergées sur ce site&nbsp;: aucun service tiers n'est appelé pour les afficher.</dd>
+          <dt>Communes et codes postaux</dt>
+          <dd>Données de l'INSEE et de La Poste, via le paquet @etalab/decoupage-administratif (version 6.0.0), sous Licence Ouverte (Etalab).</dd>
+          <dt>Carte de la zone d'intervention</dt>
+          <dd>Contours des départements simplifiés à partir du paquet @socialgouv/react-departements (version 3.0.0), sous licence Apache 2.0.</dd>
+        </dl>
+
+        <h2 id="donnees">Données personnelles et cookies</h2>
+        <p>Le traitement des informations envoyées par le formulaire de demande est décrit dans la <a href="/confidentialite/">politique de confidentialité</a>. Ce site n'utilise aucun cookie ni traceur&nbsp;: voir la page <a href="/cookies/">cookies</a>.</p>
+        <p class="note">Mentions mises à jour le <time datetime={MAJ.iso}>{MAJ.texte}</time>.</p>
+      </div>
+    </div>
+  </section>
+</Base>

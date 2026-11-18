@@ -1,0 +1,200 @@
+---
+/* Page département : Eure (27). Texte distinct de la page 76 : département plus rural, assainissement non collectif, SPANC.
+   Populations : INSEE, populations légales (06_SEO/donnees/communes_76_27_population.csv). Aucune page ville publiée → communes en texte. */
+import Base from '../../layouts/Base.astro';
+import SousHero from '../../components/SousHero.astro';
+import Faq from '../../components/Faq.astro';
+import ContactCta from '../../components/ContactCta.astro';
+import Tbc from '../../components/Tbc.astro';
+import VerifCp from './_VerifCp.astro';
+import Bassins from './_Bassins.astro';
+import { FEUILLE_CONTENU } from '../../lib/feuilles';
+import { PROD } from '../../lib/env';
+import { services } from '../../data/services';
+import { entreprise as e } from '../../data/entreprise';
+import { schemaEntreprise } from '../../lib/schema';
+import zonesOrdi from '../../styles/pages/zones-ordinateur.css?url';
+import zonesMobile from '../../styles/pages/zones-mobile.css?url';
+/* Espaces insécables dans « 24 h/24 · 7 j/7 » (évite « 24 / h/24 » en fin de ligne). */
+const dispo = e.disponibilite.libelle.replace(/(\d) /g, '$1\u00a0');
+
+const tbc = (l: string) => (PROD ? '' : ` <span class="tbc">${l}</span>`);
+const tel = `<a class="tel" href="${e.telephone.lien}">${e.telephone.affiche}</a>`;
+
+const bassins = [
+  { nom: 'Agglomération d\'Évreux', texte: 'Préfecture de l\'Eure et première commune du département, dans la vallée de l\'Iton.',
+    communes: [['Évreux', 49360], ['Saint-Sébastien-de-Morsent', 5524], ['Gravigny', 4012], ['Guichainville', 3087], ['Arnières-sur-Iton', 1643]] },
+  { nom: 'Vallée de Seine', texte: 'De Pont-de-l\'Arche à Vernon, le long de la Seine et de la basse vallée de l\'Eure.',
+    communes: [['Vernon', 25290], ['Louviers', 18705], ['Val-de-Reuil', 13245], ['Les Andelys', 7706], ['Gaillon', 6746], ['Pont-de-l\'Arche', 4133]] },
+  { nom: 'Ouest de l\'Eure', texte: 'Vallée de la Risle, Lieuvin et Roumois, jusqu\'aux limites du Calvados.',
+    communes: [['Pont-Audemer', 10023], ['Bernay', 9765], ['Beuzeville', 4704], ['Brionne', 4185], ['Bourg-Achard', 4026]] },
+  { nom: 'Vexin normand', texte: 'L\'est du département, jusqu\'à l\'Epte, en limite de l\'Oise et du Val-d\'Oise.',
+    communes: [['Gisors', 12410], ['Vexin-sur-Epte', 6015], ['Étrépagny', 3670]] },
+  { nom: 'Centre et sud de l\'Eure', texte: 'Plateau du Neubourg, pays d\'Ouche, plaine de Saint-André, vallées de l\'Eure et de l\'Avre : le cœur rural du département.',
+    communes: [['Verneuil d\'Avre et d\'Iton', 7193], ['Pacy-sur-Eure', 5027], ['Conches-en-Ouche', 4838], ['Breteuil', 4282], ['Le Neubourg', 4199], ['Saint-André-de-l\'Eure', 3829]] },
+] as { nom: string; texte: string; communes: [string, number][] }[];
+
+const faq = [
+  { q: 'Intervenez-vous dans tout l\'Eure, y compris le sud du département ?',
+    a: `Notre zone d'intervention couvre l'Eure (27) et la Seine-Maritime (76). Pour une commune du sud de l'Eure (pays d'Ouche, vallée de l'Avre…), le plus simple est de vérifier votre code postal sur cette page ou de nous appeler au ${tel}.${tbc('couverture de chaque commune : à confirmer')}` },
+  { q: 'Ma maison n\'est pas raccordée au tout-à-l\'égout : pouvez-vous intervenir ?',
+    a: `Oui pour les canalisations de la maison et l'accès à votre installation&nbsp;: débouchage, passage caméra, pompage de regards et d'ouvrages. Le contrôle de l'installation d'assainissement non collectif relève du SPANC de votre collectivité.${tbc('vidange de fosse : agrément préfectoral à confirmer')}` },
+  { q: 'Intervenez-vous la nuit et le week-end dans l\'Eure ?',
+    a: `Oui, ${dispo}, sans majoration de nuit ni de week-end. Le délai dépend de votre adresse&nbsp;: une estimation vous est donnée au téléphone.` },
+  { q: 'Comment savoir si le bouchon est chez moi ou sur le réseau public ?',
+    a: 'En règle générale, la limite se situe au regard de branchement, en limite de propriété. Si plusieurs maisons voisines sont touchées en même temps, le problème vient probablement du réseau public&nbsp;: contactez votre mairie ou votre intercommunalité. Dans le doute, le passage caméra permet de localiser le bouchon.' },
+  { q: 'Faites-vous le passage caméra dans l\'Eure ?',
+    a: 'Oui. Le passage caméra (inspection vidéo) permet de voir l\'intérieur de la canalisation sans casser&nbsp;: localiser un bouchon, des racines ou un affaissement, contrôler le résultat après un curage. Les photos de l\'inspection vous sont remises sur clé USB.' },
+];
+---
+<Base
+  titre="Débouchage et curage dans l'Eure (27) | HYDROFLASH"
+  description={`Débouchage, curage, passage caméra et pompage dans l'Eure (27), maisons raccordées ou non au tout-à-l'égout. ${dispo}, sans majoration : ${e.telephone.affiche}.`}
+  feuilles={[FEUILLE_CONTENU, { ordi: zonesOrdi, mobile: zonesMobile }]}
+  jsonld={schemaEntreprise()}
+>
+  <SousHero
+    ariane={[{ label: 'Zones d\'intervention', href: '/zones-intervention/' }, { label: 'Eure (27)' }]}
+    surtitre="Département 27 · Eure"
+    titre="Débouchage, curage et assainissement"
+    titreFin="dans l'Eure (27)."
+    intro={`Évreux, vallée de Seine, ouest de l'Eure, Vexin normand, plateaux du sud&nbsp;: HYDROFLASH intervient dans l'Eure <strong>${dispo}, sans majoration</strong>, pour les maisons raccordées au tout-à-l'égout comme pour celles en assainissement non collectif.`}
+    picto="zone"
+  />
+
+  <section class="sec sec-sm" aria-labelledby="t-couv">
+    <div class="wrap c-grid2">
+      <div>
+        <p class="sec-label">Couverture</p>
+        <h2 class="h2" id="t-couv">Ce que nous couvrons <em>dans le 27</em></h2>
+        <div class="prose zprose">
+          <p>L'Eure est, avec la Seine-Maritime au nord, l'un de nos deux départements d'intervention. Nous y proposons toutes nos prestations, aussi bien pour les maisons raccordées au réseau public que pour celles équipées d'un assainissement non collectif, ainsi que pour les copropriétés et les professionnels.</p>
+        </div>
+        <div class="zv">
+          <h3 class="h3" id="t-cp27">Vérifiez votre code postal</h3>
+          <VerifCp p="cp27" labelledby="t-cp27" placeholder="Ex. 27000" />
+        </div>
+      </div>
+      <figure class="zmap-l">
+        <div class="zmap-l-crop"><img src="/img/illus/carte-zone-76-27-claire.svg" alt="Carte de principe : l'Eure (27) au sud de la Seine-Maritime (76), avec les villes repères Pont-Audemer, Louviers, Bernay, Évreux, Vernon et Gisors pour l'Eure, Le Havre, Fécamp, Dieppe et Rouen pour la Seine-Maritime." width="1120" height="980" loading="lazy"></div>
+        <figcaption class="mono">Carte de principe — contours simplifiés</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="sec sec-sm bg-mist" aria-labelledby="t-terr">
+    <div class="wrap">
+      <div class="c-head">
+        <div><p class="sec-label">Territoire</p><h2 class="h2" id="t-terr">Un département <em>plus rural</em></h2></div>
+        <p class="lead">La moitié des habitants de l'Eure vivent dans une commune de moins de 2&nbsp;000&nbsp;habitants, contre 28,3&nbsp;% en Seine-Maritime. Seules six communes dépassent 10&nbsp;000&nbsp;habitants.</p>
+      </div>
+      <ul class="zfig">
+        <li><b>585</b><span>communes</span></li>
+        <li><b>602&nbsp;714</b><span>habitants</span></li>
+        <li><b>50,4&nbsp;%</b><span>des habitants dans les 537 communes de moins de 2&nbsp;000&nbsp;habitants</span></li>
+        <li><b>21,4&nbsp;%</b><span>des habitants dans les 6 communes de 10&nbsp;000&nbsp;habitants et plus</span></li>
+      </ul>
+      <p class="note zsrc">Source&nbsp;: INSEE, populations légales <Tbc label="millésime à confirmer" /> — pourcentages calculés à partir de ces données.</p>
+    </div>
+  </section>
+
+  <section class="sec sec-sm" aria-labelledby="t-anc">
+    <div class="wrap c-grid2">
+      <div>
+        <p class="sec-label">Assainissement non collectif</p>
+        <h2 class="h2" id="t-anc">Maison non raccordée <em>au tout-à-l'égout</em></h2>
+        <div class="prose zprose">
+          <p>En secteur rural, une maison n'est pas toujours raccordée au réseau public. Les eaux usées sont alors traitées sur la parcelle par une installation d'assainissement non collectif&nbsp;: fosse toutes eaux suivie d'un épandage ou d'un filtre, micro-station…</p>
+          <p>Ces installations sont nombreuses dans l'Eure&nbsp;: l'Agglomération Seine-Eure (Louviers, Val-de-Reuil) en recense à elle seule 10&nbsp;255 dans son rapport annuel 2024 sur l'eau et l'assainissement. Leur contrôle relève du SPANC (service public d'assainissement non collectif) de votre collectivité.</p>
+        </div>
+      </div>
+      <div class="callout zanc">
+        <h3>Ce que nous faisons pour votre installation</h3>
+        <ul class="checks">
+          <li>Déboucher les canalisations entre la maison et l'installation.</li>
+          <li>Localiser un bouchon ou un défaut par passage caméra&nbsp;: photos remises sur clé USB.</li>
+          <li>Pomper des regards et des ouvrages d'assainissement.</li>
+        </ul>
+        {!PROD && <p>Vidange de fosse (activité soumise à agrément préfectoral)&nbsp;: <Tbc /></p>}
+        <a class="btn btn-call" href={e.telephone.lien}><svg class="ic" aria-hidden="true"><use class="u-d" href="#i-tel"/><use class="u-m" href="#i-tel-f"/></svg>Appeler le <span class="tel">{e.telephone.affiche}</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec-sm bg-mist" aria-labelledby="t-bassins">
+    <div class="wrap">
+      <div class="c-head">
+        <div><p class="sec-label">Secteurs</p><h2 class="h2" id="t-bassins">Les grands secteurs <em>de l'Eure</em></h2></div>
+        <p class="lead">D'Évreux au Vexin normand, de la vallée de la Risle aux plateaux du sud&nbsp;: des repères pour situer votre commune. Ces regroupements sont géographiques, pas administratifs.</p>
+      </div>
+      <Bassins bassins={bassins} />
+      <p class="note zsrc">Populations&nbsp;: INSEE, populations légales.{!PROD && <> Couverture de chaque commune&nbsp;: <Tbc /></>}</p>
+    </div>
+  </section>
+
+  <section class="sec sec-sm" aria-labelledby="t-public">
+    <div class="wrap c-grid2">
+      <div>
+        <p class="sec-label">Réseau public</p>
+        <h2 class="h2" id="t-public">Raccordé au réseau&nbsp;: <em>qui fait quoi&nbsp;?</em></h2>
+      </div>
+      <div class="prose zprose">
+        <p>Si votre maison est raccordée, le réseau public sous la voirie relève de la collectivité&nbsp;; la partie privée, côté maison, relève du propriétaire. La limite se situe en général au regard de branchement, en limite de propriété&nbsp;: le règlement d'assainissement de votre collectivité fait foi.</p>
+        <ul>
+          <li><strong>Louviers, Val-de-Reuil et leurs environs</strong>&nbsp;: l'<a href="https://www.agglo-seine-eure.fr/" rel="noopener">Agglomération Seine-Eure</a>, qui publie un rapport annuel sur l'eau et l'assainissement.</li>
+          <li><strong>Ailleurs dans l'Eure</strong>&nbsp;: votre mairie ou votre intercommunalité, qui vous indique aussi le SPANC compétent.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec-sm bg-mist" aria-labelledby="t-presta">
+    <div class="wrap">
+      <div class="c-head">
+        <div><p class="sec-label">Prestations</p><h2 class="h2" id="t-presta">Nos prestations <em>dans l'Eure</em></h2></div>
+        <p class="lead">Les six prestations HYDROFLASH sont proposées dans l'Eure, en ville comme pour les maisons équipées d'un assainissement non collectif.</p>
+      </div>
+      <ul class="cards cards-3 zcards">
+        {services.map((s) => (
+          <li class="li-c"><a class="card" href={s.url}>
+            <span class="num">{s.numero}</span>
+            <img src={`/img/pictos/${s.picto}-noir.svg`} alt="" width="48" height="48" loading="lazy" />
+            <h3>{s.titre}</h3>
+            <p>{s.resume}</p>
+            <span class="go">Découvrir <svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></span>
+          </a></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec sec-sm on-dark" aria-labelledby="t-urg">
+    <div class="wrap c-grid2">
+      <div>
+        <p class="sec-label">Urgence dans le 27</p>
+        <h2 class="h2" id="t-urg">L'eau remonte&nbsp;? <em>Appelez maintenant.</em></h2>
+        <p class="lead zurg-lead">De nuit comme le dimanche, sans majoration. <a href="/urgence-debouchage-24h/">Que faire en attendant notre arrivée</a>.</p>
+      </div>
+      <div class="callout callout-o">
+        <h3>Intervention {dispo}</h3>
+        <p>Le délai dépend de votre adresse&nbsp;: une estimation vous est donnée au téléphone.{!PROD && <> Délai d'intervention&nbsp;: <Tbc /></>}</p>
+        <a class="btn btn-dark btn-xl" href={e.telephone.lien}><svg class="ic" aria-hidden="true"><use class="u-d" href="#i-tel"/><use class="u-m" href="#i-tel-f"/></svg>Appeler le {e.telephone.affiche}</a>
+      </div>
+    </div>
+  </section>
+
+  <Faq items={faq} titre="Eure : vos questions" intro="Communes rurales, assainissement non collectif, réseau public : les questions propres au département." />
+
+  <section class="sec-xs" aria-labelledby="t-voir">
+    <div class="wrap"><div class="zx">
+      <h2 class="zx-t mono" id="t-voir">Voir aussi</h2>
+      <ul class="zx-l">
+        <li><a href="/zones-intervention/seine-maritime-76/">Débouchage et curage en Seine-Maritime (76) <svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></a></li>
+        <li><a href="/zones-intervention/">Toutes nos zones d'intervention <svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></a></li>
+        <li><a href="/pompage-vidange/">Pompage <svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></a></li>
+      </ul>
+    </div></div>
+  </section>
+
+  <ContactCta />
+</Base>

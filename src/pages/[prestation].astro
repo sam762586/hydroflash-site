@@ -1,0 +1,256 @@
+---
+/* PAGES PRESTATIONS (à la racine, décision D1) — une route pour les 6 fichiers de src/content/prestations/.
+ *
+ * Contenu éditable dans chaque fichier Markdown :
+ *  - frontmatter (schéma : src/content.config.ts) : titres SEO, H1, intro, symptômes, étapes, FAQ, prestations liées ;
+ *  - corps Markdown, découpé ici par titres de niveau 2 (##) :
+ *      · la PREMIÈRE section (## titre + texte + ### sous-titres) forme le bloc « Notre méthode » ;
+ *      · la section dont le titre contient « pour qui » forme le bloc « Pour qui » : une liste
+ *        « - **Public** — texte » (le picto est choisi d'après le libellé du public) ;
+ *      · toute autre section ## s'ajoute au bloc « Notre méthode ».
+ *    Un passage entre *astérisques* dans un titre ## s'affiche en style léger (deux tons).
+ *  - jetons remplacés depuis la source unique (src/data/entreprise.ts) : {telephone}, {disponibilite}, {zone},
+ *    {livrableCamera}. Ne jamais écrire ces informations en dur dans le Markdown.
+ * Les informations non confirmées n'apparaissent que via <Tbc /> (préproduction) et disparaissent en production. */
+import { getCollection, type CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import SousHero from '../components/SousHero.astro';
+import Faq from '../components/Faq.astro';
+import ContactCta from '../components/ContactCta.astro';
+import Tbc from '../components/Tbc.astro';
+import { FEUILLE_CONTENU } from '../lib/feuilles';
+import { schemaService } from '../lib/schema';
+import { PROD } from '../lib/env';
+import { services } from '../data/services';
+import { entreprise as e } from '../data/entreprise';
+import cssOrdi from '../styles/pages/prestation-ordinateur.css?url';
+import cssMobile from '../styles/pages/prestation-mobile.css?url';
+import photoCanalisations from '../assets/photos/canalisations-carrelage.webp';
+
+export async function getStaticPaths() {
+  const toutes = await getCollection('prestations');
+  return toutes.map((entry) => ({ params: { prestation: entry.data.slug }, props: { entry } }));
+}
+
+interface Props { entry: CollectionEntry<'prestations'> }
+const { entry } = Astro.props;
+const d = entry.data;
+const chemin = `/${d.slug}/`;
+const toutes = (await getCollection('prestations')).sort((a, b) => a.data.ordre - b.data.ordre);
+
+/* ——— Jetons (source unique) ——— */
+const zoneEn = e.zone.departements.map((z) => `${/^[AEIOUYÉÈ]/i.test(z.nom) ? `dans l’${z.nom}` : `en ${z.nom}`} (${z.code})`).join(' et ');
+const jetons = (html: boolean): Record<string, string> => ({
+  telephone: html ? `<a class="tel" href="${e.telephone.lien}">${e.telephone.affiche}</a>` : e.telephone.affiche,
+  disponibilite: e.disponibilite.libelle,
+  zone: e.zone.libelle,
+  zoneEn: zoneEn,
+  livrableCamera: e.passageCamera.livrable,
+});
+/* Typographie française : espaces insécables avant ; : ? ! » et après «, apostrophe typographique. */
+const typo = (s: string) => s
+  .replace(/([A-Za-zÀ-ÿ])'([A-Za-zÀ-ÿ])/g, '$1’$2')
+  .replace(/ ([;:?!»])/g, '\u00a0$1')
+  .replace(/« /g, '«\u00a0');
+const remplir = (s: string, html = false) => typo(s.replace(/\{(\w+)\}/g, (m, k) => jetons(html)[k] ?? m));
+
+/* ——— Service correspondant (data/services.ts) : numéro, picto, libellé du formulaire ——— */
+const idx = services.findIndex((s) => s.url === chemin);
+const svc = services[idx];
+const typeFormulaire = svc?.typeFormulaire ?? svc?.court; // libellé du champ « Type de problème » (services.ts)
+
+/* ——— Découpage du corps Markdown par titres ## ——— */
+const html = remplir(entry.rendered?.html ?? '', true);
+type Section = { id: string; titre: string; corps: string };
+const sections: Section[] = html.split(/(?=<h2[\s>])/).filter((p) => p.trim().startsWith('<h2')).map((p) => {
+  const m = p.match(/^\s*<h2([^>]*)>([\s\S]*?)<\/h2>/);
+  const id = m?.[1].match(/id="([^"]+)"/)?.[1] ?? '';
+  return { id, titre: m?.[2] ?? '', corps: p.slice(m?.[0].length ?? 0) };
+});
+const estPourQui = (s: Section) => /pour qui/i.test(s.titre.replace(/<[^>]+>/g, ''));
+const [methode, ...autres] = sections.filter((s) => !estPourQui(s));
+const pourQui = sections.find(estPourQui);
+const publics = (pourQui?.corps.match(/<li>[\s\S]*?<\/li>/g) ?? []).map((li) => {
+  const m = li.match(/<li>\s*<strong>([\s\S]*?)<\/strong>\s*(?:—|–|-|:)?\s*([\s\S]*?)<\/li>/);
+  const label = (m?.[1] ?? '').trim();
+  const picto = /syndic|copro|gestion|bailleur/i.test(label) ? 'syndic' : /profession|commerce|restaura|entreprise/i.test(label) ? 'professionnel' : /particulier|propri|locataire/i.test(label) ? 'particulier' : 'technicien';
+  return { label, texte: (m?.[2] ?? '').trim(), picto };
+});
+
+/* ——— Visuel du bloc « Notre méthode » ——— */
+type Visuel = { illus?: { src: string; w: number; h: number }; photo?: typeof photoCanalisations; alt: string; legende: string };
+const visuels: Record<string, Visuel> = {
+  'debouchage-canalisation': { illus: { src: '/img/illus/scene-debouchage-coupe.svg', w: 1400, h: 700 }, alt: 'Vue en coupe d\'un débouchage : un flexible descend par le regard de visite et une buse progresse dans la canalisation jusqu\'au bouchon.', legende: 'Illustration conceptuelle · débouchage vu en coupe' },
+  'curage-canalisation': { illus: { src: '/img/illus/buse-haute-pression.svg', w: 800, h: 400 }, alt: 'Schéma d\'une buse de curage : les jets arrière font avancer la buse et nettoient la paroi, le jet avant attaque le bouchon.', legende: 'Illustration conceptuelle · buse de curage' },
+  'detartrage-canalisation': { photo: photoCanalisations, alt: 'Canalisations apparentes le long d\'un mur carrelé.', legende: 'Photo d\'ambiance libre de droits' },
+  'inspection-camera-canalisation': { illus: { src: '/img/illus/inspection-camera-vue.svg', w: 800, h: 500 }, alt: 'Vue de l\'intérieur d\'une canalisation telle que la montre une caméra d\'inspection, avec une zone à traiter entourée.', legende: 'Illustration conceptuelle · vue caméra' },
+  'pompage-vidange': { illus: { src: '/img/illus/scene-pompage-coupe.svg', w: 1400, h: 700 }, alt: 'Vue en coupe d\'un pompage : un flexible d\'aspiration descend dans un ouvrage enterré et aspire son contenu.', legende: 'Illustration conceptuelle · pompage vu en coupe' },
+  'entretien-reseaux-assainissement': { illus: { src: '/img/illus/coupe-avant-apres-curage.svg', w: 1200, h: 440 }, alt: 'Deux coupes de canalisation : avant, des dépôts réduisent le diamètre utile ; après nettoyage, la paroi est dégagée.', legende: 'Illustration conceptuelle · avant / après' },
+};
+const visuel = visuels[d.slug];
+
+/* ——— Informations pratiques (confirmées) + points à confirmer (préproduction seulement) ——— */
+type Info = { k: string; v?: string; tbc?: boolean };
+const infos: Info[] = [
+  { k: 'Disponibilité', v: `Intervention ${e.disponibilite.court}` },
+  ...(e.sansMajoration ? [{ k: 'Majoration', v: 'Aucune, de nuit comme le week-end' }] : []),
+  { k: 'Zone', v: e.zone.libelle },
+  ...(d.slug === 'inspection-camera-canalisation' ? [{ k: 'Livrable', v: e.passageCamera.livrable }, { k: 'Rapport écrit, vidéo', tbc: true }] : []),
+  ...(d.slug === 'pompage-vidange' ? [e.typesOuvragesPompage ? { k: 'Ouvrages', v: e.typesOuvragesPompage } : { k: 'Types d\'ouvrages', tbc: true }] : []),
+  ...(d.slug === 'entretien-reseaux-assainissement' ? [{ k: 'Contrat d\'entretien', tbc: true }] : []),
+  e.principeFacturation ? { k: 'Tarifs', v: e.principeFacturation } : { k: 'Tarifs', tbc: true },
+  ...(e.devisAvantIntervention === null ? [{ k: 'Devis avant intervention', tbc: true }] : []),
+  ...(e.materiel === null ? [{ k: 'Matériel', tbc: true }] : []),
+].filter((i) => !(PROD && i.tbc));
+
+/* ——— Prestations liées ——— */
+const liees = d.liees.map((slug) => {
+  const s = services.find((x) => x.url === `/${slug}/`);
+  const p = toutes.find((x) => x.data.slug === slug);
+  return s && p ? { ...s } : null;
+}).filter((x): x is NonNullable<typeof x> => x !== null);
+
+/* Formes du nom de la prestation pour les textes de liaison (toutes masculines) */
+const nom = d.titreCourt.toLowerCase();
+const voyelle = /^[aeiouyéèh]/.test(nom);
+const leNom = voyelle ? `l’${nom}` : `le ${nom}`;
+const LeNom = leNom.charAt(0).toUpperCase() + leNom.slice(1);
+const auNom = voyelle ? `à l’${nom}` : `au ${nom}`;
+const unNom = `un ${nom}`;
+const faq = d.faq.map((f) => ({ q: remplir(f.q), a: remplir(f.a, true) }));
+const description = remplir(d.seoDescription);
+const dispoCourt = e.disponibilite.court.replace(/(\d+) ([hj])/g, '$1\u00a0$2'); // « 24 h/24 · 7 j/7 » sans coupure interne
+const nomService = svc?.titre ?? d.titreCourt;
+---
+<Base
+  titre={remplir(d.seoTitre)}
+  description={description}
+  feuilles={[FEUILLE_CONTENU, { ordi: cssOrdi, mobile: cssMobile }]}
+  jsonld={schemaService(nomService, chemin, description)}
+>
+  <SousHero
+    ariane={[{ label: 'Nos services', href: '/services/' }, { label: remplir(d.titreCourt) }]}
+    surtitre={`Prestation ${svc?.numero ?? String(d.ordre).padStart(2, '0')} · ${d.titreCourt}`}
+    titre={remplir(d.h1a)}
+    titreFin={d.h1b ? remplir(d.h1b) : undefined}
+    intro={remplir(d.intro, true)}
+    picto={d.picto}
+  />
+
+  {d.symptomes.length > 0 && (
+    <section class="sec sec-sm pr-signes" aria-labelledby="t-signes">
+      <div class="wrap">
+        <div class="c-head">
+          <div><p class="sec-label">Diagnostic</p><h2 class="h2" id="t-signes">Les signes qui doivent <em>vous alerter</em></h2></div>
+          <p class="lead">Ces situations appellent souvent {unNom}. Vous en reconnaissez une&nbsp;? Décrivez-la-nous au téléphone&nbsp;: c’est le meilleur point de départ pour choisir la bonne intervention.</p>
+        </div>
+        <ul class="checks pr-checks reveal">
+          {d.symptomes.map((s) => <li>{remplir(s)}</li>)}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  {methode && (
+    <section class="sec sec-sm pr-methode" aria-labelledby="t-methode">
+      <div class="wrap c-grid2">
+        <div class="pr-methode-txt">
+          <p class="sec-label">Notre méthode</p>
+          <h2 class="h2" id="t-methode" set:html={methode.titre} />
+          <div class="prose pr-prose" set:html={methode.corps + autres.map((s) => `<h2 id="${s.id}">${s.titre}</h2>${s.corps}`).join('')} />
+        </div>
+        <aside class="pr-aside c-sticky" aria-label="Visuel et informations pratiques">
+          {visuel && (
+            <figure class:list={['pr-fig', { 'pr-fig--photo': visuel.photo }]}>
+              {visuel.illus && <img src={visuel.illus.src} alt={typo(visuel.alt)} width={visuel.illus.w} height={visuel.illus.h} loading="lazy" decoding="async" />}
+              {visuel.photo && <Image src={visuel.photo} alt={typo(visuel.alt)} widths={[480, 720, 960]} sizes="(min-width: 1101px) 40vw, (min-width: 701px) 90vw, 100vw" loading="lazy" />}
+              <figcaption>{typo(visuel.legende)}</figcaption>
+            </figure>
+          )}
+          <div class="pr-infos">
+            <p class="pr-infos-t">Informations pratiques</p>
+            <dl>
+              {infos.map((i) => <div><dt>{typo(i.k)}</dt><dd>{i.tbc ? <Tbc /> : typo(i.v ?? '')}</dd></div>)}
+            </dl>
+            <a class="btn btn-call pr-infos-btn" href={e.telephone.lien}><svg class="ic" aria-hidden="true"><use class="u-d" href="#i-tel"/><use class="u-m" href="#i-tel-f"/></svg>Appeler le {e.telephone.affiche}</a>
+          </div>
+        </aside>
+      </div>
+    </section>
+  )}
+
+  {d.etapes.length > 0 && (
+    <section class="sec sec-sm on-dark pr-etapes" aria-labelledby="t-etapes">
+      <div class="wrap">
+        <div class="c-head">
+          <div><p class="sec-label">Étape par étape</p><h2 class="h2" id="t-etapes">Le déroulé <em>de l’intervention</em></h2></div>
+          <p class="lead">Voici comment se déroule {unNom} avec HYDROFLASH, de votre premier appel à la fin de l’intervention.</p>
+        </div>
+        <ol class="steps-c reveal">
+          {d.etapes.map((s) => <li><h3>{remplir(s.titre)}</h3><p>{remplir(s.texte)}</p></li>)}
+        </ol>
+      </div>
+    </section>
+  )}
+
+  <section class="sec sec-sm pr-urg-sec" aria-labelledby="t-urg">
+    <div class="wrap">
+      <div class="callout callout-o pr-urg reveal">
+        <img class="pr-urg-ic" src="/img/pictos/permanence-24h-noir.svg" alt="" width="72" height="72" decoding="async" />
+        <div class="pr-urg-txt">
+          <h2 id="t-urg">Intervention {dispoCourt}{e.sansMajoration && <>, <span class="pr-nw">sans majoration</span></>}</h2>
+          <p>De nuit comme le week-end, HYDROFLASH intervient {zoneEn}. Appelez&nbsp;: nous faisons le point avec vous sur la situation.</p>
+        </div>
+        <a class="btn btn-dark btn-xl" href={e.telephone.lien}><svg class="ic" aria-hidden="true"><use class="u-d" href="#i-tel"/><use class="u-m" href="#i-tel-f"/></svg>Appeler le {e.telephone.affiche}</a>
+      </div>
+    </div>
+  </section>
+
+  {pourQui && publics.length > 0 && (
+    <section class="sec sec-sm pr-cibles-sec" aria-labelledby="t-cibles">
+      <div class="wrap">
+        <div class="c-head">
+          <div><p class="sec-label">Pour qui</p><h2 class="h2" id="t-cibles" set:html={pourQui.titre} /></div>
+          <p class="lead">{LeNom} concerne aussi bien les particuliers que les professionnels, les syndics et les gestionnaires&nbsp;: la même exigence, des contraintes différentes.</p>
+        </div>
+        <ul class="pr-cibles reveal">
+          {publics.map((p) => (
+            <li>
+              <img src={`/img/pictos/${p.picto}-noir.svg`} alt="" width="56" height="56" decoding="async" />
+              <h3>{p.label}</h3>
+              <p set:html={p.texte} />
+            </li>
+          ))}
+        </ul>
+        <p class="pr-pro"><a href="/professionnels/">Professionnels et syndics&nbsp;: voir la page dédiée <svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></a></p>
+      </div>
+    </section>
+  )}
+
+  {liees.length > 0 && (
+    <section class="sec sec-sm pr-liees" aria-labelledby="t-liees">
+      <div class="wrap">
+        <div class="c-head">
+          <div><p class="sec-label">À voir aussi</p><h2 class="h2" id="t-liees">Prestations <em>complémentaires</em></h2></div>
+          <p class="lead">Un problème de canalisation en appelle parfois un autre&nbsp;: ces interventions sont souvent associées {auNom}.</p>
+        </div>
+        <ul class="cards cards-3 pr-cards3">
+          {liees.map((s) => (
+            <li class="li-c"><a class="card" href={s.url}>
+              <span class="num">{s.numero}</span>
+              <img src={`/img/pictos/${s.picto}-noir.svg`} alt="" width="48" height="48" decoding="async" />
+              <h3>{s.titre}</h3>
+              <p>{s.resume}</p>
+              <span class="go">Découvrir <svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></span>
+            </a></li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  {faq.length > 0 && <Faq items={faq} intro={remplir(`${d.titreCourt} : nos réponses aux questions les plus courantes.`)} />}
+
+  <ContactCta prestation={typeFormulaire} />
+</Base>

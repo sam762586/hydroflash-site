@@ -6,7 +6,8 @@ import { conseilsPublies } from '../lib/conseils';
 const avecConseils = (await conseilsPublies()).length > 0;
 const principal = nav.principal.filter((l) => l.href !== '/conseils/' || avecConseils);
 const path = Astro.url.pathname;
-const cur = (href: string) => (href === '/' ? path === '/' : path.startsWith(href)) ? 'page' : undefined;
+const estPrestation = services.some((s) => path === s.url);
+const cur = (href: string) => ((href === '/' ? path === '/' : path.startsWith(href)) || (href === '/services/' && estPrestation)) ? 'page' : undefined;
 const tel = e.telephone;
 ---
 <header class="hdr">
@@ -16,7 +17,7 @@ const tel = e.telephone;
       <p class="tb-r"><span class="tb-zone"><svg class="ic" aria-hidden="true"><use href="#i-pin"/></svg>{e.zone.libelle}</span><span class="tb-sep" aria-hidden="true"></span><span class="tb-24"><span class="pulse" aria-hidden="true"></span>Intervention {e.disponibilite.court}</span></p>
     </div>
   </div>
-  <a class="m-urg m-only" href={nav.urgence.href}><span class="dot" aria-hidden="true"></span><b>Urgence 24&nbsp;h/24</b><span class="m-urg-q">Que faire maintenant&nbsp;?</span><i aria-hidden="true">→</i></a>
+  {!path.startsWith(nav.urgence.href) && <a class="m-urg m-only" href={nav.urgence.href}><span class="dot" aria-hidden="true"></span><b>Urgence 24&nbsp;h/24</b><span class="m-urg-q">Que faire maintenant&nbsp;?</span><i aria-hidden="true">→</i></a>}
   <div class="wrap hdr-in">
     <a class="brand" href="/"><img src="/img/logo/hf-logo-blanc.svg" alt="HYDROFLASH — accueil" width="214" height="50"></a>
     <nav class="nav" aria-label="Navigation principale">

@@ -1,0 +1,50 @@
+/* HYDROFLASH — pages légales (mentions, confidentialité, cookies, accessibilité, plan du site)
+   Rendu ordinateur / tablette (style C), ≥ 701 px. Complète contenu-ordinateur.css (.prose, .kv, .callout, .note). */
+
+/* Sommaire collant + texte */
+.lg-grid { display: grid; grid-template-columns: minmax(200px, 270px) minmax(0, 1fr); gap: 64px; align-items: start; }
+.lg-toc { position: sticky; top: 110px; }
+.lg-toc-t { font-family: var(--f-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--grey); }
+.lg-toc ol { margin-top: 14px; display: grid; border-left: 2px solid var(--line); }
+.lg-toc a { display: block; margin-left: -2px; padding: 7px 0 7px 16px; border-left: 2px solid transparent; color: var(--ink2); font-size: 15.5px; line-height: 1.35; text-decoration: none; }
+.lg-toc a:hover { border-left-color: var(--o); color: var(--o-text); }
+.lg-maj { margin-top: 22px; font-family: var(--f-mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--grey); }
+
+/* Texte */
+.lg-body .prose > h2:first-child { margin-top: 0; }
+.lg-body .prose h2 { scroll-margin-top: 110px; }
+.lg-body .prose .kv { font-size: 16.5px; line-height: 1.5; }
+.lg-body .prose .kv dd > * + * { margin-top: 6px; }
+.lg-body .prose .kv dd ul { gap: 4px; }
+.lg-body .prose .note { font-size: 15px; line-height: 1.5; }
+.lg-body .prose address { font-style: normal; }
+.lg-body .prose a { overflow-wrap: anywhere; }
+
+/* Encadré « En bref » (en tête de page, hors .prose) */
+.lg-bref { margin-bottom: 44px; max-width: 74ch; }
+.lg-bref h2 { font-size: 26px; }
+.lg-bref .checks { margin-top: 18px; }
+
+/* Statut de conformité (accessibilité) */
+.lg-etat { display: inline-flex; align-items: center; gap: 10px; padding: 8px 16px; border-radius: 999px; background: var(--ink2); color: #fff; font-weight: 700; font-size: 16px; }
+.lg-etat::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--o); }
+
+/* Plan du site */
+.pds-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 48px 56px; }
+.pds-grp h2 { font-size: 26px; font-weight: var(--w-heavy); font-stretch: var(--cond); line-height: 1.05; padding-bottom: 14px; border-bottom: 2px solid var(--ink2); }
+.pds-grp ul { margin-top: 6px; }
+.pds-grp li { border-bottom: 1px solid var(--line); }
+.pds-grp a { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 0; color: var(--ink2); text-decoration: none; font-size: 16.5px; line-height: 1.35; }
+.pds-grp a::after { content: "→"; color: var(--o-text); flex: none; transition: transform .2s; }
+.pds-grp a:hover { color: var(--o-text); }
+.pds-grp a:hover::after { transform: translateX(4px); }
+.pds-grp .pds-sub a { padding-left: 18px; font-size: 15.5px; color: var(--grey); }
+
+@media (max-width: 1100px) {
+  .lg-grid { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  .lg-toc { position: static; }
+  .lg-toc ol { grid-template-columns: repeat(2, minmax(0, 1fr)); border-left: 0; gap: 0 24px; }
+  .lg-toc a { margin-left: 0; padding-left: 0; border-left: 0; border-bottom: 1px solid var(--line); }
+  .pds-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+.lg-bref.callout .checks li { color: var(--ink2); }

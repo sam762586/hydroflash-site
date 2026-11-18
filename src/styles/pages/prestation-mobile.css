@@ -1,0 +1,76 @@
+/* HYDROFLASH — pages prestations ([prestation].astro) et page Professionnels — smartphone (style A « Impact »), ≤ 700 px.
+   Complète contenu-mobile.css (FEUILLE_CONTENU) sans le modifier. Préfixe : .pr- */
+
+/* ——— Signes d'alerte ——— */
+.pr-checks { gap: 0; border-top: 2px solid var(--ink2); }
+.pr-checks li { padding: 14px 0 14px 34px; border-bottom: 1px solid var(--line); font-size: 16.5px; }
+.pr-checks li::before { top: 15px; }
+
+/* ——— Notre méthode ——— */
+.pr-methode { background: var(--mist); }
+.pr-methode-txt .h2 { font-size: 36px; }
+.pr-prose { margin-top: 18px; }
+.pr-prose > p:first-child { font-size: 17.5px; line-height: 1.55; }
+.pr-prose h3 { margin-top: 1.4em; padding-top: 14px; border-top: 2px solid var(--ink2); font: 900 22px/1.05 var(--f-display); font-stretch: 75%; text-transform: uppercase; }
+.pr-prose h2 { padding-top: 14px; border-top: 4px solid var(--o); }
+.pr-aside { display: grid; gap: 16px; margin-top: 6px; }
+.pr-fig img { width: 100%; height: auto; background: var(--mist2); }
+.pr-fig--photo img { aspect-ratio: 4 / 3; object-fit: cover; }
+.pr-fig figcaption { margin-top: 8px; font: 700 12px/1.3 var(--f-display); letter-spacing: .08em; text-transform: uppercase; color: var(--grey); }
+.pr-infos { padding: 20px 16px 18px; background: var(--ink2); color: #fff; border-radius: var(--radius); }
+.pr-infos-t { font: 800 16px/1.2 var(--f-display); font-stretch: 85%; letter-spacing: .08em; text-transform: uppercase; color: var(--o); }
+.pr-infos-t::before { content: ""; display: inline-block; vertical-align: middle; width: 26px; height: 4px; background: currentColor; margin: -3px 10px 0 0; }
+.pr-infos dl { margin: 10px 0 0; }
+.pr-infos dl > div { padding: 10px 0; border-top: 1px solid var(--line-k); }
+.pr-infos dt { font: 700 12.5px/1.3 var(--f-display); letter-spacing: .08em; text-transform: uppercase; color: var(--grey-d); }
+.pr-infos dd { margin: 3px 0 0; font-size: 16.5px; font-weight: 600; line-height: 1.4; }
+.pr-infos-btn { width: 100%; margin-top: 14px; --h: 54px; padding: 0 12px; font-size: 15.5px; letter-spacing: .03em; }
+
+/* ——— Déroulé (fond noir, comme les blocs sombres du style A) ——— */
+.pr-etapes { background: var(--ink0); color: #fff; }
+.pr-etapes .sec-label, .pr-etapes .h2 em { color: var(--o); }
+.pr-etapes .steps-c li:not(:last-child)::after { background: var(--o); }
+
+/* ——— Bandeau urgence (pleine largeur, orange) ——— */
+.pr-urg-sec { padding: 0; }
+.pr-urg-sec > .wrap { padding: 0; }
+.pr-urg { display: grid; gap: 0; padding: 30px var(--pad) 32px; }
+.pr-urg-ic { width: 56px; height: 56px; margin-bottom: 14px; }
+.pr-urg h2 { font-size: 32px; line-height: .98; }
+.pr-urg p { margin-top: 12px; }
+.pr-urg .btn { width: 100%; margin-top: 20px; }
+.pr-nw { white-space: nowrap; }
+
+/* ——— Pour qui ——— */
+.pr-cibles { display: grid; border-top: 2px solid var(--ink2); }
+.pr-cibles > li { display: grid; grid-template-columns: 44px minmax(0, 1fr); column-gap: 14px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+.pr-cibles img { grid-row: span 2; width: 40px; height: 40px; margin-top: 2px; }
+.pr-cibles h3 { font: 900 22px/1.02 var(--f-display); font-stretch: 75%; text-transform: uppercase; }
+.pr-cibles p { margin-top: 4px; color: var(--grey); font-size: 16px; line-height: 1.45; }
+.pr-pro { margin-top: 18px; }
+.pr-pro a, .pr-lien { display: inline-flex; align-items: center; gap: 12px; min-height: 48px; font: 800 16px/1.25 var(--f-display); font-stretch: 85%; letter-spacing: .05em; text-transform: uppercase; color: var(--ink2); text-decoration: none; border-bottom: 3px solid var(--o); padding-bottom: 4px; }
+.pr-pro .ic, .pr-lien .ic { flex: none; width: 36px; height: 36px; padding: 8px; border-radius: 50%; background: var(--o); color: var(--ink2); }
+
+/* ——— Prestations liées ——— */
+.pr-liees { background: #fff; }
+
+/* ——— Page Professionnels ——— */
+.pro-profils { display: grid; gap: 14px; }
+.pro-profil { padding: 22px 16px 20px; background: var(--mist); border-left: 4px solid var(--o); }
+.pro-profil img { width: 44px; height: 44px; }
+.pro-profil h3 { margin-top: 12px; font-size: 28px; line-height: .98; }
+.pro-profil > p { margin-top: 8px; color: #2A2E35; font-size: 16px; line-height: 1.5; }
+.pro-profil .checks { margin-top: 14px; }
+.pro-profil--dark { background: var(--ink2); color: #fff; }
+.pro-profil--dark > p { color: #D9DCE0; }
+.pro-profil--dark .checks li { color: #fff; }
+.pro-trace { background: var(--mist); }
+.pro-trace .prose { margin-top: 14px; }
+.pro-fig { margin-top: 20px; }
+.pro-devis { padding: 28px var(--pad) 30px; border-top: 6px solid var(--o); }
+.pro-devis-sec { padding: 0; }
+.pro-devis-sec > .wrap { padding: 0; }
+.pro-devis h2 { font-size: 34px; }
+.pro-devis .pro-devis-btns { display: grid; gap: 10px; margin-top: 18px; }
+.pro-devis .btn { width: 100%; margin-top: 0; }
+.pr-cibles-sec .h2 em { white-space: nowrap; }

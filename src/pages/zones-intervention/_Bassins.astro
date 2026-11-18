@@ -1,0 +1,19 @@
+---
+/** Liste des grands secteurs d'un département (repères géographiques, pas des périmètres administratifs).
+ *  Populations : INSEE, populations légales (fichier 06_SEO/donnees/communes_76_27_population.csv). */
+interface Bassin { nom: string; texte: string; communes: [string, number][] }
+interface Props { bassins: Bassin[] }
+const { bassins } = Astro.props;
+const fmt = (n: number) => n.toLocaleString('fr-FR').replace(/\s/g, '\u00a0'); // espace insécable lisible dans toutes les polices
+---
+<ul class="zb">
+  {bassins.map((b) => (
+    <li class="zb-item">
+      <h3>{b.nom}</h3>
+      <p>{b.texte}</p>
+      <ul class="zb-pop" aria-label={`Communes principales — ${b.nom}`}>
+        {b.communes.map(([c, n]) => <li><span>{c}</span><span>{fmt(n)}&nbsp;hab.</span></li>)}
+      </ul>
+    </li>
+  ))}
+</ul>

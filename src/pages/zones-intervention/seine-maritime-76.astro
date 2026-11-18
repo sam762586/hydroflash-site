@@ -1,0 +1,193 @@
+---
+/* Page département : Seine-Maritime (76). Contenu propre (test : échanger « Seine-Maritime » et « Eure » doit rendre le texte faux).
+   Populations : INSEE, populations légales (06_SEO/donnees/communes_76_27_population.csv). Aucune page ville publiée → communes en texte. */
+import Base from '../../layouts/Base.astro';
+import SousHero from '../../components/SousHero.astro';
+import Faq from '../../components/Faq.astro';
+import ContactCta from '../../components/ContactCta.astro';
+import Tbc from '../../components/Tbc.astro';
+import VerifCp from './_VerifCp.astro';
+import Bassins from './_Bassins.astro';
+import { FEUILLE_CONTENU } from '../../lib/feuilles';
+import { PROD } from '../../lib/env';
+import { services } from '../../data/services';
+import { entreprise as e } from '../../data/entreprise';
+import { schemaEntreprise } from '../../lib/schema';
+import zonesOrdi from '../../styles/pages/zones-ordinateur.css?url';
+import zonesMobile from '../../styles/pages/zones-mobile.css?url';
+/* Espaces insécables dans « 24 h/24 · 7 j/7 » (évite « 24 / h/24 » en fin de ligne). */
+const dispo = e.disponibilite.libelle.replace(/(\d) /g, '$1\u00a0');
+
+const tbc = (l: string) => (PROD ? '' : ` <span class="tbc">${l}</span>`);
+const tel = `<a class="tel" href="${e.telephone.lien}">${e.telephone.affiche}</a>`;
+
+const bassins = [
+  { nom: 'Agglomération de Rouen', texte: 'Préfecture de la Seine-Maritime et premier bassin de population du département, de part et d\'autre de la Seine.',
+    communes: [['Rouen', 117662], ['Saint-Étienne-du-Rouvray', 29518], ['Sotteville-lès-Rouen', 29003], ['Le Grand-Quevilly', 25789], ['Le Petit-Quevilly', 22208], ['Mont-Saint-Aignan', 20165]] },
+  { nom: 'Agglomération du Havre', texte: 'À l\'embouchure de la Seine, autour du Havre, la commune la plus peuplée de la Seine-Maritime et de l\'Eure.',
+    communes: [['Le Havre', 166687], ['Montivilliers', 15478], ['Gonfreville-l\'Orcher', 8916], ['Harfleur', 8289], ['Sainte-Adresse', 7004]] },
+  { nom: 'Boucle d\'Elbeuf', texte: 'Au sud de l\'agglomération rouennaise, dans une boucle de la Seine.',
+    communes: [['Elbeuf', 15474], ['Caudebec-lès-Elbeuf', 10476], ['Saint-Aubin-lès-Elbeuf', 8443], ['Saint-Pierre-lès-Elbeuf', 8306]] },
+  { nom: 'Côte d\'Albâtre', texte: 'Le littoral de la Manche, de Fécamp à la vallée de la Bresle, en passant par Dieppe.',
+    communes: [['Dieppe', 28496], ['Fécamp', 17313], ['Petit-Caux', 9513], ['Eu', 6499], ['Le Tréport', 4378]] },
+  { nom: 'Estuaire et vallée du Commerce', texte: 'Entre Le Havre et Rouen, au nord de la Seine, autour de la vallée du Commerce.',
+    communes: [['Bolbec', 11590], ['Port-Jérôme-sur-Seine', 10617], ['Lillebonne', 8541]] },
+  { nom: 'Pays de Caux intérieur', texte: 'Le plateau entre Rouen, Le Havre et la côte, avec de nombreuses communes rurales.',
+    communes: [['Barentin', 12022], ['Yvetot', 11438], ['Pavilly', 6029]] },
+  { nom: 'Pays de Bray', texte: 'L\'est du département, en limite de l\'Oise, majoritairement rural.',
+    communes: [['Gournay-en-Bray', 5723], ['Neufchâtel-en-Bray', 4662], ['Forges-les-Eaux', 3642]] },
+] as { nom: string; texte: string; communes: [string, number][] }[];
+
+const faq = [
+  { q: 'Intervenez-vous dans toute la Seine-Maritime, du Havre au Tréport ?',
+    a: `Notre zone d'intervention couvre la Seine-Maritime (76) et l'Eure (27). Pour savoir si nous intervenons à votre adresse, utilisez le vérificateur de code postal de cette page ou appelez le ${tel}.${tbc('couverture de chaque commune : à confirmer')}` },
+  { q: 'Intervenez-vous dans les immeubles et copropriétés de Rouen et du Havre ?',
+    a: `Oui. HYDROFLASH s'adresse aux particuliers comme aux syndics, gestionnaires et professionnels&nbsp;: colonnes d'évacuation, branchements, réseaux de copropriété. Le passage caméra permet de garder une trace de l'état du réseau&nbsp;: les photos vous sont remises sur clé USB.${tbc('modalités pour les syndics : à confirmer')}` },
+  { q: 'Intervenez-vous la nuit et le week-end en Seine-Maritime ?',
+    a: `Oui, ${dispo}, sans majoration de nuit ni de week-end. Une estimation du délai d'intervention vous est donnée au téléphone, selon votre adresse.` },
+  { q: 'Le bouchon est côté rue : qui contacter à Rouen ou au Havre ?',
+    a: 'Le réseau public relève de la collectivité&nbsp;: la Métropole Rouen Normandie dans l\'agglomération rouennaise, Le Havre Seine Métropole dans l\'agglomération havraise, votre mairie ou votre intercommunalité ailleurs. Si vous ne savez pas de quel côté se trouve le bouchon, le passage caméra permet de le localiser.' },
+  { q: 'Ma maison du pays de Caux n\'est pas raccordée au tout-à-l\'égout : pouvez-vous intervenir ?',
+    a: `Oui pour vos canalisations&nbsp;: débouchage, passage caméra, pompage de regards et d'ouvrages. Le contrôle de l'installation d'assainissement non collectif relève du SPANC de votre collectivité.${tbc('vidange de fosse : agrément préfectoral à confirmer')}` },
+];
+---
+<Base
+  titre="Débouchage et curage en Seine-Maritime (76) | HYDROFLASH"
+  description={`Débouchage, curage, passage caméra et pompage en Seine-Maritime (76), ${dispo}, sans majoration de nuit ni de week-end. Appelez le ${e.telephone.affiche}.`}
+  feuilles={[FEUILLE_CONTENU, { ordi: zonesOrdi, mobile: zonesMobile }]}
+  jsonld={schemaEntreprise()}
+>
+  <SousHero
+    ariane={[{ label: 'Zones d\'intervention', href: '/zones-intervention/' }, { label: 'Seine-Maritime (76)' }]}
+    surtitre="Département 76 · Seine-Maritime"
+    titre="Débouchage, curage et assainissement"
+    titreFin="en Seine-Maritime (76)."
+    intro={`Agglomérations de Rouen et du Havre, côte d'Albâtre, pays de Caux, pays de Bray&nbsp;: HYDROFLASH intervient en Seine-Maritime <strong>${dispo}, sans majoration</strong> de nuit ni de week-end.`}
+    picto="zone"
+  />
+
+  <section class="sec sec-sm" aria-labelledby="t-couv">
+    <div class="wrap c-grid2">
+      <div>
+        <p class="sec-label">Couverture</p>
+        <h2 class="h2" id="t-couv">Ce que nous couvrons <em>dans le 76</em></h2>
+        <div class="prose zprose">
+          <p>La Seine-Maritime est l'un de nos deux départements d'intervention, avec l'Eure voisine. Nous y intervenons chez les particuliers, dans les copropriétés et chez les professionnels, pour toutes nos prestations&nbsp;: débouchage, curage, détartrage, passage caméra, pompage et entretien des réseaux.</p>
+        </div>
+        <div class="zv">
+          <h3 class="h3" id="t-cp76">Vérifiez votre code postal</h3>
+          <VerifCp p="cp76" labelledby="t-cp76" />
+        </div>
+      </div>
+      <figure class="zmap-l">
+        <div class="zmap-l-crop"><img src="/img/illus/carte-zone-76-27-claire.svg" alt="Carte de principe : la Seine-Maritime (76) au nord, le long de la Manche, et l'Eure (27) au sud, avec les villes repères Le Havre, Fécamp, Dieppe, Rouen, Pont-Audemer, Louviers, Bernay, Évreux, Vernon et Gisors." width="1120" height="980" loading="lazy"></div>
+        <figcaption class="mono">Carte de principe — contours simplifiés</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="sec sec-sm bg-mist" aria-labelledby="t-terr">
+    <div class="wrap">
+      <div class="c-head">
+        <div><p class="sec-label">Territoire</p><h2 class="h2" id="t-terr">Un département <em>urbain et concentré</em></h2></div>
+        <p class="lead">Près de la moitié des habitants de la Seine-Maritime vivent dans l'une de ses 21&nbsp;communes de 10&nbsp;000&nbsp;habitants et plus, en majorité dans les agglomérations de Rouen et du Havre.</p>
+      </div>
+      <ul class="zfig">
+        <li><b>707</b><span>communes</span></li>
+        <li><b>1&nbsp;260&nbsp;964</b><span>habitants</span></li>
+        <li><b>48,1&nbsp;%</b><span>des habitants dans les 21 communes de 10&nbsp;000&nbsp;habitants et plus</span></li>
+        <li><b>28,3&nbsp;%</b><span>des habitants dans les 621 communes de moins de 2&nbsp;000&nbsp;habitants</span></li>
+      </ul>
+      <div class="c-grid2 zterr">
+        <div class="prose">
+          <h3>En ville&nbsp;: immeubles et copropriétés</h3>
+          <p>Dans un immeuble, les canalisations sont en partie communes à plusieurs logements&nbsp;: un bouchon dans une colonne d'évacuation peut toucher plusieurs appartements à la fois. Nous intervenons pour les occupants comme pour les syndics et les gestionnaires.</p>
+        </div>
+        <div class="prose">
+          <h3>À la campagne&nbsp;: pays de Caux et pays de Bray</h3>
+          <p>Dans les secteurs ruraux, une partie des maisons n'est pas raccordée au tout-à-l'égout et dispose d'un assainissement non collectif, dont le contrôle relève du SPANC de la collectivité. Nous intervenons sur les canalisations qui y mènent.</p>
+        </div>
+      </div>
+      <p class="note zsrc">Source&nbsp;: INSEE, populations légales <Tbc label="millésime à confirmer" /> — pourcentages calculés à partir de ces données.</p>
+    </div>
+  </section>
+
+  <section class="sec sec-sm" aria-labelledby="t-bassins">
+    <div class="wrap">
+      <div class="c-head">
+        <div><p class="sec-label">Secteurs</p><h2 class="h2" id="t-bassins">Les grands secteurs <em>du département</em></h2></div>
+        <p class="lead">Des repères pour situer votre commune, du Havre au pays de Bray. Ces regroupements sont géographiques&nbsp;: ce ne sont pas des périmètres administratifs.</p>
+      </div>
+      <Bassins bassins={bassins} />
+      <p class="note zsrc">Populations&nbsp;: INSEE, populations légales.{!PROD && <> Couverture de chaque commune&nbsp;: <Tbc /></>}</p>
+    </div>
+  </section>
+
+  <section class="sec sec-sm bg-mist" aria-labelledby="t-public">
+    <div class="wrap c-grid2">
+      <div>
+        <p class="sec-label">Réseau public</p>
+        <h2 class="h2" id="t-public">Bouchon côté rue&nbsp;: <em>qui contacter&nbsp;?</em></h2>
+      </div>
+      <div class="prose zprose">
+        <p>Le réseau public d'assainissement, sous la voirie, relève de la collectivité. En règle générale, la limite se situe au regard de branchement, en limite de propriété&nbsp;: côté maison, la canalisation est privée&nbsp;; au-delà, elle est publique. Le règlement du service d'assainissement de votre collectivité fait foi.</p>
+        <ul>
+          <li><strong>Agglomération de Rouen</strong>&nbsp;: <a href="https://www.metropole-rouen-normandie.fr/" rel="noopener">Métropole Rouen Normandie</a>, gestionnaire du service public d'assainissement.</li>
+          <li><strong>Agglomération du Havre</strong>&nbsp;: <a href="https://www.lehavreseinemetropole.fr/" rel="noopener">Le Havre Seine Métropole</a>, qui publie ses règlements de l'eau, de l'assainissement et du SPANC.</li>
+          <li><strong>Ailleurs dans le département</strong>&nbsp;: votre mairie ou votre intercommunalité.</li>
+        </ul>
+        <p>Vous ne savez pas de quel côté se trouve le bouchon&nbsp;? Le <a href="/inspection-camera-canalisation/">passage caméra</a> permet de le localiser sans casser&nbsp;; les photos de l'inspection vous sont remises sur clé USB.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec-sm" aria-labelledby="t-presta">
+    <div class="wrap">
+      <div class="c-head">
+        <div><p class="sec-label">Prestations</p><h2 class="h2" id="t-presta">Nos prestations <em>en Seine-Maritime</em></h2></div>
+        <p class="lead">Toutes nos prestations sont proposées dans le département, pour les maisons, les immeubles et les locaux professionnels.</p>
+      </div>
+      <ul class="cards cards-3">
+        {services.map((s) => (
+          <li class="li-c"><a class="card" href={s.url}>
+            <span class="num">{s.numero}</span>
+            <img src={`/img/pictos/${s.picto}-noir.svg`} alt="" width="48" height="48" loading="lazy" />
+            <h3>{s.titre}</h3>
+            <p>{s.resume}</p>
+            <span class="go">Découvrir <svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></span>
+          </a></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec sec-sm on-dark" aria-labelledby="t-urg">
+    <div class="wrap c-grid2">
+      <div>
+        <p class="sec-label">Urgence dans le 76</p>
+        <h2 class="h2" id="t-urg">Ça déborde&nbsp;? <em>Appelez maintenant.</em></h2>
+        <p class="lead zurg-lead">De nuit comme le week-end, sans majoration. <a href="/urgence-debouchage-24h/">Les bons gestes en attendant notre arrivée</a>.</p>
+      </div>
+      <div class="callout callout-o">
+        <h3>Intervention {dispo}</h3>
+        <p>Une estimation du délai d'intervention vous est donnée au téléphone, selon votre adresse.{!PROD && <> Délai d'intervention&nbsp;: <Tbc /></>}</p>
+        <a class="btn btn-dark btn-xl" href={e.telephone.lien}><svg class="ic" aria-hidden="true"><use class="u-d" href="#i-tel"/><use class="u-m" href="#i-tel-f"/></svg>Appeler le {e.telephone.affiche}</a>
+      </div>
+    </div>
+  </section>
+
+  <Faq items={faq} titre="Seine-Maritime : vos questions" intro="Couverture, copropriétés, réseau public, maisons non raccordées : les questions propres au département." />
+
+  <section class="sec-xs" aria-labelledby="t-voir">
+    <div class="wrap"><div class="zx">
+      <h2 class="zx-t mono" id="t-voir">Voir aussi</h2>
+      <ul class="zx-l">
+        <li><a href="/zones-intervention/eure-27/">Débouchage et curage dans l'Eure (27) <svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></a></li>
+        <li><a href="/zones-intervention/">Toutes nos zones d'intervention <svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></a></li>
+        <li><a href="/urgence-debouchage-24h/">Urgence débouchage 24&nbsp;h/24 <svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></a></li>
+      </ul>
+    </div></div>
+  </section>
+
+  <ContactCta />
+</Base>

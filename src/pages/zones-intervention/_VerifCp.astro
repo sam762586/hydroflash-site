@@ -1,0 +1,34 @@
+---
+/** Vérificateur de code postal (pages de zone) — même balisage que le prototype validé (form[data-cp]).
+ *  Comportement : public/js/hf.js (charge /data/communes-76-27.json à la demande).
+ *  p : préfixe d'identifiants, UNIQUE dans la page (ex. « cph », « cp76 »).
+ *  labelledby : id de l'intitulé du formulaire. reperes : affiche les villes repères (texte, sans lien). */
+import { PROD } from '../../lib/env';
+import { entreprise as e } from '../../data/entreprise';
+import Tbc from '../../components/Tbc.astro';
+interface Props { p: string; labelledby: string; reperes?: boolean; placeholder?: string }
+const { p, labelledby, reperes = false, placeholder = 'Ex. 76000' } = Astro.props;
+const villes = {
+  '76': ['Rouen', 'Le Havre', 'Dieppe', 'Fécamp', 'Elbeuf'],
+  '27': ['Évreux', 'Vernon', 'Louviers', 'Bernay', 'Pont-Audemer', 'Gisors'],
+};
+---
+<form class="cp-form" data-cp data-res={`${p}-res`} data-map={reperes ? `${p}-rep` : undefined} novalidate aria-labelledby={labelledby}>
+  <div class="cp-field"><label for={`${p}-in`}>Votre code postal</label><input id={`${p}-in`} name="cp" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="5" placeholder={placeholder} aria-describedby={`${p}-note`}></div>
+  <button class="btn btn-call" type="submit">Vérifier</button>
+</form>
+<div class="cp-res" id={`${p}-res`} aria-live="polite"></div>
+{PROD
+  ? <p class="cp-note" id={`${p}-note`}>Un doute sur votre adresse&nbsp;? Appelez le <a class="tel" href={e.telephone.lien}>{e.telephone.affiche}</a>.</p>
+  : <p class="cp-note" id={`${p}-note`}>Couverture de chaque commune&nbsp;: <Tbc /></p>}
+{reperes && (
+  <div class="reperes" id={`${p}-rep`}>
+    <p class="rp-t mono">Villes repères</p>
+    {e.zone.departements.map((d) => (
+      <div class="rp-grp" data-dep={d.code}>
+        <p class="rp-d" title={d.nom}><span class="sr">{d.nom} </span>{d.code}</p>
+        <ul class="communes" aria-label={d.nom}>{villes[d.code as '76' | '27'].map((v) => <li>{v}</li>)}</ul>
+      </div>
+    ))}
+  </div>
+)}

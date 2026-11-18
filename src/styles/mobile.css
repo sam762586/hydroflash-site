@@ -67,8 +67,10 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 .dot { flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--o); box-shadow: 0 0 0 4px var(--o-a22); }
 .pulse { flex: none; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--o); box-shadow: 0 0 0 4px var(--o-a22); }
 @media (prefers-reduced-motion: no-preference) {
-  .dot, .m-urg .dot { animation: hf-pulse 1.6s ease-out infinite; }
-  @keyframes hf-pulse { 0% { box-shadow: 0 0 0 0 var(--o-a55); } 100% { box-shadow: 0 0 0 9px color-mix(in srgb, var(--orange) 0%, transparent); } }
+  /* Pulsation animée en transform/opacity (composée par le GPU : aucun repeint à chaque image). */
+  .dot { position: relative; }
+  .dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: var(--o-a55); animation: hf-pulse 1.6s ease-out infinite; }
+  @keyframes hf-pulse { from { transform: scale(1); opacity: 1; } to { transform: scale(3.25); opacity: 0; } }
 }
 
 /* Étiquette de statut d'image (A) */
@@ -165,6 +167,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 .reass-item { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; padding: 16px 12px 16px 14px; }
 .reass-item:nth-child(odd) { padding-left: 0; border-right: 2px solid rgba(20, 22, 26, .18); }
 .reass-item:nth-child(-n+2) { border-bottom: 2px solid rgba(20, 22, 26, .18); }
+.reass-item:only-child { grid-column: 1 / -1; border: 0; } /* production : engagements non confirmés masqués */
 .reass-item img { width: 36px; height: 36px; }
 .reass-item h3 { font-size: 21px; line-height: .98; font-stretch: 70%; }
 .r-desc, .r-n, .r-idx--plain { display: none !important; }

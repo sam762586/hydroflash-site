@@ -5,7 +5,7 @@ import { PROD } from '../lib/env';
 import { services } from '../data/services';
 interface Props { id?: string; titre?: string; titreMobile?: string; complet?: boolean; prestation?: string; classe?: string }
 const { id = 'devis', titre = 'Demande de devis', titreMobile = 'Être rappelé', complet = true, prestation, classe = 'form' } = Astro.props;
-const types = ['Bouchon / débouchage', ...services.slice(1).map((s) => s.court), 'Autre'];
+const types = [...services.map((s) => s.typeFormulaire ?? s.court), 'Autre'];
 ---
 <form class={classe} id={id} method="post" action="/envoi-demande.php" enctype="multipart/form-data" aria-labelledby={`${id}-t`} data-demande data-preprod={PROD ? undefined : ''} novalidate>
   <h3 id={`${id}-t`}><span class="d-only">{titre}</span><span class="m-only">{titreMobile}</span></h3>
@@ -21,7 +21,7 @@ const types = ['Bouchon / débouchage', ...services.slice(1).map((s) => s.court)
         <summary><span>Ajouter des précisions <i>(message, photo)</i></span><span class="tog" aria-hidden="true"></span></summary>
         <div class="more-in">
           <label class="fld"><span>Message <i>(facultatif)</i></span><textarea name="message" maxlength="2000" placeholder="Décrivez la situation en quelques mots"></textarea></label>
-          <label class="drop"><svg class="ic" aria-hidden="true"><use href="#i-cam"/></svg><span><b>Ajouter une photo</b> (facultatif, 8 Mo max.)</span><input class="sr" type="file" name="photo" accept="image/jpeg,image/png,image/webp,image/heic"></label>
+          <label class="drop"><svg class="ic" aria-hidden="true"><use href="#i-cam"/></svg><span><b>Ajouter une photo</b> (facultatif · JPEG, PNG ou WebP · 8 Mo max.)</span><input class="sr" type="file" name="photo" accept="image/jpeg,image/png,image/webp"></label>
         </div>
       </details>
     </>

@@ -1,0 +1,75 @@
+/* HYDROFLASH — pages Contact, Demande envoyée, À propos et 404 : rendu ordinateur/tablette (style C), ≥ 701 px.
+   Complète contenu-ordinateur.css. */
+
+/* ——— Contact : appel, coordonnées, formulaire, « Ce qui se passe ensuite » ——— */
+.ct-sec { background: var(--mist); }
+.ct-grid {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px 56px; align-items: start;
+  grid-template-areas: "call form" "infos form" "next form"; grid-template-rows: auto auto 1fr;
+}
+.ct-call { grid-area: call; position: relative; overflow: hidden; padding: 40px 40px 36px; border-radius: 28px; background: var(--ink2); color: #fff; }
+.ct-call::after { content: ""; position: absolute; right: -90px; top: -110px; width: 280px; height: 280px; border-radius: 50%; border: 32px solid var(--o-a12); pointer-events: none; }
+.ct-call .sec-label { color: var(--o); }
+.ct-h { margin-top: 16px; font-size: clamp(36px, 3.4vw, 50px); font-weight: var(--w-heavy); font-stretch: var(--cond-x); line-height: 1; letter-spacing: -.02em; }
+.ct-btn { position: relative; z-index: 1; margin-top: 26px; min-height: 84px; padding: 12px 32px 12px 12px; gap: 16px; }
+.ct-btn .ic-round { width: 58px; height: 58px; }
+.ct-btn .ic-round .ic { width: 26px; height: 26px; }
+.ct-btn .btn-txt .l1 { font-size: 15px; }
+.ct-btn .btn-txt .l2 { font-size: 26px; font-weight: 600; letter-spacing: 0; opacity: 1; }
+.ct-pts { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 8px 22px; font-family: var(--f-mono); font-size: 12px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--grey-d); }
+.ct-pts li { display: inline-flex; align-items: center; gap: 8px; }
+.ct-pts li::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--o); }
+
+.ct-h2 { font-size: 30px; font-weight: var(--w-heavy); font-stretch: var(--cond); line-height: 1.05; letter-spacing: -.01em; }
+.ct-h2b { font-weight: var(--w-thin); font-stretch: var(--wide-s); letter-spacing: -.03em; }
+.ct-infos { grid-area: infos; padding-top: 12px; }
+.ct-infos .ct-h2 { margin-bottom: 16px; }
+.ct-infos .kv { grid-template-columns: minmax(130px, 168px) minmax(0, 1fr); }
+.ct-a { color: var(--ink2); font-weight: 650; text-decoration-color: var(--o); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+.ct-a:hover { color: var(--o-text); }
+
+.ct-form { grid-area: form; position: sticky; top: 110px; }
+.ct-form-l { margin: 10px 0 20px; color: var(--grey); font-size: 17px; }
+
+.ct-next { grid-area: next; padding: 32px 36px 34px; border-radius: 28px; background: #fff; }
+.ct-next .ct-h2 { margin-bottom: 22px; }
+.ct-steps { display: grid; gap: 20px; counter-reset: s; }
+.ct-steps li { counter-increment: s; position: relative; padding-left: 60px; }
+.ct-steps li::before { content: counter(s, decimal-leading-zero); position: absolute; left: 0; top: -4px; width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: var(--ink2); color: var(--o); font: 600 13px/1 var(--f-mono); }
+.ct-steps li:not(:last-child)::after { content: ""; position: absolute; left: 20px; top: 44px; bottom: -16px; width: 2px; background: var(--line); }
+.ct-steps h3 { font-size: 20px; font-weight: 760; font-stretch: var(--cond); line-height: 1.15; }
+.ct-steps p { margin-top: 4px; color: var(--grey); font-size: 16px; line-height: 1.5; }
+.ct-steps .tbc { font-size: 12px; }
+
+.ct-urg-btns { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 12px; }
+.ct-urg-btns .btn { margin-top: 0; }
+
+/* ——— Demande envoyée ——— */
+.mc-call h2 { max-width: 16em; }
+.mc-nav .ct-h2 { margin-bottom: 18px; }
+.mc-links { display: grid; border-top: 1px solid var(--line); }
+.mc-links a { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 66px; border-bottom: 1px solid var(--line); font-weight: 650; font-size: 18px; text-decoration: none; color: var(--ink2); }
+.mc-links a .ic { width: 30px; height: 30px; padding: 7px; border-radius: 50%; background: var(--mist); color: var(--ink2); transition: background .2s; }
+.mc-links a:hover .ic { background: var(--o); }
+
+/* ——— À propos ——— */
+.ap-prose { margin-top: 24px; }
+.ap-kv { align-self: center; }
+.ap-kv a { color: var(--ink2); font-weight: 650; text-decoration-color: var(--o); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+.ap-veh { align-items: start; }
+.ap-veh .media figure { background: var(--ink3); }
+.ap-small { margin-top: 18px; max-width: 400px; margin-left: auto; }
+.ap-small img { width: 100%; height: auto; border-radius: 18px; }
+.ap-small figcaption { margin-top: 10px; font-family: var(--f-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--grey-d); }
+.ap-lead { margin-top: 22px; color: var(--grey); max-width: 30em; }
+.ap-tbc .kv dd { color: var(--grey); }
+
+/* ——— 404 ——— */
+.nf-a { color: var(--ink2); font-weight: 650; text-decoration-color: var(--o); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+.nf-a:hover { color: var(--o-text); }
+.nf-ctas { margin-top: 40px; display: flex; flex-wrap: wrap; gap: 12px; }
+
+@media (max-width: 1100px) {
+  .ct-grid { grid-template-columns: minmax(0, 1fr); grid-template-areas: "call" "infos" "form" "next"; grid-template-rows: none; }
+  .ct-form { position: static; max-width: 640px; }
+}

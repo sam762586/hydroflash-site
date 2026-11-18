@@ -1,0 +1,74 @@
+/* HYDROFLASH — pages « Zones d'intervention » (hub + départements), rendu smartphone (style A), ≤ 700 px.
+   Complète contenu-mobile.css ; le panneau du hub reprend .zones-sec / .zone-panel / .cp-* de mobile.css (maquette validée). */
+
+.bg-mist { background: var(--mist); }
+
+/* ——— Hub : panneau vérificateur + carte (fond noir A) ——— */
+.zh-sec { border-top: 1px solid var(--line-k); }
+.zh-sec .cp-form { margin-top: 4px; }
+.zh-sec .zmap figcaption { font-size: 11.5px; color: #fff; background: rgba(11, 12, 14, .82); padding: 5px 8px; border-left: 4px solid var(--o); }
+
+/* ——— Cartes départements ——— */
+.zdep { display: grid; border-top: 1px solid var(--line); }
+.zdep-card { display: grid; grid-template-columns: 74px minmax(0, 1fr); column-gap: 14px; align-items: start; padding: 18px 0; border-bottom: 1px solid var(--line); color: var(--ink2); text-decoration: none; }
+.zdep-n { font: 900 64px/.85 var(--f-display); font-stretch: 62%; color: var(--o-text); }
+.zdep-b { display: grid; gap: 6px; }
+.zdep-b h3 { font: 900 26px/1 var(--f-display); font-stretch: 70%; text-transform: uppercase; }
+.zdep-b p { color: var(--grey); font-size: 15.5px; line-height: 1.45; }
+.zdep-card .go { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font: 800 15px/1 var(--f-display); font-stretch: 85%; letter-spacing: .06em; text-transform: uppercase; }
+.zdep-card .go .ic { width: 36px; height: 36px; padding: 8px; border: 2px solid var(--o); border-radius: 50%; color: var(--o-text); }
+.zsrc { margin-top: 14px; }
+
+/* ——— Hub : engagements ——— */
+.zh-lead { margin-top: 12px; color: var(--grey); }
+.zh-same .c-grid2 { gap: 20px; }
+.zh-h3 { margin: 26px 0 12px; font: 800 15px/1.2 var(--f-display); font-stretch: 85%; letter-spacing: .08em; text-transform: uppercase; color: var(--grey); }
+.zh-same .chips a { background: #fff; }
+
+/* ——— Départements : couverture, vérificateur, carte ——— */
+.zprose { margin-top: 14px; }
+.zv { margin: 22px calc(-1 * var(--pad)) 0; padding: 22px var(--pad) 20px; background: var(--ink2); color: #fff; border-top: 4px solid var(--o); }
+.zv .cp-call { padding: 0 14px; }
+.zv .h3 { font-size: 24px; margin-bottom: 14px; }
+.zmap-l { margin: 0; }
+.zmap-l-crop { aspect-ratio: 112 / 92; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius); background: var(--mist); }
+.zmap-l-crop img { width: 100%; height: auto; }
+.zmap-l figcaption { margin-top: 8px; font-size: 13px; color: var(--grey); }
+
+/* Chiffres du territoire */
+.zfig { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
+.zfig li { display: grid; align-content: start; gap: 6px; padding: 14px 12px 16px; background: #fff; border-top: 4px solid var(--o); }
+.zfig b { font: 900 32px/1 var(--f-display); font-stretch: 66%; }
+.zfig span { color: var(--grey); font-size: 14.5px; line-height: 1.4; }
+.zterr { margin-top: 24px; gap: 4px; }
+
+/* Grands secteurs */
+.zb { display: grid; border-top: 1px solid var(--line); }
+.zb-item { display: grid; gap: 6px; padding: 18px 0 16px; border-bottom: 1px solid var(--line); }
+.zb-item h3 { font: 900 24px/1 var(--f-display); font-stretch: 70%; text-transform: uppercase; }
+.zb-item > p { color: var(--grey); font-size: 15.5px; line-height: 1.45; }
+.zb-pop { margin-top: 4px; display: grid; }
+.zb-pop li { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; padding: 6px 0; border-top: 1px dashed var(--line); font-size: 15.5px; line-height: 1.35; }
+.zb-pop li span:first-child { min-width: 0; }
+.zb-pop li span:last-child { flex: none; font-weight: 700; font-size: 14.5px; color: var(--grey); white-space: nowrap; }
+
+/* Assainissement non collectif */
+.zanc .checks { margin-top: 14px; }
+
+/* Urgence */
+.zurg-lead { margin-top: 12px; color: var(--grey-d); }
+.zurg-lead a { color: #fff; text-decoration-color: var(--o); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+.on-dark { background: var(--ink0); color: #fff; }
+.on-dark .sec-label, .on-dark .h2 em { color: var(--o); }
+
+/* Cartes prestations sur fond gris */
+.bg-mist .cards { border-color: var(--mist2); }
+.bg-mist .card { border-color: var(--mist2); }
+
+/* Voir aussi */
+.sec-xs { padding: 0 0 36px; }
+.zx { padding-top: 22px; border-top: 1px solid var(--line); }
+.zx-t { font-size: 14px; color: var(--grey); margin-bottom: 6px; }
+.zx-l { display: grid; }
+.zx-l a { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 52px; border-bottom: 1px solid var(--line); font-weight: 700; text-decoration: none; color: var(--ink2); }
+.zx-l a .ic { width: 20px; height: 20px; color: var(--o-text); }
