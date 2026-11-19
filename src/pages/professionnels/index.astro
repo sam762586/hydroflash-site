@@ -23,7 +23,7 @@ const dispoCourt = e.disponibilite.court.replace(/(\d+) ([hj])/g, '$1 $2');
 const livrable = e.passageCamera.livrable.replace(/'/g, '’');
 const minuscule = (s: string) => s.charAt(0).toLowerCase() + s.slice(1);
 const tbcHtml = (label: string) => (PROD ? '' : ` <span class="tbc" data-tbc>${label}</span>`);
-const majoration = ', avec un devis gratuit et un tarif annoncé avant tout déplacement';
+const majoration = ', avec un devis gratuit et un tarif transparent';
 
 const description = `Colonnes, parties communes, cuisines : débouchage, curage, détartrage, passage caméra et entretien des réseaux pour syndics et pros, ${dispo} (76, 27).`;
 
@@ -115,7 +115,7 @@ const faq = [
           <ul class="checks">
             <li>Débouchage des évacuations de cuisine, de plonge et des sanitaires</li>
             <li>Curage des canalisations chargées en graisses</li>
-            <li>Intervention possible de nuit ou le week-end, au tarif majoré annoncé d'avance</li>
+            <li>Intervention possible de nuit ou le week-end, au tarif majoré publié dans notre grille</li>
             <li>Entretien préventif pour espacer les incidents</li>
           </ul>
         </article>

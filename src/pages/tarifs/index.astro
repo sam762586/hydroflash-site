@@ -37,7 +37,7 @@ const diag = t.prestations.find((p) => p.nom.startsWith('Diagnostic'))!;
 ---
 <Base
   titre="Tarifs débouchage, curage et pompage | HYDROFLASH"
-  description={`Grille tarifaire HYDROFLASH : débouchage à partir de ${eur(t.prestations[0].a!)} HT, curage, passage caméra et pompage, en Seine-Maritime (76) et dans l'Eure (27). Zones, majorations et prix annoncés avant tout déplacement.`}
+  description={`Grille tarifaire HYDROFLASH : débouchage à partir de ${eur(t.prestations[0].a!)} HT, curage, passage caméra et pompage, en Seine-Maritime (76) et dans l'Eure (27). Zones, majorations et prix transparents, majorations publiées.`}
   feuilles={[FEUILLE_CONTENU, FEUILLE_TARIFS]}
   jsonld={schemaEntreprise()}
 >
@@ -45,7 +45,7 @@ const diag = t.prestations.find((p) => p.nom.startsWith('Diagnostic'))!;
     ariane={[{ label: 'Tarifs' }]}
     surtitre={`Tarifs · ${t.prestations.length} prestations`}
     titre="Nos prix, affichés,"
-    titreFin="et annoncés avant de partir."
+    titreFin="et transparents, jusqu'à la majoration."
     intro="Vous savez ce que vous payez avant que le camion démarre. Le tarif dépend de deux choses seulement&nbsp;: la distance depuis Rouen et le moment de l'intervention. Pas de forfait surprise à l'arrivée."
     picto="devis"
   />
@@ -111,7 +111,7 @@ const diag = t.prestations.find((p) => p.nom.startsWith('Diagnostic'))!;
       <div>
         <p class="sec-label">Majorations</p>
         <h2 class="h2" id="t-maj">Le soir, le week-end <em>et les jours fériés</em></h2>
-        <p class="lead">Intervenir à 2&nbsp;h du matin un dimanche coûte plus cher qu'un mardi après-midi&nbsp;: c'est une équipe réveillée et un camion sorti hors horaires. La majoration s'applique au prix de la zone, et vous est annoncée au téléphone avant tout déplacement.</p>
+        <p class="lead">Intervenir à 2&nbsp;h du matin un dimanche coûte plus cher qu'un mardi après-midi&nbsp;: c'est une équipe réveillée et un camion sorti hors horaires. La majoration s'applique au prix de la zone, et vous est donnée au téléphone, avant que nous partions.</p>
       </div>
       <div>
         <table class="tf-maj">

@@ -68,7 +68,7 @@ const initiales = (nom: string) => nom.split(' ').map((m) => m[0]).join('');
         <dt>Métier</dt><dd>Assainissement&nbsp;: débouchage, curage, détartrage, passage caméra, pompage, entretien des réseaux</dd>
         <dt>Zone</dt><dd>{e.zone.libelle}</dd>
         <dt>Disponibilité</dt><dd>Intervention {dispo}</dd>
-        <dt>Nuit, week-end et jours fériés</dt><dd>Majoration appliquée, annoncée avant déplacement (<a href="/tarifs/">voir les tarifs</a>)</dd>
+        <dt>Nuit, week-end et jours fériés</dt><dd>Majoration appliquée et publiée (<a href="/tarifs/">voir les tarifs</a>)</dd>
         <dt>Téléphone</dt><dd><a class="tel" href={e.telephone.lien}>{e.telephone.affiche}</a></dd>
         <dt>E-mail</dt><dd><a href={`mailto:${e.email}`}>{e.email}</a></dd>
       </dl>
@@ -217,7 +217,7 @@ const initiales = (nom: string) => nom.split(' ').map((m) => m[0]).join('');
       </div>
       <ul class="checks">
         <li><strong>Nos prix sont publics.</strong> La <a href="/tarifs/">grille complète</a> est en ligne, majorations comprises. Vous savez ce que vous payez avant de décrocher.</li>
-        <li><strong>Le devis est gratuit</strong> et le tarif est annoncé avant tout déplacement&nbsp;: il ne bouge pas en arrivant.</li>
+        <li><strong>Devis gratuit et tarif transparent</strong>&nbsp;: le prix vous est donné avant que nous partions, et il ne bouge pas en arrivant.</li>
         <li><strong>Intervention {dispo}</strong>, la nuit comme le week-end, avec un seul numéro&nbsp;: <a class="tel" href={e.telephone.lien}>{e.telephone.affiche}</a>.</li>
         <li><strong>Rappel immédiat</strong> après une demande envoyée depuis le site.</li>
         <li><strong>Passage caméra</strong>&nbsp;: les photos de l'inspection vous sont remises sur clé USB, pas gardées par l'entreprise.</li>

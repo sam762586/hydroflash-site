@@ -32,7 +32,7 @@ const description = `WC qui déborde, canalisation bouchée ? Intervention ${e.d
   classeBody="p-urg"
   barre="urgence"
   feuilles={[FEUILLE_URGENCE]}
-  jsonld={schemaService('Débouchage en urgence 24 h/24', '/urgence-debouchage-24h/', `Débouchage de canalisations en urgence, ${e.disponibilite.libelle}, en Seine-Maritime (76) et dans l'Eure (27). Devis gratuit et tarif annoncé avant tout déplacement.`)}
+  jsonld={schemaService('Débouchage en urgence 24 h/24', '/urgence-debouchage-24h/', `Débouchage de canalisations en urgence, ${e.disponibilite.libelle}, en Seine-Maritime (76) et dans l'Eure (27). Devis gratuit et tarif transparent.`)}
 >
   <!-- 1. HERO -->
   <section class="hero u-hero" aria-labelledby="h1">
@@ -51,7 +51,7 @@ const description = `WC qui déborde, canalisation bouchée ? Intervention ${e.d
           <a class="btn btn-ghost u-cb" href="#rappel" data-rappel aria-controls="rappel"><svg class="ic" aria-hidden="true"><use href="#i-cb"/></svg>Être rappelé</a>
         </div>
         <ul class="u-info" aria-label="Conditions">
-          <li><span>Devis gratuit, tarif annoncé avant tout déplacement</span></li>
+          <li><span>Devis gratuit et tarif transparent</span></li>
           {delai && <li><span>Délai d'intervention{delai === 'ok' ? <>&nbsp;: environ {e.delaiZoneA} sur Rouen et 20&nbsp;km autour</> : <> <Tbc /></>}</span></li>}
         </ul>
       </div>
@@ -124,9 +124,9 @@ const description = `WC qui déborde, canalisation bouchée ? Intervention ${e.d
         <li class="u-step"><span class="u-node" aria-hidden="true" data-n="1">01</span><h3>Vous décrivez la situation</h3><p>Quels points d'eau, depuis quand, accès au logement ou au regard.</p></li>
         <li class="u-step"><span class="u-node" aria-hidden="true" data-n="2">02</span><h3>Nous vous indiquons les conditions d'intervention</h3>
           {factu ? (
-            <p>{factu === 'ok' ? e.principeFacturation : <>Principe de facturation <Tbc /></>}, majoration de soirée, de week-end ou de jour férié comprise, annoncé avant tout déplacement.</p>
+            <p>{factu === 'ok' ? e.principeFacturation : <>Principe de facturation <Tbc /></>}, majoration de soirée, de week-end ou de jour férié comprise, communiqué avant que nous partions.</p>
           ) : (
-            <p>Le devis est gratuit. Le tarif applicable vous est annoncé avant tout déplacement, et aucun frais caché ne s'ajoute à l'arrivée.</p>
+            <p>Le devis est gratuit et le tarif transparent&nbsp;: vous connaissez le prix applicable avant que nous partions, et aucun frais caché ne s'ajoute à l'arrivée.</p>
           )}
         </li>
         <li class="u-step"><span class="u-node" aria-hidden="true" data-n="3">03</span><h3>Sur place, le technicien localise le bouchon</h3>
