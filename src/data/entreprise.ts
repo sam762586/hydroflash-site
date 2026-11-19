@@ -58,11 +58,11 @@ export const entreprise = {
   /** Les trois fondateurs et leurs parcours (confirmé le 19/11/2026). */
   fondateurs: {
     nombre: 3,
-    postes: 'technicien, chef d\u2019équipe et responsable technique',
+    postes: 'techniciens, chef d\u2019équipe et responsable technique',
     equipe: [
-      { nom: 'Samuel Delacourt', poste: 'Technicien et responsable technique', annees: 17 },
-      { nom: 'Julien Memain',    poste: 'Technicien et chef d\u2019équipe',      annees: 18 },
-      { nom: 'Souad Tliche',     poste: 'Assistante technique et responsable technique', annees: 4 },
+      { nom: 'Samuel Delacourt', poste: 'Technicien de terrain et responsable technique', role: 'terrain', annees: 17 },
+      { nom: 'Julien Memain',    poste: 'Technicien de terrain et chef d\u2019équipe',      role: 'terrain', annees: 18 },
+      { nom: 'Souad Tliche',     poste: 'Devis, accueil téléphonique et administratif',     role: 'bureau',  annees: 4 },
     ],
     /** Photo de groupe : non fournie. */
     photo: null as null | string,

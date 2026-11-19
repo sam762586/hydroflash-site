@@ -37,7 +37,7 @@ const initiales = (nom: string) => nom.split(' ').map((m) => m[0]).join('');
     surtitre={`À propos · ${cumul} ans d'expérience`}
     titre={`${cumul} ans de canalisations,`}
     titreFin="et trois associés qui descendent encore dedans."
-    intro={`HYDROFLASH, ce n'est pas une enseigne qui sous-traite&nbsp;: ce sont ${f.nombre} professionnels du métier qui ont décidé de travailler pour eux. ${detailAnnees} passés sur le terrain, comme ${f.postes}. Quand vous appelez, vous tombez sur l'un de nous ${f.nombre}.`}
+    intro={`HYDROFLASH, ce n'est pas une enseigne qui sous-traite&nbsp;: ce sont ${f.nombre} professionnels du métier qui ont décidé de travailler pour eux. ${detailAnnees} passés sur le terrain, comme ${f.postes}. Quand vous appelez, vous tombez sur l'un de nous ${f.nombre}, jamais sur un centre d'appels.`}
     picto="technicien"
   />
 
@@ -45,7 +45,7 @@ const initiales = (nom: string) => nom.split(' ').map((m) => m[0]).join('');
     <div class="wrap">
       <ul class="ap-stats">
         <li><b>{cumul}</b><span>ans d'expérience</span><em>à {f.nombre}&nbsp;: {detailAnnees}</em></li>
-        <li><b>{f.nombre}</b><span>associés sur le terrain</span><em>aucun sous-traitant</em></li>
+        <li><b>{f.nombre}</b><span>associés, zéro sous-traitant</span><em>2 sur le terrain, 1 au bureau</em></li>
         <li><b>24/7</b><span>jour, nuit et week-end</span><em>un seul numéro</em></li>
         <li><b>2</b><span>départements couverts</span><em>Seine-Maritime et Eure</em></li>
       </ul>
@@ -60,7 +60,7 @@ const initiales = (nom: string) => nom.split(' ').map((m) => m[0]).join('');
         <div class="prose ap-prose">
           <p>Nous avons passé {detailAnnees} dans l'assainissement, comme {f.postes}, chez des employeurs qui envoyaient les équipes chez des bailleurs sociaux, des syndics, des entreprises et des particuliers.</p>
           <p>On y voit toujours les mêmes scènes&nbsp;: un client qui découvre le prix une fois le camion garé devant chez lui, une intervention bâclée qu'il faut refaire trois mois plus tard, un standard qui promet une heure d'arrivée que personne ne tiendra. <strong>Nous avons monté HYDROFLASH pour faire le contraire.</strong></p>
-          <p>Même métier, mêmes machines, mêmes gestes — mais nos prix sont <a href="/tarifs/">affichés en ligne</a>, et celui qui décroche est celui qui vient. Nous couvrons la <a href="/zones-intervention/seine-maritime-76/">Seine-Maritime (76)</a> et l'<a href="/zones-intervention/eure-27/">Eure (27)</a>, {dispo}.</p>
+          <p>Même métier, mêmes machines, mêmes gestes — mais nos prix sont <a href="/tarifs/">affichés en ligne</a>, et vous avez toujours quelqu'un au bout du fil. Nous couvrons la <a href="/zones-intervention/seine-maritime-76/">Seine-Maritime (76)</a> et l'<a href="/zones-intervention/eure-27/">Eure (27)</a>, {dispo}.</p>
         </div>
       </div>
       <dl class="kv ap-kv">
@@ -108,7 +108,7 @@ const initiales = (nom: string) => nom.split(' ').map((m) => m[0]).join('');
           </tr>
           <tr>
             <td class="vs-a">Un standard qui note votre adresse et envoie un sous-traitant que personne ne connaît.</td>
-            <td class="vs-b"><strong>Celui qui décroche est celui qui vient.</strong> Aucune plateforme, aucune sous-traitance.</td>
+            <td class="vs-b"><strong>Souad prend votre appel, Samuel ou Julien se déplace.</strong> Aucune plateforme, aucune sous-traitance.</td>
           </tr>
           <tr>
             <td class="vs-a">Un coup de furet, et le bouchon qui revient trois mois plus tard.</td>
@@ -127,7 +127,7 @@ const initiales = (nom: string) => nom.split(' ').map((m) => m[0]).join('');
     <div class="wrap">
       <div class="c-head">
         <div><p class="sec-label">L'équipe</p><h2 class="h2" id="t-eq">Les {f.nombre} personnes <em>que vous aurez au bout du fil</em></h2></div>
-        <p class="lead">Pas de standard, pas de commercial&nbsp;: ce sont eux qui répondent, qui chiffrent et qui interviennent.</p>
+        <p class="lead">Pas de standard, pas de commercial&nbsp;: Souad prend les appels et établit les devis, Samuel et Julien sont sur le terrain.</p>
       </div>
       <ul class="ap-eq">
         {equipe.map((m) => (
