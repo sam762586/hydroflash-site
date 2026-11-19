@@ -85,7 +85,12 @@ export const entreprise = {
   mediateur: null as null | { nom: string; adresse: string; site: string },
   hebergeur: null as null | { nom: string; adresse: string; telephone: string },
   assuranceRcPro: null as string | null,
-  delaiIntervention: null as string | null, // jamais affiché sans confirmation
+  /** Délai d'arrivée. Confirmé par Samuel le 19/11/2026 : environ 30 minutes.
+      Ce délai vaut pour la ZONE A seulement (Rouen et 20 km autour). Au-delà,
+      Le Havre ou Bernay sont à plus de 75 km : annoncer 30 minutes partout serait
+      une promesse intenable. Hors zone A, le délai est estimé au téléphone. */
+  delaiZoneA: '30 minutes',
+  delaiIntervention: 'Environ 30\u00a0minutes sur Rouen et 20\u00a0km autour. Au-delà, le délai vous est estimé au téléphone selon votre adresse.',
   devisAvantIntervention: true,
   /** Le devis ne coûte rien. Attention : le DÉPLACEMENT, lui, est facturé quand
       l'intervention s'avère impossible (prestation « Diagnostic ou déplacement seul »).

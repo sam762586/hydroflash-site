@@ -96,6 +96,7 @@ const altVehicule = `Véhicule d'intervention HYDROFLASH : pick-up orange à cab
           {devis && <li><svg class="ic" aria-hidden="true"><use href="#i-doc"/></svg><span>Devis présenté avant intervention{devis === 'tbc' && <> <Tbc /></>}</span></li>}
           {factu && <li><svg class="ic" aria-hidden="true"><use href="#i-doc"/></svg><span>{factu === 'ok' ? e.principeFacturation : <>Principe de facturation <Tbc /></>}</span></li>}
           <li class="pn-ok"><svg class="ic" aria-hidden="true"><use href="#i-moon"/></svg><span><b>Devis gratuit</b> et tarif annoncé avant tout déplacement, majoration comprise</span></li>
+          <li class="pn-ok"><svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg><span><b>Sur place en {e.delaiZoneA}</b> en général, sur Rouen et 20&nbsp;km autour</span></li>
         </ul>
         <a class="pn-link" href="#faq">Comprendre nos prix <svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></a>
       </div>
