@@ -9,9 +9,12 @@
 
 :root {
   --pad: clamp(20px, 3.4vw, 48px);
-  --gut: max(0px, calc((100vw - 1376px) / 2));
-  --content-left: calc(var(--gut) + var(--pad));
-  --spine-x: calc(var(--gut) + 14px);
+  /* Gouttière réelle : « 100% » se résout sur la largeur du bloc conteneur,
+     donc HORS barre de défilement. 100vw, lui, l'inclut : sous Windows la barre
+     classique (≈17 px) décalait l'épine de 8 px par rapport aux coudes. */
+  --gut-reel: max(0px, calc((100% - 1376px) / 2));
+  /* Longueur d'un coude, du texte jusqu'à l'épine : ne dépend que du padding. */
+  --coude: calc(var(--pad) - 14px);
   --r: 22px;
   --r-lg: 32px;
   --tb-h: 34px;
@@ -125,13 +128,13 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 
 /* ---------- Colonne vertébrale « flux » ---------- */
 main { position: relative; }
-.spine { position: absolute; left: var(--spine-x); top: 140px; bottom: 0; width: 4px; background: var(--o); z-index: 6; pointer-events: none; }
+.spine { position: absolute; left: calc(var(--gut-reel) + 14px); top: 140px; bottom: 0; width: 4px; background: var(--o); z-index: 6; pointer-events: none; }
 .sec-label { position: relative; display: inline-flex; align-items: center; gap: 10px; color: var(--o-text); font-family: var(--f-mono); font-size: 13px; line-height: 1.4; letter-spacing: .08em; text-transform: uppercase; font-weight: 500; }
 .on-dark .sec-label, .zone-panel .sec-label { color: var(--o); }
 .sec-label::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--o); flex: none; }
 .sec-label::after {
   content: ""; position: absolute; right: calc(100% - 2px); bottom: calc(50% - 2px);
-  width: calc(var(--content-left) - var(--spine-x) + 2px); height: 56px;
+  width: calc(var(--coude) + 2px); height: 56px;
   border-left: 4px solid var(--o); border-bottom: 4px solid var(--o); border-bottom-left-radius: 20px; z-index: 3;
 }
 .sec-label-nb::after { display: none; }
@@ -141,7 +144,7 @@ main { position: relative; }
 .hero-grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); min-height: min(calc(100vh - 78px - 34px - 64px), 800px); }
 .hero-txt { padding: 76px 0 110px; position: relative; z-index: 4; display: flex; flex-direction: column; justify-content: flex-start; }
 .eyebrow { position: relative; display: flex; align-items: center; flex-wrap: wrap; gap: 10px; color: var(--grey-d); font-family: var(--f-mono); font-size: 13px; line-height: 1.4; letter-spacing: .08em; text-transform: uppercase; font-weight: 500; }
-.eyebrow::before { content: ""; position: absolute; right: calc(100% - 4px); top: calc(50% - 2px); width: calc(var(--content-left) - var(--spine-x) + 4px); height: 60px; border-top: 4px solid var(--o); border-left: 4px solid var(--o); border-top-left-radius: 20px; }
+.eyebrow::before { content: ""; position: absolute; right: calc(100% - 4px); top: calc(50% - 2px); width: calc(var(--coude) + 4px); height: 60px; border-top: 4px solid var(--o); border-left: 4px solid var(--o); border-top-left-radius: 20px; }
 .eyebrow .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--o); box-shadow: 0 0 0 6px var(--o-a18); }
 .eb-zone { color: #fff; }
 .hero h1 { margin-top: 26px; }
@@ -454,7 +457,7 @@ main { position: relative; }
 
 /* ---------- PIED DE PAGE ---------- */
 .ftr { background: var(--ink); color: #fff; padding: 96px 0 0; position: relative; }
-.ftr .regard { position: absolute; left: calc(var(--spine-x) - 10px); top: -2px; width: 24px; height: 24px; border-radius: 50%; border: 4px solid var(--o); background: var(--ink); z-index: 4; }
+.ftr .regard { position: absolute; left: calc(var(--gut-reel) + 4px); top: -2px; width: 24px; height: 24px; border-radius: 50%; border: 4px solid var(--o); background: var(--ink); z-index: 4; }
 .ftr-grid { display: grid; grid-template-columns: minmax(0, 3.6fr) minmax(0, 2fr) minmax(0, 2fr) minmax(0, 2.8fr); gap: 44px; }
 .ftr-brand img { height: 56px; width: auto; margin-left: -12px; }
 .ftr-brand p { margin-top: 18px; color: var(--grey-d); max-width: 22em; font-size: 16.5px; }
