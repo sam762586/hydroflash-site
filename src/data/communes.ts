@@ -28,11 +28,11 @@ export const communes: Commune[] = [
   { nom: 'Mont-Saint-Aignan',        slug: 'mont-saint-aignan',        cp: '76130', dep: '76', population: 20165,  bassin: 'Agglomération de Rouen', zone: 'A',  tissu: 'periurbain' },
   { nom: 'Barentin',                 slug: 'barentin',                 cp: '76360', dep: '76', population: 12022,  bassin: 'Pays de Caux intérieur', zone: 'A',  tissu: 'periurbain' },
 
-  // ---- Boucle d'Elbeuf : à la limite des 20 km ----
-  { nom: 'Elbeuf',                   slug: 'elbeuf',                   cp: '76500', dep: '76', population: 15474,  bassin: "Boucle d'Elbeuf",        zone: 'AB', tissu: 'urbain' },
-  { nom: 'Caudebec-lès-Elbeuf',      slug: 'caudebec-les-elbeuf',      cp: '76320', dep: '76', population: 10476,  bassin: "Boucle d'Elbeuf",        zone: 'AB', tissu: 'periurbain' },
-  { nom: 'Saint-Aubin-lès-Elbeuf',   slug: 'saint-aubin-les-elbeuf',   cp: '76410', dep: '76', population: 8443,   bassin: "Boucle d'Elbeuf",        zone: 'AB', tissu: 'periurbain' },
-  { nom: "Pont-de-l'Arche",          slug: 'pont-de-l-arche',          cp: '27340', dep: '27', population: 4133,   bassin: 'Vallée de Seine',        zone: 'AB', tissu: 'bourg' },
+  // ---- Boucle d'Elbeuf et Pont-de-l'Arche : zone A (confirmé par Samuel le 19/11/2026) ----
+  { nom: 'Elbeuf',                   slug: 'elbeuf',                   cp: '76500', dep: '76', population: 15474,  bassin: "Boucle d'Elbeuf",        zone: 'A',  tissu: 'urbain' },
+  { nom: 'Caudebec-lès-Elbeuf',      slug: 'caudebec-les-elbeuf',      cp: '76320', dep: '76', population: 10476,  bassin: "Boucle d'Elbeuf",        zone: 'A',  tissu: 'periurbain' },
+  { nom: 'Saint-Aubin-lès-Elbeuf',   slug: 'saint-aubin-les-elbeuf',   cp: '76410', dep: '76', population: 8443,   bassin: "Boucle d'Elbeuf",        zone: 'A',  tissu: 'periurbain' },
+  { nom: "Pont-de-l'Arche",          slug: 'pont-de-l-arche',          cp: '27340', dep: '27', population: 4133,   bassin: 'Vallée de Seine',        zone: 'A',  tissu: 'bourg' },
 
   // ---- Seine-Maritime, zone B ----
   { nom: 'Le Havre',                 slug: 'le-havre',                 cp: '76600', dep: '76', population: 166687, bassin: 'Agglomération du Havre', zone: 'B',  tissu: 'urbain' },
