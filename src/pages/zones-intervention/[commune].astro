@@ -120,8 +120,13 @@ const faq = [
     a: `Oui. Copropriétés, bailleurs, commerces, restaurants et industries : colonnes, branchements, bacs à graisse, réseaux complets. Le passage caméra permet de garder une trace de l'état du réseau, et les photos vous sont remises sur clé USB. Voir la page <a href="/professionnels/">Professionnels et syndics</a>.` },
 ];
 
-const titrePage = `Débouchage et assainissement ${aNom} (${c.cp}) | HYDROFLASH`;
-const descPage = `Débouchage, curage, passage caméra et pompage ${aNom} (${c.cp}). Intervention ${dispo}, devis gratuit et tarif transparent. Débouchage à partir de ${eur(prixManuel)} HT.`;
+/* Google coupe autour de 60 caractères : pour les noms longs, on raccourcit
+   plutôt que de laisser tronquer « | HYDROFLASH ». */
+const titreLong = `Débouchage et assainissement ${aNom} (${c.cp}) | HYDROFLASH`;
+const titrePage = titreLong.length <= 65 ? titreLong : `Débouchage ${aNom} (${c.cp}) | HYDROFLASH`;
+/* La description est coupée vers 160 caractères : on garde l'essentiel en tête. */
+const descLong = `Débouchage, curage, passage caméra et pompage ${aNom} (${c.cp}). Intervention ${dispo}, devis gratuit, à partir de ${eur(prixManuel)} HT.`;
+const descPage = descLong.length <= 170 ? descLong : `Débouchage, curage et pompage ${aNom} (${c.cp}). ${dispo}, devis gratuit, à partir de ${eur(prixManuel)} HT.`;
 ---
 <Base
   titre={titrePage}

@@ -28,7 +28,7 @@ const initiales = (nom: string) => nom.split(' ').map((m) => m[0]).join('');
 ---
 <Base
   titre={`À propos : ${cumul} ans d'expérience en assainissement | HYDROFLASH`}
-  description={`HYDROFLASH, ce sont ${f.nombre} professionnels de l'assainissement réunis près de Rouen : ${cumul} ans d'expérience cumulée en débouchage, curage et passage caméra, en Seine-Maritime (76) et dans l'Eure (27). Intervention ${dispo}.`}
+  description={`${f.nombre} professionnels de l'assainissement près de Rouen, ${cumul} ans d'expérience cumulée. Débouchage, curage et caméra en Seine-Maritime et dans l'Eure, ${dispo}.`}
   feuilles={[FEUILLE_CONTENU, { ordi: contactOrdi, mobile: contactMobile }]}
   jsonld={schemaEntreprise()}
 >
