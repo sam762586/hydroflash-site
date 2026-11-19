@@ -54,3 +54,28 @@
 .nf-ctas { margin-top: 24px; display: grid; gap: 10px; }
 .nf-ctas .btn { width: 100%; }
 .nw { white-space: nowrap; }
+
+/* ---- À propos : bandeau de chiffres et comparatif (style A, ≤ 700 px) ---- */
+
+.sec-xs { padding: 0 0 36px; }
+
+.ap-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; border-top: 2px solid var(--ink2); border-bottom: 1px solid var(--line); }
+.ap-stats li { padding: 16px 14px 18px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.ap-stats li:nth-child(2n) { border-right: none; }
+.ap-stats li:nth-last-child(-n+2) { border-bottom: none; }
+.ap-stats b { display: block; font: 800 32px/1 var(--f-display); font-stretch: 85%; font-variant-numeric: tabular-nums; color: var(--o-text); }
+.ap-stats span { display: block; margin-top: 6px; font-size: 14.5px; line-height: 1.35; color: var(--ink2); }
+.ap-stats em { display: block; margin-top: 3px; font-style: normal; font-size: 13px; line-height: 1.35; color: var(--grey); }
+
+/* Sur petit écran, le tableau devient une suite de paires empilées */
+.ap-vs { display: block; width: 100%; margin-top: 8px; }
+.ap-vs thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.ap-vs tbody, .ap-vs tr, .ap-vs td { display: block; }
+.ap-vs tr { margin-bottom: 14px; border: 1px solid var(--line); }
+.ap-vs td { position: relative; padding: 13px 16px 13px 46px; font-size: 15.5px; line-height: 1.45; }
+.ap-vs td.vs-a { color: var(--grey); background: var(--mist); }
+.ap-vs td.vs-b { color: var(--ink2); border-top: 1px solid var(--line); }
+.ap-vs td::before { position: absolute; left: 16px; top: 14px; width: 20px; height: 20px; font: 700 13px/20px var(--f-display); text-align: center; border-radius: 50%; }
+.ap-vs td.vs-a::before { content: "\00d7"; background: var(--line); color: var(--grey); }
+.ap-vs td.vs-b::before { content: "\2713"; background: var(--o); color: #fff; }
+.ap-vs td.vs-b a { color: var(--ink2); text-decoration-color: var(--o); text-decoration-thickness: 2px; text-underline-offset: 3px; }

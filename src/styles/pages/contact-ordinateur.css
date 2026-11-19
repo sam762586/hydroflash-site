@@ -73,3 +73,26 @@
   .ct-grid { grid-template-columns: minmax(0, 1fr); grid-template-areas: "call" "infos" "form" "next"; grid-template-rows: none; }
   .ct-form { position: static; max-width: 640px; }
 }
+
+/* ---- À propos : bandeau de chiffres et tableau comparatif (style C, ≥ 701 px) ---- */
+
+.sec-xs { padding: 0 0 96px; }
+
+.ap-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border-top: 2px solid var(--ink2); border-bottom: 1px solid var(--line); }
+.ap-stats li { padding: 26px 24px 28px; border-right: 1px solid var(--line); }
+.ap-stats li:last-child { border-right: none; }
+.ap-stats b { display: block; font: 800 46px/1 var(--f-display); font-stretch: 85%; font-variant-numeric: tabular-nums; color: var(--o-text); letter-spacing: -.01em; }
+.ap-stats span { display: block; margin-top: 10px; font-size: 15.5px; line-height: 1.4; color: var(--ink2); }
+.ap-stats em { display: block; margin-top: 4px; font-style: normal; font-size: 14px; line-height: 1.4; color: var(--grey); }
+
+.ap-vs { width: 100%; margin-top: 10px; border-collapse: collapse; table-layout: fixed; border: 1px solid var(--line); }
+.ap-vs th { padding: 15px 24px; text-align: left; font-family: var(--f-mono); font-size: 12px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; }
+.ap-vs th.vs-a { background: var(--mist); color: var(--grey); border-bottom: 1px solid var(--line); }
+.ap-vs th.vs-b { background: var(--ink2); color: var(--paper); }
+.ap-vs td { position: relative; padding: 20px 24px 20px 56px; border-top: 1px solid var(--line); font-size: 16.5px; line-height: 1.5; vertical-align: middle; }
+.ap-vs td.vs-b { border-left: 1px solid var(--line); color: var(--ink2); }
+.ap-vs td.vs-a { color: var(--grey); }
+.ap-vs td::before { position: absolute; left: 24px; top: 22px; width: 20px; height: 20px; font: 700 13px/20px var(--f-mono); text-align: center; border-radius: 50%; }
+.ap-vs td.vs-a::before { content: "\00d7"; background: var(--line); color: var(--grey); }
+.ap-vs td.vs-b::before { content: "\2713"; background: var(--o); color: #fff; }
+.ap-vs td.vs-b a { color: var(--ink2); text-decoration-color: var(--o); text-decoration-thickness: 2px; text-underline-offset: 3px; }

@@ -31,20 +31,32 @@ const detailAnnees = f.annees.slice(0, -1).join(', ') + ' et ' + f.annees[f.anne
   <SousHero
     ariane={[{ label: 'À propos' }]}
     surtitre={`À propos · ${cumul} ans d'expérience`}
-    titre={`${f.nombre} professionnels de l'assainissement,`}
-    titreFin="une entreprise normande."
-    intro={`HYDROFLASH est née de la rencontre de ${f.nombre} professionnels du métier. À nous ${f.nombre}, nous cumulons <strong>${cumul} ans d'expérience</strong> en assainissement — ${detailAnnees} passés sur le terrain, à des postes de ${f.postes}.`}
+    titre={`${cumul} ans de canalisations,`}
+    titreFin="et trois associés qui descendent encore dedans."
+    intro={`HYDROFLASH, ce n'est pas une enseigne qui sous-traite&nbsp;: ce sont ${f.nombre} professionnels du métier qui ont décidé de travailler pour eux. ${detailAnnees} passés sur le terrain, comme ${f.postes}. Quand vous appelez, vous tombez sur l'un de nous ${f.nombre}.`}
     picto="technicien"
   />
+
+  <section class="sec sec-xs" aria-label="HYDROFLASH en chiffres">
+    <div class="wrap">
+      <ul class="ap-stats">
+        <li><b>{cumul}</b><span>ans d'expérience</span><em>à {f.nombre}&nbsp;: {detailAnnees}</em></li>
+        <li><b>{f.nombre}</b><span>associés sur le terrain</span><em>aucun sous-traitant</em></li>
+        <li><b>24/7</b><span>jour, nuit et week-end</span><em>un seul numéro</em></li>
+        <li><b>2</b><span>départements couverts</span><em>Seine-Maritime et Eure</em></li>
+      </ul>
+    </div>
+  </section>
 
   <section class="sec sec-sm" aria-labelledby="t-qui">
     <div class="wrap c-grid2">
       <div>
-        <p class="sec-label">Qui sommes-nous</p>
-        <h2 class="h2" id="t-qui">Un seul métier&nbsp;: <em>l'assainissement</em></h2>
+        <p class="sec-label">Pourquoi HYDROFLASH</p>
+        <h2 class="h2" id="t-qui">Trois parcours, <em>une même lassitude</em></h2>
         <div class="prose ap-prose">
-          <p>Avant de créer HYDROFLASH, nous avons encadré des équipes et piloté des chantiers pour des bailleurs sociaux, des syndics, des entreprises et des particuliers. Aujourd'hui, nous mettons ce savoir-faire directement à votre service, sans intermédiaire.</p>
-          <p>Notre métier, c'est tout ce qui permet aux eaux usées de s'écouler, de l'évier jusqu'au réseau. Notre zone couvre deux départements normands, la <a href="/zones-intervention/seine-maritime-76/">Seine-Maritime (76)</a> et l'<a href="/zones-intervention/eure-27/">Eure (27)</a>, avec un seul numéro, joignable {dispo}.</p>
+          <p>Nous avons passé {detailAnnees} dans l'assainissement, comme {f.postes}, chez des employeurs qui envoyaient les équipes chez des bailleurs sociaux, des syndics, des entreprises et des particuliers.</p>
+          <p>On y voit toujours les mêmes scènes&nbsp;: un client qui découvre le prix une fois le camion garé devant chez lui, une intervention bâclée qu'il faut refaire trois mois plus tard, un standard qui promet une heure d'arrivée que personne ne tiendra. <strong>Nous avons monté HYDROFLASH pour faire le contraire.</strong></p>
+          <p>Même métier, mêmes machines, mêmes gestes — mais nos prix sont <a href="/tarifs/">affichés en ligne</a>, et celui qui décroche est celui qui vient. Nous couvrons la <a href="/zones-intervention/seine-maritime-76/">Seine-Maritime (76)</a> et l'<a href="/zones-intervention/eure-27/">Eure (27)</a>, {dispo}.</p>
         </div>
       </div>
       <dl class="kv ap-kv">
@@ -76,15 +88,34 @@ const detailAnnees = f.annees.slice(0, -1).join(', ') + ' et ' + f.annees[f.anne
   </section>
 
   <section class="sec sec-sm" aria-labelledby="t-inter">
-    <div class="wrap c-grid2">
-      <div>
-        <p class="sec-label">Pas d'intermédiaire</p>
-        <h2 class="h2" id="t-inter">Ceux qui vous répondent <em>sont ceux qui interviennent</em></h2>
+    <div class="wrap">
+      <div class="c-head">
+        <div><p class="sec-label">La différence</p><h2 class="h2" id="t-inter">Ce qui change, <em>concrètement</em></h2></div>
+        <p class="lead">Quatre situations que vous avez peut-être déjà vécues avec un dépanneur, et ce qui se passe chez nous.</p>
       </div>
-      <div class="prose ap-prose">
-        <p>Chez HYDROFLASH, pas de plateforme téléphonique ni de sous-traitance. Les personnes qui établissent votre devis sont celles qui connaissent le terrain et qui se déplacent chez vous.</p>
-        <p>Vous avez un interlocuteur qui sait de quoi il parle, du premier appel à la fin de l'intervention.</p>
-      </div>
+      <table class="ap-vs">
+        <thead>
+          <tr><th scope="col" class="vs-a">Ce qu'on voit trop souvent</th><th scope="col" class="vs-b">Chez HYDROFLASH</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="vs-a">Le prix annoncé une fois le camion garé devant chez vous.</td>
+            <td class="vs-b"><strong>Le prix au téléphone</strong>, avant qu'on démarre, et une <a href="/tarifs/">grille publiée en ligne</a>.</td>
+          </tr>
+          <tr>
+            <td class="vs-a">Un standard qui note votre adresse et envoie un sous-traitant que personne ne connaît.</td>
+            <td class="vs-b"><strong>Celui qui décroche est celui qui vient.</strong> Aucune plateforme, aucune sous-traitance.</td>
+          </tr>
+          <tr>
+            <td class="vs-a">Un coup de furet, et le bouchon qui revient trois mois plus tard.</td>
+            <td class="vs-b"><strong>On cherche la cause</strong>, au besoin à la caméra, pour que ça ne recommence pas.</td>
+          </tr>
+          <tr>
+            <td class="vs-a">Une majoration de nuit découverte sur la facture.</td>
+            <td class="vs-b"><strong>Les majorations sont affichées</strong>, au pourcentage près&nbsp;: soir, week-end et jours fériés.</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </section>
 
@@ -158,16 +189,14 @@ const detailAnnees = f.annees.slice(0, -1).join(', ') + ' et ' + f.annees[f.anne
       <div>
         <p class="sec-label">Engagements</p>
         <h2 class="h2" id="t-eng">Ce sur quoi <em>vous pouvez compter</em></h2>
-        <p class="lead ap-lead">Des engagements simples et vérifiables. Le délai d'intervention, lui, vous est indiqué au téléphone, selon votre adresse.</p>
+        <p class="lead ap-lead">Cinq engagements que vous pouvez vérifier avant même de nous appeler. Le délai d'intervention, lui, vous est donné au téléphone, selon votre adresse.</p>
       </div>
       <ul class="checks">
-        <li><strong>Intervention {dispo}</strong>, la nuit comme le week-end.</li>
-        <li><strong>Un tarif annoncé avant tout déplacement</strong>, majoration de soirée, de week-end ou de jour férié comprise (<a href="/tarifs/">voir les tarifs</a>).</li>
+        <li><strong>Nos prix sont publics.</strong> La <a href="/tarifs/">grille complète</a> est en ligne, majorations comprises. Vous savez ce que vous payez avant de décrocher.</li>
+        <li><strong>Le tarif est annoncé avant tout déplacement</strong>, et il ne bouge pas en arrivant.</li>
+        <li><strong>Intervention {dispo}</strong>, la nuit comme le week-end, avec un seul numéro&nbsp;: <a class="tel" href={e.telephone.lien}>{e.telephone.affiche}</a>.</li>
         <li><strong>Rappel immédiat</strong> après une demande envoyée depuis le site.</li>
-        <li><strong>Passage caméra</strong>&nbsp;: les photos de l'inspection vous sont remises sur clé USB.</li>
-        <li><strong>Une grille tarifaire publiée</strong>&nbsp;: nos prix sont <a href="/tarifs/">affichés en ligne</a>, pas réservés à ceux qui appellent.</li>
-        <li><strong>{cumul} ans d'expérience</strong> à {f.nombre}, en débouchage, curage, détartrage, passage caméra et pompage.</li>
-        <li><strong>Un seul numéro</strong>, partout&nbsp;: <a class="tel" href={e.telephone.lien}>{e.telephone.affiche}</a>.</li>
+        <li><strong>Passage caméra</strong>&nbsp;: les photos de l'inspection vous sont remises sur clé USB, pas gardées par l'entreprise.</li>
       </ul>
     </div>
   </section>
