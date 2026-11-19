@@ -33,50 +33,24 @@ jobs:
         # Le jour du passage en production : remplacer par "npm run build:prod"
         # et supprimer l'étape « Protection préproduction » ci-dessous.
 
-      - name: Protection préproduction (mot de passe + noindex)
+      # Tant que la société n'a pas de SIRET, le site est en ligne mais invisible
+      # des moteurs de recherche (balise noindex). Pour le rendre référençable le
+      # jour de l'immatriculation : supprimer cette étape.
+      #
+      # Pour remettre un accès par mot de passe, réinsérer dans dist/.htaccess,
+      # avant « Options -Indexes », un bloc AuthType Basic pointant vers un
+      # fichier .htpasswd déposé dans le dossier personnel du serveur.
+      - name: Préproduction (invisible des moteurs de recherche)
         run: |
           python3 - <<'PY'
           p = 'dist/.htaccess'
           s = open(p, encoding='utf-8').read()
-          bloc = '''# --- PRÉPRODUCTION : accès protégé par mot de passe ---
-          AuthType Basic
-          AuthName "HYDROFLASH - preproduction"
-          AuthUserFile /home/uzdjkzv/.htpasswd-hydroflash
-          Require valid-user
-          <If "%{REQUEST_URI} =~ m#^/\\.well-known/#">
-            Require all granted
-          </If>
-          # --- fin du bloc préproduction ---
-
-          '''
-          bloc = '\n'.join(l[10:] if l.startswith(' ' * 10) else l for l in bloc.split('\n'))
-          ancre = 'Options -Indexes -MultiViews'
-          assert ancre in s, 'ancre .htaccess absente'
-          s = s.replace(ancre, bloc + ancre, 1)
           a = '  # Header always set X-Robots-Tag "noindex, nofollow"'
           assert a in s, 'ligne X-Robots-Tag absente'
           s = s.replace(a, '  Header always set X-Robots-Tag "noindex, nofollow"', 1)
           open(p, 'w', encoding='utf-8').write(s)
-          print('Protection preproduction appliquee')
+          print('noindex applique, aucun mot de passe')
           PY
-
-      # Recrée le fichier de mots de passe de la préproduction à partir du secret
-      # PREPROD_MDP. Le mot de passe en clair ne passe que par une variable
-      # d'environnement : il n'apparaît jamais dans les journaux du déploiement.
-      # Identifiant fixe : hydroflash. Pour le changer, modifier le secret.
-      - name: Mot de passe de préproduction
-        env:
-          PREPROD_MDP: ${{ secrets.PREPROD_MDP }}
-        run: |
-          if [ -z "$PREPROD_MDP" ]; then
-            echo "Secret PREPROD_MDP absent : le mot de passe actuel du serveur est conservé."
-            exit 0
-          fi
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq apache2-utils
-          # -b : mot de passe en argument ; -m : hachage MD5-APR1, compris par tous les Apache
-          htpasswd -cbm .htpasswd-hydroflash hydroflash "$PREPROD_MDP"
-          echo "Fichier de mots de passe regénéré pour l'identifiant « hydroflash »"
 
       - name: Envoyer sur OVH par SFTP
         env:
@@ -84,16 +58,10 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq lftp
-          if [ -f .htpasswd-hydroflash ]; then
-            ENVOI_MDP="put -O . .htpasswd-hydroflash;"
-          else
-            ENVOI_MDP=""
-          fi
           lftp -c "
             set sftp:auto-confirm yes;
             set net:max-retries 3;
             set net:timeout 30;
             open -u uzdjkzv,'$MDP_FTP' sftp://ftp.cluster129.hosting.ovh.net;
-            $ENVOI_MDP
             mirror -R --delete --parallel=4 --verbose=1 dist/ www/;
           "
