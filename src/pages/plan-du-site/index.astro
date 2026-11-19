@@ -11,6 +11,7 @@ import SousHero from '../../components/SousHero.astro';
 import { FEUILLE_CONTENU } from '../../lib/feuilles';
 import { services } from '../../data/services';
 import { nav } from '../../data/navigation';
+import { communes } from '../../data/communes';
 import { entreprise as e } from '../../data/entreprise';
 import { conseilsPublies } from '../../lib/conseils';
 import legalOrdi from '../../styles/pages/legal-ordinateur.css?url';
@@ -52,7 +53,10 @@ const groupes: { titre: string; liens: Lien[] }[] = [
   { titre: 'HYDROFLASH', liens: filtrer([
     { label: 'Tarifs', href: '/tarifs/' },
     { label: 'Professionnels et syndics', href: '/professionnels/' },
-    { label: 'Zones d\'intervention', href: '/zones-intervention/', sous: e.zone.departements.map((d) => ({ label: `${d.nom} (${d.code})`, href: `/zones-intervention/${d.slug}/`, donnees: true })) },
+    { label: 'Zones d\'intervention', href: '/zones-intervention/', sous: [
+      ...e.zone.departements.map((d) => ({ label: `${d.nom} (${d.code})`, href: `/zones-intervention/${d.slug}/`, donnees: true })),
+      ...communes.map((c) => ({ label: `${c.nom} (${c.cp})`, href: `/zones-intervention/${c.slug}-${c.cp}/`, donnees: true })),
+    ] },
     { label: 'À propos', href: '/a-propos/' },
     ...(conseils.length ? [{ label: 'Conseils', href: '/conseils/', donnees: true, sous: conseils.map((c) => ({ label: c.data.titre, href: `/conseils/${c.id}/`, donnees: true })) }] : []),
     { label: 'Contact et devis', href: '/contact/' },

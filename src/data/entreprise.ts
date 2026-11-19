@@ -86,7 +86,11 @@ export const entreprise = {
   hebergeur: null as null | { nom: string; adresse: string; telephone: string },
   assuranceRcPro: null as string | null,
   delaiIntervention: null as string | null, // jamais affiché sans confirmation
-  devisAvantIntervention: null as boolean | null,
+  devisAvantIntervention: true,
+  /** Le devis ne coûte rien. Attention : le DÉPLACEMENT, lui, est facturé quand
+      l'intervention s'avère impossible (prestation « Diagnostic ou déplacement seul »).
+      Ne jamais écrire « déplacement gratuit » : ce serait faux. */
+  devisGratuit: true,
   principeFacturation: null as string | null,
   typesOuvragesPompage: null as string | null,
   materiel: null as null | { hautePression?: string; camera?: string; pompage?: string },

@@ -3,8 +3,14 @@
  *  Populations : INSEE, populations légales (fichier 06_SEO/donnees/communes_76_27_population.csv). */
 interface Bassin { nom: string; texte: string; communes: [string, number][] }
 interface Props { bassins: Bassin[] }
+import { communes } from '../../data/communes';
 const { bassins } = Astro.props;
 const fmt = (n: number) => n.toLocaleString('fr-FR').replace(/\s/g, '\u00a0'); // espace insécable lisible dans toutes les polices
+/** Les communes qui ont leur propre page deviennent des liens ; les autres restent en texte. */
+const lien = (nom: string) => {
+  const c = communes.find((x) => x.nom === nom);
+  return c ? `/zones-intervention/${c.slug}-${c.cp}/` : null;
+};
 ---
 <ul class="zb">
   {bassins.map((b) => (
@@ -12,7 +18,12 @@ const fmt = (n: number) => n.toLocaleString('fr-FR').replace(/\s/g, '\u00a0'); /
       <h3>{b.nom}</h3>
       <p>{b.texte}</p>
       <ul class="zb-pop" aria-label={`Communes principales — ${b.nom}`}>
-        {b.communes.map(([c, n]) => <li><span>{c}</span><span>{fmt(n)}&nbsp;hab.</span></li>)}
+        {b.communes.map(([c, n]) => (
+          <li>
+            {lien(c) ? <a href={lien(c)}>{c}</a> : <span>{c}</span>}
+            <span>{fmt(n)}&nbsp;hab.</span>
+          </li>
+        ))}
       </ul>
     </li>
   ))}

@@ -1,0 +1,165 @@
+---
+/* Une page par commune couverte (src/data/communes.ts).
+   Rien n'est inventé : population INSEE, zone tarifaire issue de la grille, bassin
+   repris des pages départementales. Le texte varie selon le tissu urbain et la zone,
+   pour que deux communes ne donnent pas la même page. */
+import Base from '../../layouts/Base.astro';
+import SousHero from '../../components/SousHero.astro';
+import Faq from '../../components/Faq.astro';
+import ContactCta from '../../components/ContactCta.astro';
+import { FEUILLE_CONTENU } from '../../lib/feuilles';
+import { services } from '../../data/services';
+import { communes, voisines, memeDepartement, type Commune } from '../../data/communes';
+import { entreprise as e } from '../../data/entreprise';
+import { schemaEntreprise } from '../../lib/schema';
+import zonesOrdi from '../../styles/pages/zones-ordinateur.css?url';
+import zonesMobile from '../../styles/pages/zones-mobile.css?url';
+
+export function getStaticPaths() {
+  return communes.map((c) => ({ params: { commune: `${c.slug}-${c.cp}` }, props: { c } }));
+}
+
+const { c } = Astro.props as { c: Commune };
+const dispo = e.disponibilite.libelle.replace(/(\d) /g, '$1 ');
+const tel = `<a class="tel" href="${e.telephone.lien}">${e.telephone.affiche}</a>`;
+const t = e.tarifs;
+const departement = c.dep === '76' ? 'Seine-Maritime' : 'Eure';
+/** « la Seine-Maritime » / « l'Eure » — l'élision change selon le département. */
+const leDep = c.dep === '76' ? 'la Seine-Maritime' : "l'Eure";
+const pageDep = c.dep === '76' ? '/zones-intervention/seine-maritime-76/' : '/zones-intervention/eure-27/';
+const hab = c.population.toLocaleString('fr-FR').replace(/ | /g, ' ');
+
+/* Prix d'appel réels, repris de la grille. */
+const manuel = t.prestations[0];
+const hydro = t.prestations[1];
+const eur = (v: number) => v.toLocaleString('fr-FR') + ' €';
+/* Pour une commune à cheval, on annonce le prix le plus bas en précisant que la zone est confirmée. */
+const prixManuel = c.zone === 'B' ? manuel.b! : manuel.a!;
+const prixHydro = c.zone === 'B' ? hydro.b! : hydro.a!;
+
+const libZone =
+  c.zone === 'A' ? `zone A (${t.zones[0].libelle})`
+  : c.zone === 'B' ? `zone B (${t.zones[1].libelle})`
+  : 'à la limite des zones A et B';
+
+/* Le texte change selon le type d'habitat : ce n'est pas le même métier en centre-ville
+   dense qu'en secteur pavillonnaire ou en bourg. */
+const contexte = {
+  urbain: `À ${c.nom}, l'essentiel de nos interventions concerne des immeubles et des copropriétés : colonnes d'évacuation communes, branchements en sous-sol, regards de pied d'immeuble. Un bouchon de colonne se signale souvent par un refoulement chez le voisin du bas, pas chez celui qui l'a causé — d'où l'intérêt d'identifier le point exact avant de casser quoi que ce soit.`,
+  periurbain: `À ${c.nom}, nous intervenons autant sur des maisons individuelles que sur des petits collectifs. En secteur pavillonnaire, les bouchons se forment le plus souvent sur le branchement entre la maison et le réseau public, à l'endroit où les racines et les graisses s'accumulent.`,
+  bourg: `À ${c.nom} et dans les communes alentour, l'habitat est majoritairement individuel, avec des réseaux parfois anciens et, dans les secteurs non raccordés, des installations autonomes. Le passage caméra est souvent ce qui évite des travaux de terrassement inutiles.`,
+}[c.tissu];
+
+const proches = (voisines(c).length ? voisines(c) : memeDepartement(c)).slice(0, 6);
+
+const faq = [
+  { q: `Combien coûte un débouchage à ${c.nom} ?`,
+    a: `Un débouchage manuel est à ${eur(prixManuel)} HT, un débouchage à l'hydrocureur à ${eur(prixHydro)} HT, déplacement et première heure compris. ${c.nom} est ${libZone}.${c.zone === 'AB' ? ' Selon l\'adresse exacte, le tarif retenu est celui de la zone A ou de la zone B : nous vous le confirmons au téléphone, avant tout déplacement.' : ''} Le détail complet est sur notre <a href="/tarifs/">grille tarifaire</a>, majorations comprises. Le devis est gratuit.` },
+  { q: `Intervenez-vous la nuit et le week-end à ${c.nom} ?`,
+    a: `Oui, ${dispo}. Une majoration s'applique le samedi, en soirée, la nuit, le dimanche et les jours fériés : elle est <a href="/tarifs/">affichée au pourcentage près</a> et vous est annoncée au téléphone avant que nous partions. Aucun supplément n'apparaît sur la facture sans avoir été annoncé.` },
+  { q: `Quel est le délai d'intervention à ${c.nom} ?`,
+    a: `Le délai dépend de l'heure, du jour et de la position de nos équipes. Nous vous donnons une estimation honnête au téléphone, lors de l'appel : appelez le ${tel}. Nous préférons annoncer un créneau tenable plutôt qu'une promesse qui ne le serait pas.` },
+  { q: `Intervenez-vous pour les syndics et les professionnels de ${c.nom} ?`,
+    a: `Oui. Copropriétés, bailleurs, commerces, restaurants et industries : colonnes, branchements, bacs à graisse, réseaux complets. Le passage caméra permet de garder une trace de l'état du réseau, et les photos vous sont remises sur clé USB. Voir la page <a href="/professionnels/">Professionnels et syndics</a>.` },
+];
+
+const titrePage = `Débouchage et assainissement à ${c.nom} (${c.cp}) | HYDROFLASH`;
+const descPage = `Débouchage, curage, passage caméra et pompage à ${c.nom} (${c.cp}). Intervention ${dispo}, devis gratuit et prix annoncé avant tout déplacement. Débouchage à partir de ${eur(prixManuel)} HT.`;
+---
+<Base
+  titre={titrePage}
+  description={descPage}
+  feuilles={[FEUILLE_CONTENU, { ordi: zonesOrdi, mobile: zonesMobile }]}
+  jsonld={schemaEntreprise()}
+>
+  <SousHero
+    ariane={[{ label: "Zones d'intervention", href: '/zones-intervention/' }, { label: departement, href: pageDep }, { label: c.nom }]}
+    surtitre={`${c.nom} · ${c.cp}`}
+    titre={`Débouchage et assainissement`}
+    titreFin={`à ${c.nom}.`}
+    intro={`Canalisation bouchée, réseau qui refoule, bac à graisse plein&nbsp;? Nous intervenons à ${c.nom} ${dispo}. <strong>Devis gratuit</strong>, prix annoncé au téléphone avant tout déplacement.`}
+    picto="zone"
+  />
+
+  <section class="sec sec-sm" aria-labelledby="t-ville">
+    <div class="wrap c-grid2">
+      <div>
+        <p class="sec-label">{departement} · {c.bassin}</p>
+        <h2 class="h2" id="t-ville">Nos interventions <em>à {c.nom}</em></h2>
+        <div class="prose zprose">
+          <p set:html={contexte} />
+          <p>{c.nom} compte {hab}&nbsp;habitants et se situe en <strong>{libZone}</strong> de notre grille tarifaire. Nous couvrons l'ensemble de <a href={pageDep}>{leDep}</a>, avec un seul numéro&nbsp;: <a class="tel" href={e.telephone.lien}>{e.telephone.affiche}</a>.</p>
+        </div>
+      </div>
+      <dl class="kv">
+        <dt>Commune</dt><dd>{c.nom} ({c.cp}), {departement}</dd>
+        <dt>Zone tarifaire</dt><dd>{c.zone === 'AB' ? 'À la limite des zones A et B — confirmée au téléphone selon votre adresse' : `Zone ${c.zone}`}</dd>
+        <dt>Débouchage manuel</dt><dd>à partir de {eur(prixManuel)} HT, déplacement et 1<sup>re</sup>&nbsp;heure compris</dd>
+        <dt>Débouchage hydrocureur</dt><dd>à partir de {eur(prixHydro)} HT, déplacement et 1<sup>re</sup>&nbsp;heure compris</dd>
+        <dt>Devis</dt><dd>Gratuit, sans engagement</dd>
+        <dt>Disponibilité</dt><dd>{dispo}</dd>
+      </dl>
+    </div>
+  </section>
+
+  <section class="sec sec-sm bg-mist" aria-labelledby="t-prix">
+    <div class="wrap c-grid2">
+      <div>
+        <p class="sec-label">Pas de mauvaise surprise</p>
+        <h2 class="h2" id="t-prix">Le prix est dit <em>avant qu'on parte</em></h2>
+        <p class="lead zh-lead">Vous n'avez pas à redouter le moment de la facture&nbsp;: tout est annoncé à l'avance, et tout est publié.</p>
+      </div>
+      <ul class="checks">
+        <li><strong>Devis gratuit et sans engagement</strong>, par téléphone ou depuis le <a href="/contact/">formulaire</a>.</li>
+        <li><strong>Le prix annoncé est le prix payé</strong>, dès lors que l'intervention correspond à ce que vous nous avez décrit.</li>
+        <li><strong>Aucun frais caché.</strong> Déplacement et première heure sont compris dans le forfait.</li>
+        <li><strong>Les majorations sont publiées</strong>, au pourcentage près&nbsp;: <a href="/tarifs/">voir la grille</a>.</li>
+        <li><strong>Si nous découvrons autre chose sur place</strong>, nous vous le disons et vous donnons le nouveau prix. Rien ne démarre sans votre accord.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec sec-sm" aria-labelledby="t-presta">
+    <div class="wrap">
+      <div class="c-head">
+        <div><p class="sec-label">Prestations</p><h2 class="h2" id="t-presta">Ce que nous faisons <em>à {c.nom}</em></h2></div>
+        <p class="lead">Du bouchon d'évier au curage d'un réseau complet, avec le même interlocuteur du premier appel à la fin du chantier.</p>
+      </div>
+      <ul class="cards cards-3">
+        {services.map((s) => (
+          <li class="li-c"><a class="card" href={s.url}>
+            <span class="num">{s.numero}</span>
+            <img src={`/img/pictos/${s.picto}-noir.svg`} alt="" width="48" height="48" loading="lazy" />
+            <h3>{s.titre}</h3>
+            <p>{s.resume}</p>
+            <span class="go">Découvrir <svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></span>
+          </a></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <Faq items={faq} titre={`Vos questions sur ${c.nom}`} label="Questions" />
+
+  {proches.length > 0 && (
+    <section class="sec sec-sm bg-mist" aria-labelledby="t-autour">
+      <div class="wrap">
+        <div class="c-head">
+          <div><p class="sec-label">Autour de {c.nom}</p><h2 class="h2" id="t-autour">Nous intervenons aussi <em>à côté</em></h2></div>
+        </div>
+        <ul class="zb">
+          {proches.map((v) => (
+            <li class="zb-item"><a href={`/zones-intervention/${v.slug}-${v.cp}/`}>{v.nom}<span class="zb-pop">{v.cp}</span></a></li>
+          ))}
+        </ul>
+        <p class="note">Votre commune n'est pas dans la liste&nbsp;? Nous couvrons toute <a href={pageDep}>{leDep}</a>. Vérifiez votre code postal sur la <a href="/zones-intervention/">page des zones d'intervention</a>.</p>
+      </div>
+    </section>
+  )}
+
+  <ContactCta
+    titreD={`Une canalisation bouchée à ${c.nom} ?`}
+    titreDem="Appelez, le devis est gratuit."
+    titreM="Demandez votre devis."
+  />
+</Base>
