@@ -11,8 +11,9 @@ import Bassins from './_Bassins.astro';
 import { FEUILLE_CONTENU } from '../../lib/feuilles';
 import { PROD } from '../../lib/env';
 import { services } from '../../data/services';
+import Communes from './_Communes.astro';
 import { entreprise as e } from '../../data/entreprise';
-import { schemaEntreprise } from '../../lib/schema';
+import { schemaEntreprise, schemaFaq } from '../../lib/schema';
 import zonesOrdi from '../../styles/pages/zones-ordinateur.css?url';
 import zonesMobile from '../../styles/pages/zones-mobile.css?url';
 /* Espaces insécables dans « 24 h/24 · 7 j/7 » (évite « 24 / h/24 » en fin de ligne). */
@@ -55,7 +56,7 @@ const faq = [
   titre="Débouchage et curage en Seine-Maritime (76) | HYDROFLASH"
   description={`Débouchage, curage, passage caméra et pompage en Seine-Maritime (76), ${dispo}. Devis gratuit et tarif transparent. Appelez le ${e.telephone.affiche}.`}
   feuilles={[FEUILLE_CONTENU, { ordi: zonesOrdi, mobile: zonesMobile }]}
-  jsonld={schemaEntreprise()}
+  jsonld={[schemaEntreprise(), schemaFaq(faq)]}
 >
   <SousHero
     ariane={[{ label: 'Zones d\'intervention', href: '/zones-intervention/' }, { label: 'Seine-Maritime (76)' }]}
@@ -188,6 +189,8 @@ const faq = [
       </ul>
     </div></div>
   </section>
+
+  <Communes dep="76" titre="Nos pages par commune en Seine-Maritime" />
 
   <ContactCta />
 </Base>

@@ -11,8 +11,9 @@ import Bassins from './_Bassins.astro';
 import { FEUILLE_CONTENU } from '../../lib/feuilles';
 import { PROD } from '../../lib/env';
 import { services } from '../../data/services';
+import Communes from './_Communes.astro';
 import { entreprise as e } from '../../data/entreprise';
-import { schemaEntreprise } from '../../lib/schema';
+import { schemaEntreprise, schemaFaq } from '../../lib/schema';
 import zonesOrdi from '../../styles/pages/zones-ordinateur.css?url';
 import zonesMobile from '../../styles/pages/zones-mobile.css?url';
 /* Espaces insécables dans « 24 h/24 · 7 j/7 » (évite « 24 / h/24 » en fin de ligne). */
@@ -51,7 +52,7 @@ const faq = [
   titre="Débouchage et curage dans l'Eure (27) | HYDROFLASH"
   description={`Débouchage, curage, caméra et pompage dans l'Eure (27), raccordé ou non au tout-à-l'égout. ${dispo}, devis gratuit : ${e.telephone.affiche}.`}
   feuilles={[FEUILLE_CONTENU, { ordi: zonesOrdi, mobile: zonesMobile }]}
-  jsonld={schemaEntreprise()}
+  jsonld={[schemaEntreprise(), schemaFaq(faq)]}
 >
   <SousHero
     ariane={[{ label: 'Zones d\'intervention', href: '/zones-intervention/' }, { label: 'Eure (27)' }]}
@@ -195,6 +196,8 @@ const faq = [
       </ul>
     </div></div>
   </section>
+
+  <Communes dep="27" titre="Nos pages par commune dans l'Eure" />
 
   <ContactCta />
 </Base>

@@ -9,8 +9,9 @@ import VerifCp from './_VerifCp.astro';
 import { FEUILLE_CONTENU } from '../../lib/feuilles';
 import { PROD } from '../../lib/env';
 import { services } from '../../data/services';
+import Communes from './_Communes.astro';
 import { entreprise as e } from '../../data/entreprise';
-import { schemaEntreprise } from '../../lib/schema';
+import { schemaEntreprise, schemaFaq } from '../../lib/schema';
 import zonesOrdi from '../../styles/pages/zones-ordinateur.css?url';
 import zonesMobile from '../../styles/pages/zones-mobile.css?url';
 /* Espaces insécables dans « 24 h/24 · 7 j/7 » (évite « 24 / h/24 » en fin de ligne). */
@@ -39,7 +40,7 @@ const deps = [
   titre="Zones d'intervention : Seine-Maritime et Eure | HYDROFLASH"
   description={`HYDROFLASH intervient en Seine-Maritime (76) et dans l'Eure (27) : débouchage, curage, inspection caméra, pompage. Communes et contact : ${e.telephone.affiche}.`}
   feuilles={[FEUILLE_CONTENU, { ordi: zonesOrdi, mobile: zonesMobile }]}
-  jsonld={schemaEntreprise()}
+  jsonld={[schemaEntreprise(), schemaFaq(faq)]}
 >
   <SousHero
     ariane={[{ label: 'Zones d\'intervention' }]}
@@ -114,6 +115,8 @@ const deps = [
   </section>
 
   <Faq items={faq} titre="Zone d'intervention : vos questions" intro="Couverture, horaires, délai : les réponses aux questions que l'on nous pose sur notre zone." />
+
+  <Communes titre="Toutes nos pages par commune" />
 
   <ContactCta />
 </Base>

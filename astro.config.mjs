@@ -16,6 +16,28 @@ export default defineConfig({
   integrations: [
     sitemap({
       filter: (page) => !/\/(contact\/merci|404)\/?$/.test(page),
+      // lastmod : Google s'en sert pour decider quoi recrawler en priorite.
+      // Sans date, il repasse au hasard et une page corrigee peut rester
+      // desindexee des semaines.
+      lastmod: new Date(),
+      // L'accueil, l'urgence et les tarifs sont les pages qui doivent etre
+      // explorees le plus souvent ; les mentions legales, le moins.
+      serialize: (item) => {
+        const u = item.url;
+        if (/\/(mentions-legales|confidentialite|cookies|accessibilite|plan-du-site)\//.test(u)) {
+          return { ...item, changefreq: 'yearly', priority: 0.2 };
+        }
+        if (/\/(urgence-debouchage-24h|tarifs|contact)\//.test(u)) {
+          return { ...item, changefreq: 'weekly', priority: 0.9 };
+        }
+        if (/\/conseils\//.test(u)) return { ...item, changefreq: 'monthly', priority: 0.5 };
+        if (/\/zones-intervention\/[a-z-]+-\d{5}\//.test(u)) {
+          return { ...item, changefreq: 'monthly', priority: 0.7 };
+        }
+        // Accueil
+        if (/^https?:\/\/[^/]+\/$/.test(u)) return { ...item, changefreq: 'weekly', priority: 1.0 };
+        return { ...item, changefreq: 'monthly', priority: 0.6 };
+      },
     }),
   ],
   vite: { build: { assetsInlineLimit: 0 } },

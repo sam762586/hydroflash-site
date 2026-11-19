@@ -11,7 +11,7 @@ import { FEUILLE_CONTENU } from '../../lib/feuilles';
 import { services } from '../../data/services';
 import { communes, voisines, memeDepartement, type Commune } from '../../data/communes';
 import { entreprise as e } from '../../data/entreprise';
-import { schemaEntreprise } from '../../lib/schema';
+import { schemaEntreprise, schemaFaq } from '../../lib/schema';
 import zonesOrdi from '../../styles/pages/zones-ordinateur.css?url';
 import zonesMobile from '../../styles/pages/zones-mobile.css?url';
 
@@ -132,7 +132,7 @@ const descPage = descLong.length <= 170 ? descLong : `Débouchage, curage et pom
   titre={titrePage}
   description={descPage}
   feuilles={[FEUILLE_CONTENU, { ordi: zonesOrdi, mobile: zonesMobile }]}
-  jsonld={schemaEntreprise({ nom: c.nom, cp: c.cp, dep: c.dep })}
+  jsonld={[schemaEntreprise({ nom: c.nom, cp: c.cp, dep: c.dep }), schemaFaq(faq)]}
 >
   <SousHero
     ariane={[{ label: "Zones d'intervention", href: '/zones-intervention/' }, { label: departement, href: pageDep }, { label: c.nom }]}

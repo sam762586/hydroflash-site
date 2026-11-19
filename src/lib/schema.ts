@@ -25,6 +25,66 @@ export function schemaEntreprise(ville?: { nom: string; cp: string; dep: string 
     openingHoursSpecification: [{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], opens: '00:00', closes: '23:59' }],
     ...(e.adresse ? { address: { '@type': 'PostalAddress', streetAddress: e.adresse.rue, postalCode: e.adresse.cp, addressLocality: e.adresse.ville, addressCountry: 'FR' } } : {}),
     ...(e.googleBusinessProfile ? { sameAs: [e.googleBusinessProfile] } : {}),
+    /* Fourchette de prix : Google l'affiche dans la fiche locale. Calculée depuis la
+       grille réelle, du premier forfait au plus élevé, majorations exclues. */
+    priceRange: `${Math.min(...prixGrille())}\u2013${Math.max(...prixGrille())} €`,
+    currenciesAccepted: 'EUR',
+    slogan: e.slogan,
+    /* Ce que l'entreprise sait faire : aide Google à relier le site aux requêtes métier. */
+    knowsAbout: [
+      'débouchage de canalisation', 'débouchage de WC', "débouchage d'évier",
+      'curage de canalisation', 'hydrocurage haute pression', 'détartrage de canalisation',
+      'inspection caméra de canalisation', 'inspection télévisée de réseau',
+      'pompage de bac à graisse', 'pompage des eaux usées', 'pompage des eaux pluviales',
+      "entretien de réseau d'assainissement", 'colonne d\'évacuation', 'assainissement',
+    ],
+    /* Catalogue de prestations avec leur prix d'appel : c'est ce qui permet d'apparaître
+       sur les requêtes « prix débouchage » plutôt que sur la seule marque. */
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: 'Prestations HYDROFLASH',
+      itemListElement: e.tarifs.prestations
+        .filter((p) => p.a !== null)
+        .map((p) => ({
+          '@type': 'Offer',
+          itemOffered: { '@type': 'Service', name: p.nom, description: p.detail },
+          price: String(p.a),
+          priceCurrency: 'EUR',
+          priceSpecification: {
+            '@type': 'PriceSpecification',
+            price: String(p.a),
+            priceCurrency: 'EUR',
+            valueAddedTaxIncluded: false,
+          },
+          availability: 'https://schema.org/InStock',
+        })),
+    },
+  };
+}
+
+/** Prix des FORFAITS de la grille, en euros HT. Les prix à l'heure ou au mètre
+    sont exclus : annoncer « à partir de 9 € » parce que le curage se facture 9 €
+    le mètre laisserait croire à un dépannage à 9 €. */
+function prixGrille(): number[] {
+  const v: number[] = [];
+  for (const p of e.tarifs.prestations) {
+    if (p.unite !== 'forfait') continue;
+    if (p.a !== null) v.push(p.a);
+    if (p.b !== null) v.push(p.b);
+  }
+  return v;
+}
+
+/** FAQPage : une page ne doit en déclarer qu'une, avec les questions réellement affichées. */
+export function schemaFaq(items: { q: string; a: string }[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: items.map((it) => ({
+      '@type': 'Question',
+      name: it.q.replace(/<[^>]+>/g, ''),
+      acceptedAnswer: { '@type': 'Answer', text: it.a.replace(/<[^>]+>/g, '') },
+    })),
   };
 }
 

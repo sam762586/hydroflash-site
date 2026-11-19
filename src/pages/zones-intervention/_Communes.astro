@@ -1,0 +1,48 @@
+---
+/** Liste des communes qui ont leur propre page, pour un département ou pour les deux.
+ *  Sert le maillage interne : sans ce bloc, les pages de communes ajoutées après les
+ *  listes de bassins n'avaient qu'un seul lien entrant. */
+import { communes } from '../../data/communes';
+interface Props { dep?: '76' | '27'; titre?: string; id?: string }
+const { dep, titre, id = 't-communes' } = Astro.props;
+const liste = (dep ? communes.filter((c) => c.dep === dep) : communes)
+  .slice()
+  .sort((a, b) => a.nom.localeCompare(b.nom, 'fr'));
+const zoneA = liste.filter((c) => c.zone === 'A');
+const zoneB = liste.filter((c) => c.zone !== 'A');
+---
+<section class="sec sec-sm" aria-labelledby={id}>
+  <div class="wrap">
+    <div class="c-head">
+      <div>
+        <p class="sec-label">Par commune</p>
+        <h2 class="h2" id={id}>{titre ?? 'Nos pages par commune'}</h2>
+      </div>
+      <p class="lead">Les tarifs et le délai annoncés dépendent de la commune. Ouvrez la vôtre pour voir le prix qui s'y applique.</p>
+    </div>
+
+    {zoneA.length > 0 && (
+      <>
+        <h3 class="zh-h3">Zone A — Rouen et 20&nbsp;km autour</h3>
+        <ul class="zb">
+          {zoneA.map((c) => (
+            <li class="zb-item"><a href={`/zones-intervention/${c.slug}-${c.cp}/`}>{c.nom}<span class="zb-pop">{c.cp}</span></a></li>
+          ))}
+        </ul>
+      </>
+    )}
+
+    {zoneB.length > 0 && (
+      <>
+        <h3 class="zh-h3">Zone B — au-delà de 20&nbsp;km</h3>
+        <ul class="zb">
+          {zoneB.map((c) => (
+            <li class="zb-item"><a href={`/zones-intervention/${c.slug}-${c.cp}/`}>{c.nom}<span class="zb-pop">{c.cp}</span></a></li>
+          ))}
+        </ul>
+      </>
+    )}
+
+    <p class="note">Votre commune n'est pas listée&nbsp;? Nous intervenons dans toute la Seine-Maritime et tout l'Eure&nbsp;: vérifiez votre code postal sur la <a href="/zones-intervention/">page des zones</a>.</p>
+  </div>
+</section>

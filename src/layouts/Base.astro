@@ -49,6 +49,10 @@ const robots = !PROD || noindex ? 'noindex, nofollow' : 'index, follow, max-imag
   <meta property="og:description" content={description}>
   <meta property="og:url" content={canonical}>
   <meta property="og:image" content={new URL(image, base).href}>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content={titre}>
+  <meta name="twitter:description" content={description}>
+  <meta name="twitter:image" content={new URL(image, base).href}>
   <link rel="stylesheet" href={cssOrdi} media="(min-width: 701px)">
   <link rel="stylesheet" href={cssMobile} media="(max-width: 700px)">
   {feuilles.map((f) => <>
