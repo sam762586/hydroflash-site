@@ -1,13 +1,58 @@
-# Le logiciel HYDROFLASH doit pouvoir appeler ce script même quand le site
-# est en préproduction protégée par mot de passe.
+# --- API du logiciel HYDROFLASH ----------------------------------------------
+# La racine du site refuse l'execution de tout PHP sauf exceptions nommees,
+# et la preproduction demande un mot de passe. Ce dossier reouvre les deux,
+# pour ces deux scripts seulement.
+
+# 1. Lever la protection par mot de passe de la preproduction : le logiciel
+#    appelle ce script sans pouvoir s'authentifier.
 <IfModule mod_authz_core.c>
   Require all granted
 </IfModule>
+<IfModule !mod_authz_core.c>
+  Satisfy any
+  Order deny,allow
+  Allow from all
+</IfModule>
 
-# Rien d'autre que les scripts PHP ne doit sortir d'ici.
-<FilesMatch "\.(log|txt|md|ini|bak|exemple\.php)$">
+# 2. Reautoriser nos deux scripts, refuses par la regle generale de la racine.
+<Files "envoi.php">
+  <IfModule mod_authz_core.c>
+    Require all granted
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Satisfy any
+    Order deny,allow
+    Allow from all
+  </IfModule>
+</Files>
+<Files "installer.php">
+  <IfModule mod_authz_core.c>
+    Require all granted
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Satisfy any
+    Order deny,allow
+    Allow from all
+  </IfModule>
+</Files>
+
+# 3. Le dossier lib/ ne doit jamais etre servi directement.
+<FilesMatch "^(PHPMailer|SMTP|Exception)\.php$">
   <IfModule mod_authz_core.c>
     Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+<FilesMatch "\.(log|txt|md|ini|bak)$|^config-mail\.php$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
   </IfModule>
 </FilesMatch>
 
