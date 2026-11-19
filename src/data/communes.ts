@@ -11,11 +11,15 @@ export type Commune = {
   slug: string;
   cp: string;
   dep: '76' | '27';
-  population: number;
+  /** Population INSEE. Absente quand nous n'avons pas le chiffre : la page
+      n'affiche alors aucun nombre plutôt qu'une estimation. */
+  population?: number;
   bassin: string;
   zone: 'A' | 'B' | 'AB';
   /** Dominante de l'habitat, qui oriente le type d'intervention. */
   tissu: 'urbain' | 'periurbain' | 'bourg';
+  /** Secteur géographique, utilisé pour varier le texte d'une page à l'autre. */
+  secteur?: 'cailly' | 'plateau-est' | 'boucle-seine' | 'rive-gauche';
 };
 
 export const communes: Commune[] = [
@@ -33,6 +37,27 @@ export const communes: Commune[] = [
   { nom: 'Caudebec-lès-Elbeuf',      slug: 'caudebec-les-elbeuf',      cp: '76320', dep: '76', population: 10476,  bassin: "Boucle d'Elbeuf",        zone: 'A',  tissu: 'periurbain' },
   { nom: 'Saint-Aubin-lès-Elbeuf',   slug: 'saint-aubin-les-elbeuf',   cp: '76410', dep: '76', population: 8443,   bassin: "Boucle d'Elbeuf",        zone: 'A',  tissu: 'periurbain' },
   { nom: "Pont-de-l'Arche",          slug: 'pont-de-l-arche',          cp: '27340', dep: '27', population: 4133,   bassin: 'Vallée de Seine',        zone: 'A',  tissu: 'bourg' },
+
+  // ---- Vallée du Cailly et nord-ouest rouennais : zone A ----
+  { nom: 'Canteleu',                 slug: 'canteleu',                 cp: '76380', dep: '76', bassin: 'Agglomération de Rouen', zone: 'A', tissu: 'periurbain', secteur: 'cailly' },
+  { nom: 'Maromme',                  slug: 'maromme',                  cp: '76150', dep: '76', bassin: 'Agglomération de Rouen', zone: 'A', tissu: 'periurbain', secteur: 'cailly' },
+  { nom: 'Déville-lès-Rouen',        slug: 'deville-les-rouen',        cp: '76250', dep: '76', bassin: 'Agglomération de Rouen', zone: 'A', tissu: 'periurbain', secteur: 'cailly' },
+  { nom: 'Notre-Dame-de-Bondeville', slug: 'notre-dame-de-bondeville', cp: '76960', dep: '76', bassin: 'Agglomération de Rouen', zone: 'A', tissu: 'periurbain', secteur: 'cailly' },
+  { nom: 'Malaunay',                 slug: 'malaunay',                 cp: '76770', dep: '76', bassin: 'Agglomération de Rouen', zone: 'A', tissu: 'bourg',      secteur: 'cailly' },
+
+  // ---- Plateau est et nord : zone A ----
+  { nom: 'Darnétal',                 slug: 'darnetal',                 cp: '76160', dep: '76', bassin: 'Agglomération de Rouen', zone: 'A', tissu: 'periurbain', secteur: 'plateau-est' },
+  { nom: 'Bois-Guillaume',           slug: 'bois-guillaume',           cp: '76230', dep: '76', bassin: 'Agglomération de Rouen', zone: 'A', tissu: 'periurbain', secteur: 'plateau-est' },
+  { nom: 'Isneauville',              slug: 'isneauville',              cp: '76230', dep: '76', bassin: 'Agglomération de Rouen', zone: 'A', tissu: 'bourg',      secteur: 'plateau-est' },
+  { nom: 'Bonsecours',               slug: 'bonsecours',               cp: '76240', dep: '76', bassin: 'Agglomération de Rouen', zone: 'A', tissu: 'periurbain', secteur: 'plateau-est' },
+  { nom: 'Le Mesnil-Esnard',         slug: 'le-mesnil-esnard',         cp: '76240', dep: '76', bassin: 'Agglomération de Rouen', zone: 'A', tissu: 'periurbain', secteur: 'plateau-est' },
+  { nom: 'Franqueville-Saint-Pierre',slug: 'franqueville-saint-pierre',cp: '76520', dep: '76', bassin: 'Agglomération de Rouen', zone: 'A', tissu: 'periurbain', secteur: 'plateau-est' },
+
+  // ---- Boucle de Seine, rive gauche : zone A ----
+  { nom: 'Oissel',                   slug: 'oissel',                   cp: '76350', dep: '76', bassin: 'Agglomération de Rouen', zone: 'A', tissu: 'periurbain', secteur: 'boucle-seine' },
+  { nom: 'Grand-Couronne',           slug: 'grand-couronne',           cp: '76530', dep: '76', bassin: 'Agglomération de Rouen', zone: 'A', tissu: 'periurbain', secteur: 'boucle-seine' },
+  { nom: 'Petit-Couronne',           slug: 'petit-couronne',           cp: '76650', dep: '76', bassin: 'Agglomération de Rouen', zone: 'A', tissu: 'periurbain', secteur: 'boucle-seine' },
+  { nom: 'Saint-Pierre-lès-Elbeuf',  slug: 'saint-pierre-les-elbeuf',  cp: '76320', dep: '76', bassin: "Boucle d'Elbeuf",        zone: 'A', tissu: 'periurbain', secteur: 'boucle-seine' },
 
   // ---- Seine-Maritime, zone B ----
   { nom: 'Le Havre',                 slug: 'le-havre',                 cp: '76600', dep: '76', population: 166687, bassin: 'Agglomération du Havre', zone: 'B',  tissu: 'urbain' },

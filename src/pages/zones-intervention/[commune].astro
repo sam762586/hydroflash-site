@@ -37,7 +37,7 @@ const ANom = aNom.charAt(0).toUpperCase() + aNom.slice(1);
 /** « la Seine-Maritime » / « l'Eure » — l'élision change selon le département. */
 const leDep = c.dep === '76' ? 'la Seine-Maritime' : "l'Eure";
 const pageDep = c.dep === '76' ? '/zones-intervention/seine-maritime-76/' : '/zones-intervention/eure-27/';
-const hab = c.population.toLocaleString('fr-FR').replace(/ | /g, ' ');
+const hab = (c.population ?? 0).toLocaleString('fr-FR').replace(/ | /g, ' ');
 
 /* Prix d'appel réels, repris de la grille. */
 const manuel = t.prestations[0];
@@ -52,13 +52,58 @@ const libZone =
   : c.zone === 'B' ? `zone B (${t.zones[1].libelle})`
   : 'à la limite des zones A et B';
 
-/* Le texte change selon le type d'habitat : ce n'est pas le même métier en centre-ville
-   dense qu'en secteur pavillonnaire ou en bourg. */
-const contexte = {
-  urbain: `${ANom}, l'essentiel de nos interventions concerne des immeubles et des copropriétés : colonnes d'évacuation communes, branchements en sous-sol, regards de pied d'immeuble. Un bouchon de colonne se signale souvent par un refoulement chez le voisin du bas, pas chez celui qui l'a causé — d'où l'intérêt d'identifier le point exact avant de casser quoi que ce soit.`,
-  periurbain: `${ANom}, nous intervenons autant sur des maisons individuelles que sur des petits collectifs. En secteur pavillonnaire, les bouchons se forment le plus souvent sur le branchement entre la maison et le réseau public, à l'endroit où les racines et les graisses s'accumulent.`,
-  bourg: `${ANom} et dans les communes alentour, l'habitat est majoritairement individuel, avec des réseaux parfois anciens et, dans les secteurs non raccordés, des installations autonomes. Le passage caméra est souvent ce qui évite des travaux de terrassement inutiles.`,
-}[c.tissu];
+/* Deux communes ne doivent jamais donner la même page : Google traite les pages
+   clonées comme du contenu dupliqué et n'en garde qu'une. Le texte se compose donc
+   de trois variantes par type d'habitat, choisies par le nom de la commune, plus
+   une phrase propre au secteur géographique. Rien n'est inventé : ce sont des
+   constats de métier, vrais partout, formulés différemment. */
+const variantes: Record<Commune['tissu'], string[]> = {
+  urbain: [
+    `l'essentiel de nos interventions concerne des immeubles et des copropriétés : colonnes d'évacuation communes, branchements en sous-sol, regards de pied d'immeuble. Un bouchon de colonne se signale souvent par un refoulement chez le voisin du bas, pas chez celui qui l'a causé — d'où l'intérêt d'identifier le point exact avant de casser quoi que ce soit.`,
+    `nous intervenons surtout en habitat collectif. Dans un immeuble, le bouchon est rarement là où l'eau remonte : il se forme plus bas, dans la colonne ou le collectif, et c'est le logement du rez-de-chaussée qui encaisse. Le passage caméra sert à situer le défaut avant d'engager des travaux.`,
+    `les réseaux sont denses et souvent anciens : colonnes d'immeubles, branchements enterrés sous la voirie, regards difficiles d'accès. Nous commençons par chercher d'où vient le problème, parce qu'un débouchage au jugé sur un réseau collectif se refait dans les trois mois.`,
+  ],
+  periurbain: [
+    `nous intervenons autant sur des maisons individuelles que sur des petits collectifs. En secteur pavillonnaire, les bouchons se forment le plus souvent sur le branchement entre la maison et le réseau public, à l'endroit où les racines et les graisses s'accumulent.`,
+    `l'habitat est surtout pavillonnaire. Le point faible, c'est presque toujours le regard de visite ou le branchement sous le jardin : des années de graisses de cuisine et quelques racines d'arbre suffisent à réduire une canalisation de moitié sans que personne ne s'en aperçoive.`,
+    `nous travaillons principalement sur des maisons avec jardin. Quand plusieurs évacuations se bouchent en même temps — évier, douche, WC —, le problème n'est pas dans la maison mais sur le collecteur extérieur. C'est exactement ce que l'hydrocurage traite.`,
+  ],
+  bourg: [
+    `l'habitat est majoritairement individuel, avec des réseaux parfois anciens et, dans les secteurs non raccordés, des installations autonomes. Le passage caméra est souvent ce qui évite des travaux de terrassement inutiles.`,
+    `on trouve des maisons anciennes et, à l'écart du bourg, des habitations en assainissement non collectif. Fosse, bac dégraisseur, épandage : chacun a son entretien, et un réseau négligé finit toujours par se rappeler au mauvais moment.`,
+    `les canalisations sont souvent d'origine, en grès ou en fonte, avec des joints qui se déboîtent et laissent entrer les racines. Inspecter avant de creuser évite de défoncer une allée pour rien.`,
+  ],
+};
+
+/** Choix stable : la même commune donne toujours la même variante. */
+const idx = [...c.slug].reduce((n, ch) => n + ch.charCodeAt(0), 0);
+const variante = variantes[c.tissu][idx % variantes[c.tissu].length];
+
+/* À défaut de secteur, une phrase propre au bassin : chaque page garde ainsi
+   une deuxième phrase qui lui est propre. */
+const phraseBassin: Record<string, string> = {
+  'Agglomération de Rouen': ` L'agglomération rouennaise mêle immeubles de centre-ville et lotissements : nous adaptons la méthode au réseau, pas l'inverse.`,
+  'Agglomération du Havre': ` Près de l'estuaire, les réseaux travaillent avec une nappe haute et des sols instables, ce qui fatigue les joints et favorise les déboîtements.`,
+  "Côte d'Albâtre": ` Sur le littoral, le sel et l'humidité accélèrent la corrosion des réseaux en fonte, et les fortes pluies saturent vite les collecteurs.`,
+  'Estuaire et vallée du Commerce': ` Dans la vallée du Commerce, l'habitat ancien côtoie des zones d'activité : les contraintes ne sont pas les mêmes d'une rue à l'autre.`,
+  'Pays de Caux intérieur': ` Sur le plateau cauchois, beaucoup d'habitations sont éloignées du réseau collectif et fonctionnent en assainissement autonome.`,
+  'Pays de Bray': ` Le pays de Bray est un secteur argileux : les terrains bougent, et les canalisations enterrées avec eux.`,
+  "Boucle d'Elbeuf": ` La boucle d'Elbeuf a un bâti ancien, avec des réseaux qui ont parfois plus d'un siècle et n'ont jamais été inspectés.`,
+  "Agglomération d'Évreux": ` Dans la vallée de l'Iton, les réseaux reçoivent beaucoup d'eaux de ruissellement, ce qui entraîne limons et sables dans les collecteurs.`,
+  'Vallée de Seine': ` Le long de la Seine, la nappe est proche de la surface : un réseau fissuré se remplit d'eau claire et s'ensable.`,
+  "Ouest de l'Eure": ` Dans la vallée de la Risle et le Roumois, l'habitat est dispersé et souvent en assainissement non collectif.`,
+  'Vexin normand': ` Le Vexin normand est rural : fosses, bacs dégraisseurs et longs branchements sous jardin y sont la règle.`,
+  'Centre et sud de l\'Eure': ` Au centre et au sud du département, les bourgs sont distants et les installations souvent autonomes.`,
+};
+
+const phraseSecteur = {
+  cailly: ` La vallée du Cailly est un secteur de fond de vallée : les réseaux y reçoivent aussi les eaux de ruissellement du plateau, ce qui accélère l'encrassement.`,
+  'plateau-est': ` Sur le plateau est de Rouen, les maisons sont souvent raccordées par de longs branchements sous jardin, où les racines trouvent vite le chemin.`,
+  'boucle-seine': ` Dans la boucle de Seine, la nappe est haute : un réseau fissuré se remplit d'eau claire et perd son pouvoir d'entraînement, ce qu'une caméra repère immédiatement.`,
+  'rive-gauche': ``,
+}[c.secteur ?? 'rive-gauche'] || phraseBassin[c.bassin] || '';
+
+const contexte = `${ANom}, ${variante}${phraseSecteur}`;
 
 const proches = (voisines(c).length ? voisines(c) : memeDepartement(c)).slice(0, 6);
 
@@ -82,7 +127,7 @@ const descPage = `Débouchage, curage, passage caméra et pompage ${aNom} (${c.c
   titre={titrePage}
   description={descPage}
   feuilles={[FEUILLE_CONTENU, { ordi: zonesOrdi, mobile: zonesMobile }]}
-  jsonld={schemaEntreprise()}
+  jsonld={schemaEntreprise({ nom: c.nom, cp: c.cp, dep: c.dep })}
 >
   <SousHero
     ariane={[{ label: "Zones d'intervention", href: '/zones-intervention/' }, { label: departement, href: pageDep }, { label: c.nom }]}
@@ -100,7 +145,7 @@ const descPage = `Débouchage, curage, passage caméra et pompage ${aNom} (${c.c
         <h2 class="h2" id="t-ville">Nos interventions <em>{aNom}</em></h2>
         <div class="prose zprose">
           <p set:html={contexte} />
-          <p>{c.nom} compte {hab}&nbsp;habitants et se situe en <strong>{libZone}</strong> de notre grille tarifaire. Nous couvrons l'ensemble de <a href={pageDep}>{leDep}</a>, avec un seul numéro&nbsp;: <a class="tel" href={e.telephone.lien}>{e.telephone.affiche}</a>.</p>
+          <p>{c.population ? <>{c.nom} compte {hab}&nbsp;habitants et se situe</> : <>{c.nom} se situe</>} en <strong>{libZone}</strong> de notre grille tarifaire. Nous couvrons l'ensemble de <a href={pageDep}>{leDep}</a>, avec un seul numéro&nbsp;: <a class="tel" href={e.telephone.lien}>{e.telephone.affiche}</a>.</p>
         </div>
       </div>
       <dl class="kv">
