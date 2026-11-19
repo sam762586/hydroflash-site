@@ -55,6 +55,15 @@ export const entreprise = {
       { code: '27', nom: 'Eure', slug: 'eure-27' },
     ],
   },
+  /** Les trois fondateurs (confirmé le 19/11/2026). Années d'expérience dans l'assainissement. */
+  fondateurs: {
+    nombre: 3,
+    annees: [18, 17, 5],
+    postes: 'responsable de service et chef d\u2019équipe',
+    /** Répartition prénom / poste / années : non confirmée (bloc « L'équipe » en attente). */
+    equipe: null as null | { prenom: string; poste: string; annees: number }[],
+  },
+
   passageCamera: { livrable: 'Les photos de l\'inspection vous sont remises sur clé USB.' },
   vehicule: { type: 'Pick-up à caisson', couleur: 'RAL 2009', marquage: 'à venir' },
 

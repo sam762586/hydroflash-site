@@ -17,19 +17,23 @@ import vehiculeMarque from '../assets/photos/vehicule-marque-atelier.jpg';
 import vehiculeLivraison from '../assets/photos/vehicule-livraison.webp';
 /* Espaces insécables dans « 24 h/24 · 7 j/7 » (évite « 24 / h/24 » en fin de ligne). */
 const dispo = e.disponibilite.libelle.replace(/(\d) /g, '$1\u00a0');
+const f = e.fondateurs;
+const cumul = f.annees.reduce((t, n) => t + n, 0);
+/** « 18, 17 et 5 ans » */
+const detailAnnees = f.annees.slice(0, -1).join(', ') + ' et ' + f.annees[f.annees.length - 1] + '\u00a0ans';
 ---
 <Base
-  titre="À propos : spécialiste de l'assainissement | HYDROFLASH"
-  description={`HYDROFLASH, spécialiste de l'assainissement en Seine-Maritime (76) et dans l'Eure (27) : débouchage, curage, passage caméra, pompage. ${dispo}. Tarif annoncé avant tout déplacement.`}
+  titre={`À propos : ${cumul} ans d'expérience en assainissement | HYDROFLASH`}
+  description={`HYDROFLASH, ce sont ${f.nombre} professionnels de l'assainissement réunis près de Rouen : ${cumul} ans d'expérience cumulée en débouchage, curage et passage caméra, en Seine-Maritime (76) et dans l'Eure (27). Intervention ${dispo}.`}
   feuilles={[FEUILLE_CONTENU, { ordi: contactOrdi, mobile: contactMobile }]}
   jsonld={schemaEntreprise()}
 >
   <SousHero
     ariane={[{ label: 'À propos' }]}
-    surtitre="À propos · HYDROFLASH"
-    titre="Spécialiste de l'assainissement,"
-    titreFin="en Seine-Maritime et dans l'Eure."
-    intro={`HYDROFLASH débouche, cure, détartre, inspecte par passage caméra, pompe et entretient les canalisations et réseaux d'assainissement, <strong>${dispo}</strong>. Le tarif, majoration comprise, vous est annoncé avant tout déplacement.`}
+    surtitre={`À propos · ${cumul} ans d'expérience`}
+    titre={`${f.nombre} professionnels de l'assainissement,`}
+    titreFin="une entreprise normande."
+    intro={`HYDROFLASH est née de la rencontre de ${f.nombre} professionnels du métier. À nous ${f.nombre}, nous cumulons <strong>${cumul} ans d'expérience</strong> en assainissement — ${detailAnnees} passés sur le terrain, à des postes de ${f.postes}.`}
     picto="technicien"
   />
 
@@ -39,11 +43,12 @@ const dispo = e.disponibilite.libelle.replace(/(\d) /g, '$1\u00a0');
         <p class="sec-label">Qui sommes-nous</p>
         <h2 class="h2" id="t-qui">Un seul métier&nbsp;: <em>l'assainissement</em></h2>
         <div class="prose ap-prose">
-          <p>HYDROFLASH est une entreprise spécialisée dans l'assainissement&nbsp;: tout ce qui permet aux eaux usées de s'écouler, de l'évier jusqu'au réseau. Nous intervenons chez les particuliers comme chez les professionnels et les syndics de copropriété.</p>
-          <p>Notre zone d'intervention couvre deux départements normands, la <a href="/zones-intervention/seine-maritime-76/">Seine-Maritime (76)</a> et l'<a href="/zones-intervention/eure-27/">Eure (27)</a>, avec un seul numéro, joignable {dispo}.</p>
+          <p>Avant de créer HYDROFLASH, nous avons encadré des équipes et piloté des chantiers pour des bailleurs sociaux, des syndics, des entreprises et des particuliers. Aujourd'hui, nous mettons ce savoir-faire directement à votre service, sans intermédiaire.</p>
+          <p>Notre métier, c'est tout ce qui permet aux eaux usées de s'écouler, de l'évier jusqu'au réseau. Notre zone couvre deux départements normands, la <a href="/zones-intervention/seine-maritime-76/">Seine-Maritime (76)</a> et l'<a href="/zones-intervention/eure-27/">Eure (27)</a>, avec un seul numéro, joignable {dispo}.</p>
         </div>
       </div>
       <dl class="kv ap-kv">
+        <dt>Expérience</dt><dd>{cumul}&nbsp;ans cumulés à {f.nombre}&nbsp;: {detailAnnees} dans l'assainissement</dd>
         <dt>Métier</dt><dd>Assainissement&nbsp;: débouchage, curage, détartrage, passage caméra, pompage, entretien des réseaux</dd>
         <dt>Zone</dt><dd>{e.zone.libelle}</dd>
         <dt>Disponibilité</dt><dd>Intervention {dispo}</dd>
@@ -51,6 +56,35 @@ const dispo = e.disponibilite.libelle.replace(/(\d) /g, '$1\u00a0');
         <dt>Téléphone</dt><dd><a class="tel" href={e.telephone.lien}>{e.telephone.affiche}</a></dd>
         <dt>E-mail</dt><dd><a href={`mailto:${e.email}`}>{e.email}</a></dd>
       </dl>
+    </div>
+  </section>
+
+  <section class="sec sec-sm bg-mist" aria-labelledby="t-terrain">
+    <div class="wrap c-grid2">
+      <div>
+        <p class="sec-label">Sur le terrain</p>
+        <h2 class="h2" id="t-terrain">Une vraie connaissance <em>des chantiers</em></h2>
+        <p class="lead ap-lead">Canalisation bouchée, colonne entartrée, réseau qui refoule, bac à graisse saturé&nbsp;: ces situations, nous les connaissons par cœur.</p>
+      </div>
+      <ul class="checks">
+        <li><strong>Le bon diagnostic</strong> dès la première visite.</li>
+        <li><strong>La méthode adaptée</strong>, sans prestation inutile.</li>
+        <li><strong>Une explication claire</strong> de l'origine du problème et de la solution.</li>
+        <li><strong>Une intervention rapide</strong>, en sécurité et proprement.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec sec-sm" aria-labelledby="t-inter">
+    <div class="wrap c-grid2">
+      <div>
+        <p class="sec-label">Pas d'intermédiaire</p>
+        <h2 class="h2" id="t-inter">Ceux qui vous répondent <em>sont ceux qui interviennent</em></h2>
+      </div>
+      <div class="prose ap-prose">
+        <p>Chez HYDROFLASH, pas de plateforme téléphonique ni de sous-traitance. Les personnes qui établissent votre devis sont celles qui connaissent le terrain et qui se déplacent chez vous.</p>
+        <p>Vous avez un interlocuteur qui sait de quoi il parle, du premier appel à la fin de l'intervention.</p>
+      </div>
     </div>
   </section>
 
@@ -62,9 +96,10 @@ const dispo = e.disponibilite.libelle.replace(/(\d) /g, '$1\u00a0');
           <p class="lead">Ces informations ne sont pas encore confirmées par HYDROFLASH&nbsp;: ce bloc n'apparaît pas sur le site en ligne.</p>
         </div>
         <dl class="kv">
-          <dt>Histoire</dt><dd>Année de création, parcours du fondateur <Tbc /></dd>
-          <dt>Équipe</dt><dd>Nombre de techniciens, qualifications <Tbc /></dd>
-          <dt>Chiffres clés</dt><dd>Interventions, clients, ancienneté <Tbc /></dd>
+          <dt>Histoire</dt><dd>Année de création <Tbc /></dd>
+          <dt>L'équipe</dt><dd>Prénom, poste et années d'expérience de chacun des {f.nombre} fondateurs, pour un bloc nominatif avec photo <Tbc label={`répartition des ${f.nombre} parcours à confirmer`} /></dd>
+          <dt>Qualifications</dt><dd>Formations et habilitations (CATEC, etc.) <Tbc /></dd>
+          <dt>Chiffres clés</dt><dd>Nombre d'interventions, de clients <Tbc /></dd>
           <dt>Matériel</dt><dd>Hydrocureuse haute pression, caméra d'inspection, pompage (modèles, capacités) <Tbc /></dd>
           <dt>Base d'intervention</dt><dd>Adresse de la base ou du dépôt <Tbc /></dd>
           <dt>Entreprise</dt><dd>Raison sociale, SIRET, assurance responsabilité civile professionnelle <Tbc /></dd>
@@ -130,6 +165,8 @@ const dispo = e.disponibilite.libelle.replace(/(\d) /g, '$1\u00a0');
         <li><strong>Un tarif annoncé avant tout déplacement</strong>, majoration de soirée, de week-end ou de jour férié comprise (<a href="/tarifs/">voir les tarifs</a>).</li>
         <li><strong>Rappel immédiat</strong> après une demande envoyée depuis le site.</li>
         <li><strong>Passage caméra</strong>&nbsp;: les photos de l'inspection vous sont remises sur clé USB.</li>
+        <li><strong>Une grille tarifaire publiée</strong>&nbsp;: nos prix sont <a href="/tarifs/">affichés en ligne</a>, pas réservés à ceux qui appellent.</li>
+        <li><strong>{cumul} ans d'expérience</strong> à {f.nombre}, en débouchage, curage, détartrage, passage caméra et pompage.</li>
         <li><strong>Un seul numéro</strong>, partout&nbsp;: <a class="tel" href={e.telephone.lien}>{e.telephone.affiche}</a>.</li>
       </ul>
     </div>
