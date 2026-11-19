@@ -12,7 +12,7 @@ export const entreprise = {
 
   // ——— Confirmé ———
   telephone: { affiche: '07 62 88 28 39', lien: 'tel:+33762882839', international: '+33762882839' },
-  email: 'hydroflash@gmail.com',
+  email: 'contact@hydroflash.fr',
   disponibilite: { libelle: '24\u00a0h/24, 7\u00a0j/7', court: '24\u00a0h/24 · 7\u00a0j/7' }, // espaces insécables
   sansMajoration: true, // de nuit ni de week-end
   rappel: 'immédiat', // demande « Être rappelé »

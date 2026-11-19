@@ -6,3 +6,7 @@ dist/
 config-hydroflash.php
 *.log
 .DS_Store
+
+# Secrets et fichiers serveur : jamais versionnes
+.htpasswd*
+config-hydroflash.php

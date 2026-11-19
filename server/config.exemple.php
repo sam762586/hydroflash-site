@@ -30,7 +30,7 @@
  */
 return [
     // Adresse qui reçoit les demandes (confirmée le 18/11/2026).
-    'destinataire' => 'hydroflash@gmail.com',
+    'destinataire' => 'contact@hydroflash.fr',
 
     // Adresse d'expédition : une adresse du domaine, existante chez l'hébergeur (ex. formulaire@hydroflash.fr).
     'expediteur' => 'À RENSEIGNER',

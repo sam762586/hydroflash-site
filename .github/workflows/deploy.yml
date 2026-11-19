@@ -1,0 +1,75 @@
+# Déploiement automatique du site HYDROFLASH vers l'hébergement OVH.
+# Se déclenche à chaque modification envoyée sur la branche main.
+name: Mise en ligne HYDROFLASH
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:        # permet aussi un lancement manuel depuis GitHub
+
+concurrency:
+  group: deploiement-ovh
+  cancel-in-progress: false
+
+jobs:
+  construire-et-envoyer:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Installer les dépendances
+        run: npm ci
+
+      - name: Construire le site
+        run: npm run build
+        # Préproduction tant que les mentions légales ne sont pas renseignées.
+        # Le jour du passage en production : remplacer par "npm run build:prod"
+        # et supprimer l'étape « Protection préproduction » ci-dessous.
+
+      - name: Protection préproduction (mot de passe + noindex)
+        run: |
+          python3 - <<'PY'
+          p = 'dist/.htaccess'
+          s = open(p, encoding='utf-8').read()
+          bloc = '''# --- PRÉPRODUCTION : accès protégé par mot de passe ---
+          AuthType Basic
+          AuthName "HYDROFLASH - preproduction"
+          AuthUserFile /home/uzdjkzv/.htpasswd-hydroflash
+          Require valid-user
+          <If "%{REQUEST_URI} =~ m#^/\\.well-known/#">
+            Require all granted
+          </If>
+          # --- fin du bloc préproduction ---
+
+          '''
+          bloc = '\n'.join(l[10:] if l.startswith(' ' * 10) else l for l in bloc.split('\n'))
+          ancre = 'Options -Indexes -MultiViews'
+          assert ancre in s, 'ancre .htaccess absente'
+          s = s.replace(ancre, bloc + ancre, 1)
+          a = '  # Header always set X-Robots-Tag "noindex, nofollow"'
+          assert a in s, 'ligne X-Robots-Tag absente'
+          s = s.replace(a, '  Header always set X-Robots-Tag "noindex, nofollow"', 1)
+          open(p, 'w', encoding='utf-8').write(s)
+          print('Protection preproduction appliquee')
+          PY
+
+      - name: Envoyer sur OVH par FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ftp.cluster129.hosting.ovh.net
+          username: uzdjkzv
+          password: ${{ secrets.OVH_FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./dist/
+          server-dir: ./www/
+          dangerous-clean-slate: false
+          exclude: |
+            **/.git*
+            **/.git*/**

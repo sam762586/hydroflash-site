@@ -75,7 +75,7 @@ accord du client pour l'hébergement (service payant), accès au domaine `hydrof
    curl -sI https://hydroflash.fr/ | grep -i "content-security\|strict-transport\|x-content-type"
    curl -s -o /dev/null -w "%{http_code}\n" https://hydroflash.fr/.user.ini   # 404 attendu
    ```
-5. Envoyer une vraie demande depuis `/contact/` et depuis « Être rappelé » : réception sur hydroflash@gmail.com,
+5. Envoyer une vraie demande depuis `/contact/` et depuis « Être rappelé » : réception sur contact@hydroflash.fr,
    pièce jointe photo, page `/contact/merci/`.
 6. Déclarer `https://hydroflash.fr/sitemap-index.xml` dans Google Search Console ; relier la fiche Google
    (même nom, même numéro 07 62 88 28 39) dès qu'elle existe.

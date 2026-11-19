@@ -44,7 +44,7 @@ final class HfErreur extends RuntimeException
 function hf_config(): array
 {
     $defauts = [
-        'destinataire' => 'hydroflash@gmail.com',
+        'destinataire' => 'contact@hydroflash.fr',
         'expediteur' => '',
         'expediteur_nom' => 'Site HYDROFLASH',
         'secret' => '',
