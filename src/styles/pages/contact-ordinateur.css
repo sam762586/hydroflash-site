@@ -96,3 +96,12 @@
 .ap-vs td.vs-a::before { content: "\00d7"; background: var(--line); color: var(--grey); }
 .ap-vs td.vs-b::before { content: "\2713"; background: var(--o); color: #fff; }
 .ap-vs td.vs-b a { color: var(--ink2); text-decoration-color: var(--o); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+
+/* ---- À propos : les trois associés (style C, ≥ 701 px) ---- */
+.ap-eq { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; margin-top: 10px; }
+.ap-eq li { padding: 28px 26px 30px; background: var(--paper); border-top: 3px solid var(--o); }
+.eq-av { display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%; background: var(--ink2); color: var(--paper); font: 800 19px/1 var(--f-display); font-stretch: 85%; letter-spacing: .04em; }
+.ap-eq h3 { margin: 18px 0 0; font: 800 23px/1.2 var(--f-display); font-stretch: 85%; color: var(--ink2); }
+.eq-poste { margin: 7px 0 0; font-size: 15.5px; line-height: 1.4; color: var(--grey); }
+.eq-ans { margin: 16px 0 0; padding-top: 14px; border-top: 1px solid var(--line); font-size: 15.5px; color: var(--ink2); }
+.eq-ans b { font: 800 26px/1 var(--f-display); font-stretch: 85%; font-variant-numeric: tabular-nums; color: var(--o-text); vertical-align: -2px; margin-right: 4px; }

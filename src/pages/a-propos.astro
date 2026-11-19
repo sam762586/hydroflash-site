@@ -18,9 +18,13 @@ import vehiculeLivraison from '../assets/photos/vehicule-livraison.webp';
 /* Espaces insécables dans « 24 h/24 · 7 j/7 » (évite « 24 / h/24 » en fin de ligne). */
 const dispo = e.disponibilite.libelle.replace(/(\d) /g, '$1\u00a0');
 const f = e.fondateurs;
-const cumul = f.annees.reduce((t, n) => t + n, 0);
-/** « 18, 17 et 5 ans » */
-const detailAnnees = f.annees.slice(0, -1).join(', ') + ' et ' + f.annees[f.annees.length - 1] + '\u00a0ans';
+/** Du plus ancien au plus récent : l'expérience la plus longue en premier. */
+const equipe = [...f.equipe].sort((x, y) => y.annees - x.annees);
+const cumul = equipe.reduce((t, m) => t + m.annees, 0);
+/** « 18, 17 et 4 ans » */
+const detailAnnees = equipe.slice(0, -1).map((m) => m.annees).join(', ') + ' et ' + equipe[equipe.length - 1].annees + '\u00a0ans';
+/** « SD », « JM » — initiales affichées tant qu'il n'y a pas de photo. */
+const initiales = (nom: string) => nom.split(' ').map((m) => m[0]).join('');
 ---
 <Base
   titre={`À propos : ${cumul} ans d'expérience en assainissement | HYDROFLASH`}
@@ -119,8 +123,28 @@ const detailAnnees = f.annees.slice(0, -1).join(', ') + ' et ' + f.annees[f.anne
     </div>
   </section>
 
+  <section class="sec sec-sm bg-mist" aria-labelledby="t-eq">
+    <div class="wrap">
+      <div class="c-head">
+        <div><p class="sec-label">L'équipe</p><h2 class="h2" id="t-eq">Les {f.nombre} personnes <em>que vous aurez au bout du fil</em></h2></div>
+        <p class="lead">Pas de standard, pas de commercial&nbsp;: ce sont eux qui répondent, qui chiffrent et qui interviennent.</p>
+      </div>
+      <ul class="ap-eq">
+        {equipe.map((m) => (
+          <li>
+            <span class="eq-av" aria-hidden="true">{initiales(m.nom)}</span>
+            <h3>{m.nom}</h3>
+            <p class="eq-poste">{m.poste}</p>
+            <p class="eq-ans"><b>{m.annees}</b> ans dans l'assainissement</p>
+          </li>
+        ))}
+      </ul>
+      <p class="note">À eux {f.nombre}, {cumul}&nbsp;ans de réseaux, de colonnes et de bacs à graisse en Normandie.</p>
+    </div>
+  </section>
+
   {!PROD && (
-    <section class="sec sec-sm bg-mist ap-tbc" aria-labelledby="t-hist">
+    <section class="sec sec-sm ap-tbc" aria-labelledby="t-hist">
       <div class="wrap">
         <div class="c-head">
           <div><p class="sec-label">Préproduction uniquement</p><h2 class="h2" id="t-hist">Histoire, équipe <em>et chiffres</em></h2></div>
@@ -128,7 +152,7 @@ const detailAnnees = f.annees.slice(0, -1).join(', ') + ' et ' + f.annees[f.anne
         </div>
         <dl class="kv">
           <dt>Histoire</dt><dd>Année de création <Tbc /></dd>
-          <dt>L'équipe</dt><dd>Prénom, poste et années d'expérience de chacun des {f.nombre} fondateurs, pour un bloc nominatif avec photo <Tbc label={`répartition des ${f.nombre} parcours à confirmer`} /></dd>
+          <dt>Photo de l'équipe</dt><dd>Une photo des {f.nombre} associés devant le véhicule, pour remplacer les initiales <Tbc /></dd>
           <dt>Qualifications</dt><dd>Formations et habilitations (CATEC, etc.) <Tbc /></dd>
           <dt>Chiffres clés</dt><dd>Nombre d'interventions, de clients <Tbc /></dd>
           <dt>Matériel</dt><dd>Hydrocureuse haute pression, caméra d'inspection, pompage (modèles, capacités) <Tbc /></dd>

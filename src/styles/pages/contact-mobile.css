@@ -79,3 +79,12 @@
 .ap-vs td.vs-a::before { content: "\00d7"; background: var(--line); color: var(--grey); }
 .ap-vs td.vs-b::before { content: "\2713"; background: var(--o); color: #fff; }
 .ap-vs td.vs-b a { color: var(--ink2); text-decoration-color: var(--o); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+
+/* ---- À propos : les trois associés (style A, ≤ 700 px) ---- */
+.ap-eq { display: grid; gap: 12px; margin-top: 8px; }
+.ap-eq li { padding: 16px 18px 18px; background: var(--paper); border-top: 3px solid var(--o); display: grid; grid-template-columns: 46px minmax(0, 1fr); grid-template-areas: "av nom" "av poste" "ans ans"; column-gap: 14px; align-items: center; }
+.eq-av { grid-area: av; display: grid; place-items: center; width: 46px; height: 46px; border-radius: 50%; background: var(--ink2); color: var(--paper); font: 800 16px/1 var(--f-display); font-stretch: 85%; }
+.ap-eq h3 { grid-area: nom; margin: 0; align-self: end; font: 800 19px/1.2 var(--f-display); font-stretch: 85%; color: var(--ink2); }
+.eq-poste { grid-area: poste; margin: 3px 0 0; align-self: start; font-size: 14.5px; line-height: 1.35; color: var(--grey); }
+.eq-ans { grid-area: ans; margin: 14px 0 0; padding-top: 12px; border-top: 1px solid var(--line); font-size: 15px; color: var(--ink2); }
+.eq-ans b { font: 800 21px/1 var(--f-display); font-stretch: 85%; font-variant-numeric: tabular-nums; color: var(--o-text); vertical-align: -1px; margin-right: 4px; }
