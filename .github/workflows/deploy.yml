@@ -33,23 +33,41 @@ jobs:
         # Le jour du passage en production : remplacer par "npm run build:prod"
         # et supprimer l'étape « Protection préproduction » ci-dessous.
 
-      # Tant que la société n'a pas de SIRET, le site est en ligne mais invisible
-      # des moteurs de recherche (balise noindex). Pour le rendre référençable le
-      # jour de l'immatriculation : supprimer cette étape.
+      # Tant que la société n'a pas de SIRET, le site est privé : accès par mot de
+      # passe (identifiant « hydroflash ») et invisible des moteurs de recherche.
+      # Le jour de l'immatriculation, supprimer cette étape et la ligne « put »
+      # de l'étape suivante : le site devient public et référençable.
       #
-      # Pour remettre un accès par mot de passe, réinsérer dans dist/.htaccess,
-      # avant « Options -Indexes », un bloc AuthType Basic pointant vers un
-      # fichier .htpasswd déposé dans le dossier personnel du serveur.
-      - name: Préproduction (invisible des moteurs de recherche)
+      # Ci-dessous une empreinte bcrypt de coût 12 : le mot de passe en clair
+      # n'est nulle part dans le dépôt et ne peut pas être retrouvé à partir
+      # d'elle. Pour le changer, regénérer la ligne avec :
+      #   htpasswd -nbB hydroflash "<nouveau mot de passe>"
+      - name: Préproduction (mot de passe + noindex)
         run: |
+          echo 'hydroflash:$2y$12$KNCcghV4Z2n6nACo2hrE6ejqnceKBMzoABY8QpNbByfy771Hu5lau' > .htpasswd-hydroflash
           python3 - <<'PY'
           p = 'dist/.htaccess'
           s = open(p, encoding='utf-8').read()
+          bloc = """# --- PRÉPRODUCTION : accès protégé par mot de passe ---
+          AuthType Basic
+          AuthName "HYDROFLASH - site en preparation"
+          AuthUserFile /home/uzdjkzv/.htpasswd-hydroflash
+          Require valid-user
+          <If "%{REQUEST_URI} =~ m#^/\\.well-known/#">
+            Require all granted
+          </If>
+          # --- fin du bloc préproduction ---
+
+          """
+          bloc = '\n'.join(l[10:] if l.startswith(' ' * 10) else l for l in bloc.split('\n'))
+          ancre = 'Options -Indexes -MultiViews'
+          assert ancre in s, 'ancre .htaccess absente'
+          s = s.replace(ancre, bloc + ancre, 1)
           a = '  # Header always set X-Robots-Tag "noindex, nofollow"'
           assert a in s, 'ligne X-Robots-Tag absente'
           s = s.replace(a, '  Header always set X-Robots-Tag "noindex, nofollow"', 1)
           open(p, 'w', encoding='utf-8').write(s)
-          print('noindex applique, aucun mot de passe')
+          print('Mot de passe et noindex appliques')
           PY
 
       - name: Envoyer sur OVH par SFTP
@@ -63,5 +81,6 @@ jobs:
             set net:max-retries 3;
             set net:timeout 30;
             open -u uzdjkzv,'$MDP_FTP' sftp://ftp.cluster129.hosting.ovh.net;
+            put -O . .htpasswd-hydroflash;
             mirror -R --delete --parallel=4 --verbose=1 dist/ www/;
           "
