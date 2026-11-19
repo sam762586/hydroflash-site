@@ -24,7 +24,7 @@ const faq = [
   { q: 'Intervenez-vous en dehors de la Seine-Maritime et de l\'Eure ?',
     a: `Notre zone d'intervention est la Seine-Maritime (76) et l'Eure (27). Si votre adresse se trouve dans un département voisin, appelez-nous pour en parler.` },
   { q: 'Le prix change-t-il la nuit ou le week-end ?',
-    a: `Non. HYDROFLASH intervient ${dispo}, sans majoration de nuit ni de week-end, dans les deux départements.` },
+    a: `Non. HYDROFLASH intervient ${dispo} dans les deux départements. Le tarif dépend de la zone (Rouen et 20 km autour, ou au-delà) et du créneau\u00a0: il vous est annoncé avant tout déplacement.` },
   { q: 'Dans quel délai pouvez-vous intervenir ?',
     a: `Cela dépend de votre adresse et des interventions en cours&nbsp;: une estimation vous est donnée au téléphone, au ${tel}.${tbc('délai d\'intervention : à confirmer')}` },
 ];
@@ -46,7 +46,7 @@ const deps = [
     surtitre="Zones d'intervention · 76 · 27"
     titre="Zones d'intervention"
     titreFin="Seine-Maritime (76) et Eure (27)."
-    intro={`HYDROFLASH intervient dans deux départements normands, <strong>${dispo}, sans majoration</strong> de nuit ni de week-end. Vérifiez votre code postal ou appelez-nous directement.`}
+    intro={`HYDROFLASH intervient dans deux départements normands, <strong>${dispo}</strong>, avec un tarif annoncé avant tout déplacement. Vérifiez votre code postal ou appelez-nous directement.`}
     picto="zone"
   />
 
@@ -99,7 +99,7 @@ const deps = [
       <div>
         <ul class="checks">
           <li>Intervention {dispo}, la nuit comme le week-end.</li>
-          <li>Sans majoration de nuit ni de week-end.</li>
+          <li>Tarif annoncé avant tout déplacement, majoration comprise.</li>
           <li>Un seul numéro&nbsp;: <a class="tel" href={e.telephone.lien}>{e.telephone.affiche}</a>.</li>
           <li>Rappel immédiat après une demande envoyée depuis le site.</li>
           <li>Passage caméra&nbsp;: les photos de l'inspection vous sont remises sur clé USB.</li>

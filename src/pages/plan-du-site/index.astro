@@ -50,6 +50,7 @@ const groupes: { titre: string; liens: Lien[] }[] = [
     { label: 'Nos services', href: '/services/', sous: services.map((s) => ({ label: s.titre, href: s.url, donnees: true })) },
   ]) },
   { titre: 'HYDROFLASH', liens: filtrer([
+    { label: 'Tarifs', href: '/tarifs/' },
     { label: 'Professionnels et syndics', href: '/professionnels/' },
     { label: 'Zones d\'intervention', href: '/zones-intervention/', sous: e.zone.departements.map((d) => ({ label: `${d.nom} (${d.code})`, href: `/zones-intervention/${d.slug}/`, donnees: true })) },
     { label: 'À propos', href: '/a-propos/' },

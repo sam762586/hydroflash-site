@@ -25,7 +25,7 @@ const { ariane, surtitre, titre, titreFin, intro, picto, visuel, actions = true,
           <a class="btn btn-ghost btn-xl" href="/contact/#devis"><svg class="ic ic-doc" aria-hidden="true"><use href="#i-doc"/></svg>Demander un devis</a>
         </div>
       )}
-      {actions && <p class="shero-micro"><span>Intervention {e.disponibilite.court}</span><span>Sans majoration</span><span>{e.zone.libelle}</span></p>}
+      {actions && <p class="shero-micro"><span>Intervention {e.disponibilite.court}</span><span>Tarif annoncé avant déplacement</span><span>{e.zone.libelle}</span></p>}
     </div>
     {(visuel || picto) && (
       <div class="shero-vis d-only" aria-hidden={visuel ? undefined : 'true'}>

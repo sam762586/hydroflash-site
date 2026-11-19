@@ -1,0 +1,33 @@
+/* HYDROFLASH — page Tarifs, rendu smartphone (style A), ≤ 700 px. Complète contenu-mobile.css. */
+
+.tf-zones { display: grid; gap: 12px; }
+.tf-zone { padding: 14px 16px; background: var(--mist); border-left: 3px solid var(--o); }
+.tf-zone b { display: block; font: 800 12px/1.3 var(--f-display); font-stretch: 85%; letter-spacing: .08em; text-transform: uppercase; color: var(--o-text); }
+.tf-zone span { display: block; margin-top: 4px; font-size: 16px; line-height: 1.4; color: var(--ink2); }
+
+/* Le tableau devient une liste de blocs */
+.tf-tab { width: 100%; display: block; }
+.tf-tab caption { display: block; text-align: left; padding-bottom: 8px; font-size: 13.5px; color: var(--grey); }
+.tf-tab thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.tf-tab tbody, .tf-tab tr, .tf-tab th, .tf-tab td { display: block; }
+.tf-tab tr { padding: 14px 0; border-bottom: 1px solid var(--line); }
+.tf-tab .tf-cat { padding: 18px 0 2px; border-bottom: none; }
+.tf-tab .tf-cat td { font: 800 12px/1.3 var(--f-display); font-stretch: 85%; letter-spacing: .08em; text-transform: uppercase; color: var(--o-text); }
+.tf-tab tbody th { font-size: 17px; font-weight: 700; line-height: 1.3; color: var(--ink2); }
+.tf-tab .tf-p { margin-top: 6px; font-size: 16.5px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.tf-tab .tf-p::before { content: attr(data-l) " : "; font-weight: 500; color: var(--grey); }
+.tf-tab .tf-ttc { font-weight: 500; color: var(--grey); }
+.tf-tab .tf-u, .tf-tab .tf-d { display: block; margin-top: 5px; font-weight: 400; font-size: 14.5px; line-height: 1.45; color: var(--grey); }
+
+.tf-maj { width: 100%; display: block; }
+.tf-maj tbody, .tf-maj tr, .tf-maj th, .tf-maj td { display: block; }
+.tf-maj tr { display: flex; justify-content: space-between; gap: 14px; padding: 11px 0; border-bottom: 1px solid var(--line); }
+.tf-maj th { font-size: 16px; font-weight: 500; text-align: left; color: var(--ink2); }
+.tf-maj td { font-size: 16px; font-weight: 800; white-space: nowrap; color: var(--o-text); }
+.tf-maj tr:first-child td { color: var(--grey); font-weight: 600; }
+
+.tf-ex { display: grid; gap: 12px; }
+.tf-ex li { padding: 14px 16px; background: var(--ink2); color: var(--paper); }
+.tf-ex b { display: block; font: 800 11.5px/1.3 var(--f-display); font-stretch: 85%; letter-spacing: .07em; text-transform: uppercase; color: var(--grey-d); }
+.tf-ex strong { display: block; margin-top: 6px; font: 800 26px/1 var(--f-display); font-stretch: 85%; font-variant-numeric: tabular-nums; }
+.tf-ex span { display: block; margin-top: 4px; font-size: 14px; line-height: 1.4; color: var(--grey-d); }

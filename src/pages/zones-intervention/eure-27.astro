@@ -40,7 +40,7 @@ const faq = [
   { q: 'Ma maison n\'est pas raccordée au tout-à-l\'égout : pouvez-vous intervenir ?',
     a: `Oui pour les canalisations de la maison et l'accès à votre installation&nbsp;: débouchage, passage caméra, pompage de regards et d'ouvrages. Le contrôle de l'installation d'assainissement non collectif relève du SPANC de votre collectivité.${tbc('vidange de fosse : agrément préfectoral à confirmer')}` },
   { q: 'Intervenez-vous la nuit et le week-end dans l\'Eure ?',
-    a: `Oui, ${dispo}, sans majoration de nuit ni de week-end. Le délai dépend de votre adresse&nbsp;: une estimation vous est donnée au téléphone.` },
+    a: `Oui, ${dispo}. Le tarif de nuit, de week-end ou de jour férié est majoré et vous est annoncé avant tout déplacement. Le délai dépend de votre adresse&nbsp;: une estimation vous est donnée au téléphone.` },
   { q: 'Comment savoir si le bouchon est chez moi ou sur le réseau public ?',
     a: 'En règle générale, la limite se situe au regard de branchement, en limite de propriété. Si plusieurs maisons voisines sont touchées en même temps, le problème vient probablement du réseau public&nbsp;: contactez votre mairie ou votre intercommunalité. Dans le doute, le passage caméra permet de localiser le bouchon.' },
   { q: 'Faites-vous le passage caméra dans l\'Eure ?',
@@ -49,7 +49,7 @@ const faq = [
 ---
 <Base
   titre="Débouchage et curage dans l'Eure (27) | HYDROFLASH"
-  description={`Débouchage, curage, passage caméra et pompage dans l'Eure (27), maisons raccordées ou non au tout-à-l'égout. ${dispo}, sans majoration : ${e.telephone.affiche}.`}
+  description={`Débouchage, curage, passage caméra et pompage dans l'Eure (27), maisons raccordées ou non au tout-à-l'égout. ${dispo}, tarif annoncé avant déplacement : ${e.telephone.affiche}.`}
   feuilles={[FEUILLE_CONTENU, { ordi: zonesOrdi, mobile: zonesMobile }]}
   jsonld={schemaEntreprise()}
 >
@@ -58,7 +58,7 @@ const faq = [
     surtitre="Département 27 · Eure"
     titre="Débouchage, curage et assainissement"
     titreFin="dans l'Eure (27)."
-    intro={`Évreux, vallée de Seine, ouest de l'Eure, Vexin normand, plateaux du sud&nbsp;: HYDROFLASH intervient dans l'Eure <strong>${dispo}, sans majoration</strong>, pour les maisons raccordées au tout-à-l'égout comme pour celles en assainissement non collectif.`}
+    intro={`Évreux, vallée de Seine, ouest de l'Eure, Vexin normand, plateaux du sud&nbsp;: HYDROFLASH intervient dans l'Eure <strong>${dispo}</strong>, tarif annoncé avant déplacement, pour les maisons raccordées au tout-à-l'égout comme pour celles en assainissement non collectif.`}
     picto="zone"
   />
 
@@ -173,7 +173,7 @@ const faq = [
       <div>
         <p class="sec-label">Urgence dans le 27</p>
         <h2 class="h2" id="t-urg">L'eau remonte&nbsp;? <em>Appelez maintenant.</em></h2>
-        <p class="lead zurg-lead">De nuit comme le dimanche, sans majoration. <a href="/urgence-debouchage-24h/">Que faire en attendant notre arrivée</a>.</p>
+        <p class="lead zurg-lead">De nuit comme le dimanche, avec un tarif annoncé avant déplacement. <a href="/urgence-debouchage-24h/">Que faire en attendant notre arrivée</a>.</p>
       </div>
       <div class="callout callout-o">
         <h3>Intervention {dispo}</h3>

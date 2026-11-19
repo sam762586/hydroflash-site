@@ -20,7 +20,7 @@ const dispo = e.disponibilite.libelle.replace(/(\d) /g, '$1\u00a0');
 ---
 <Base
   titre="À propos : spécialiste de l'assainissement | HYDROFLASH"
-  description={`HYDROFLASH, spécialiste de l'assainissement en Seine-Maritime (76) et dans l'Eure (27) : débouchage, curage, passage caméra, pompage. ${dispo}, sans majoration.`}
+  description={`HYDROFLASH, spécialiste de l'assainissement en Seine-Maritime (76) et dans l'Eure (27) : débouchage, curage, passage caméra, pompage. ${dispo}. Tarif annoncé avant tout déplacement.`}
   feuilles={[FEUILLE_CONTENU, { ordi: contactOrdi, mobile: contactMobile }]}
   jsonld={schemaEntreprise()}
 >
@@ -29,7 +29,7 @@ const dispo = e.disponibilite.libelle.replace(/(\d) /g, '$1\u00a0');
     surtitre="À propos · HYDROFLASH"
     titre="Spécialiste de l'assainissement,"
     titreFin="en Seine-Maritime et dans l'Eure."
-    intro={`HYDROFLASH débouche, cure, détartre, inspecte par passage caméra, pompe et entretient les canalisations et réseaux d'assainissement, <strong>${dispo}, sans majoration</strong> de nuit ni de week-end.`}
+    intro={`HYDROFLASH débouche, cure, détartre, inspecte par passage caméra, pompe et entretient les canalisations et réseaux d'assainissement, <strong>${dispo}</strong>. Le tarif, majoration comprise, vous est annoncé avant tout déplacement.`}
     picto="technicien"
   />
 
@@ -47,7 +47,7 @@ const dispo = e.disponibilite.libelle.replace(/(\d) /g, '$1\u00a0');
         <dt>Métier</dt><dd>Assainissement&nbsp;: débouchage, curage, détartrage, passage caméra, pompage, entretien des réseaux</dd>
         <dt>Zone</dt><dd>{e.zone.libelle}</dd>
         <dt>Disponibilité</dt><dd>Intervention {dispo}</dd>
-        <dt>Nuit et week-end</dt><dd>Sans majoration</dd>
+        <dt>Nuit, week-end et jours fériés</dt><dd>Majoration appliquée, annoncée avant déplacement (<a href="/tarifs/">voir les tarifs</a>)</dd>
         <dt>Téléphone</dt><dd><a class="tel" href={e.telephone.lien}>{e.telephone.affiche}</a></dd>
         <dt>E-mail</dt><dd><a href={`mailto:${e.email}`}>{e.email}</a></dd>
       </dl>
@@ -127,7 +127,7 @@ const dispo = e.disponibilite.libelle.replace(/(\d) /g, '$1\u00a0');
       </div>
       <ul class="checks">
         <li><strong>Intervention {dispo}</strong>, la nuit comme le week-end.</li>
-        <li><strong>Sans majoration</strong> de nuit ni de week-end.</li>
+        <li><strong>Un tarif annoncé avant tout déplacement</strong>, majoration de soirée, de week-end ou de jour férié comprise (<a href="/tarifs/">voir les tarifs</a>).</li>
         <li><strong>Rappel immédiat</strong> après une demande envoyée depuis le site.</li>
         <li><strong>Passage caméra</strong>&nbsp;: les photos de l'inspection vous sont remises sur clé USB.</li>
         <li><strong>Un seul numéro</strong>, partout&nbsp;: <a class="tel" href={e.telephone.lien}>{e.telephone.affiche}</a>.</li>

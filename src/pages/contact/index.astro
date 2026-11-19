@@ -22,7 +22,7 @@ const indexPrestation = Object.fromEntries(services.map((s, i) => [s.slug, i]));
 ---
 <Base
   titre={`Contact et devis : ${e.telephone.affiche}, 24 h/24 | HYDROFLASH`}
-  description={`Appelez HYDROFLASH au ${e.telephone.affiche}, ${dispo}, sans majoration, ou envoyez votre demande de devis : nous vous rappelons immédiatement.`}
+  description={`Appelez HYDROFLASH au ${e.telephone.affiche}, ${dispo}, ou envoyez votre demande de devis : nous vous rappelons immédiatement.`}
   feuilles={[FEUILLE_CONTENU, { ordi: contactOrdi, mobile: contactMobile }]}
   jsonld={schemaEntreprise()}
 >
@@ -31,7 +31,7 @@ const indexPrestation = Object.fromEntries(services.map((s, i) => [s.slug, i]));
     surtitre={`Contact · ${dispoC}`}
     titre="Contact et devis"
     titreFin="Appelez, ou décrivez-nous votre problème."
-    intro={`Le plus rapide&nbsp;: un appel, <strong>${dispo}</strong>, sans majoration de nuit ni de week-end. Vous préférez écrire&nbsp;? Envoyez votre demande&nbsp;: nous vous rappelons immédiatement.`}
+    intro={`Le plus rapide&nbsp;: un appel, <strong>${dispo}</strong>. Le tarif, majoration comprise, vous est annoncé avant tout déplacement. Vous préférez écrire&nbsp;? Envoyez votre demande&nbsp;: nous vous rappelons immédiatement.`}
     actions={false}
     compact
   />
@@ -44,7 +44,7 @@ const indexPrestation = Object.fromEntries(services.map((s, i) => [s.slug, i]));
         <a class="btn btn-call btn-xl ct-btn" href={e.telephone.lien}><span class="ic-round"><svg class="ic" aria-hidden="true"><use class="u-d" href="#i-tel"/><use class="u-m" href="#i-tel-f"/></svg></span><span class="btn-txt"><span class="l1">Appeler HYDROFLASH</span><span class="l2">{e.telephone.affiche}</span></span></a>
         <ul class="ct-pts">
           <li>Intervention {dispoC}</li>
-          <li>Sans majoration de nuit ni de week-end</li>
+          <li>Tarif annoncé avant tout déplacement</li>
           <li>Rappel immédiat après une demande écrite</li>
         </ul>
       </div>
@@ -54,7 +54,7 @@ const indexPrestation = Object.fromEntries(services.map((s, i) => [s.slug, i]));
         <dl class="kv">
           <dt>Téléphone</dt><dd><a class="ct-a tel" href={e.telephone.lien}>{e.telephone.affiche}</a></dd>
           <dt>E-mail</dt><dd><a class="ct-a" href={`mailto:${e.email}`}>{e.email}</a></dd>
-          <dt>Disponibilité</dt><dd>Intervention {dispo}, sans majoration de nuit ni de week-end</dd>
+          <dt>Disponibilité</dt><dd>Intervention {dispo}&nbsp;; majoration le soir, le week-end et les jours fériés (<a href="/tarifs/">voir les tarifs</a>)</dd>
           <dt>Zone</dt><dd>{e.zone.libelle} — <a class="ct-a" href="/zones-intervention/">vérifier mon code postal</a></dd>
           {!PROD && !e.adresse && <><dt>Adresse</dt><dd><Tbc label="adresse de la base à confirmer" /></dd></>}
         </dl>
@@ -71,7 +71,7 @@ const indexPrestation = Object.fromEntries(services.map((s, i) => [s.slug, i]));
         <ol class="ct-steps">
           <li><h3>Vous appelez ou envoyez votre demande</h3><p>Par téléphone, {dispo}, ou avec le formulaire de cette page.</p></li>
           <li><h3>Nous vous rappelons immédiatement</h3><p>Après une demande écrite, nous vous rappelons immédiatement pour faire le point sur le problème.</p></li>
-          <li><h3>Nous organisons l'intervention</h3><p>Sans majoration de nuit ni de week-end. Une estimation du délai vous est donnée au téléphone.{!PROD && <> Délai d'intervention&nbsp;: <Tbc /></>}</p></li>
+          <li><h3>Nous organisons l'intervention</h3><p>Le tarif, majoration de soirée, de week-end ou de jour férié comprise, vous est annoncé avant tout déplacement. Une estimation du délai vous est donnée au téléphone.{!PROD && <> Délai d'intervention&nbsp;: <Tbc /></>}</p></li>
         </ol>
       </aside>
     </div>

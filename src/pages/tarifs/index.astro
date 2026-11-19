@@ -1,0 +1,187 @@
+---
+/* Page Tarifs : grille publique HYDROFLASH (zones, majorations, prestations).
+   Source unique : entreprise.tarifs. Aucun prix écrit en dur ici. */
+import Base from '../../layouts/Base.astro';
+import SousHero from '../../components/SousHero.astro';
+import ContactCta from '../../components/ContactCta.astro';
+import { FEUILLE_CONTENU } from '../../lib/feuilles';
+import tarifsOrdi from '../../styles/pages/tarifs-ordinateur.css?url';
+import tarifsMobile from '../../styles/pages/tarifs-mobile.css?url';
+import { entreprise as e } from '../../data/entreprise';
+import { schemaEntreprise } from '../../lib/schema';
+
+const FEUILLE_TARIFS = { ordi: tarifsOrdi, mobile: tarifsMobile };
+const t = e.tarifs;
+const coef = 1 + t.tvaPct / 100;
+
+/** 1 234,50 € — espace insécable fine avant l'euro, virgule décimale */
+const eur = (v: number) =>
+  v.toLocaleString('fr-FR', { minimumFractionDigits: v % 1 ? 2 : 0, maximumFractionDigits: 2 }) + ' €';
+
+/** Regroupement par catégorie, dans l'ordre de la grille */
+const categories: { nom: string; lignes: typeof t.prestations }[] = [];
+for (const p of t.prestations) {
+  const derniere = categories[categories.length - 1];
+  if (derniere && derniere.nom === p.cat) derniere.lignes.push(p);
+  else categories.push({ nom: p.cat, lignes: [p] });
+}
+
+const majorees = t.creneaux.filter((c) => c.maj > 0);
+const majMax = Math.max(...majorees.map((c) => c.maj));
+
+/* Exemple chiffré : débouchage à l'hydrocureur, zone A */
+const exemple = t.prestations.find((p) => p.nom.includes('hydrocureur'))!;
+const exSamedi = t.creneaux.find((c) => c.code === 'samedi')!;
+const exDim = t.creneaux.find((c) => c.code === 'dim')!;
+const diag = t.prestations.find((p) => p.nom.startsWith('Diagnostic'))!;
+---
+<Base
+  titre="Tarifs débouchage, curage et pompage | HYDROFLASH"
+  description={`Grille tarifaire HYDROFLASH : débouchage à partir de ${eur(t.prestations[0].a!)} HT, curage, passage caméra et pompage, en Seine-Maritime (76) et dans l'Eure (27). Zones, majorations et prix annoncés avant tout déplacement.`}
+  feuilles={[FEUILLE_CONTENU, FEUILLE_TARIFS]}
+  jsonld={schemaEntreprise()}
+>
+  <SousHero
+    ariane={[{ label: 'Tarifs' }]}
+    surtitre={`Tarifs · ${t.prestations.length} prestations`}
+    titre="Nos prix, affichés,"
+    titreFin="et annoncés avant de partir."
+    intro="Vous savez ce que vous payez avant que le camion démarre. Le tarif dépend de deux choses seulement&nbsp;: la distance depuis Rouen et le moment de l'intervention. Pas de forfait surprise à l'arrivée."
+    picto="devis"
+  />
+
+  <section class="sec sec-sm" aria-labelledby="t-zones">
+    <div class="wrap">
+      <div class="c-head">
+        <div><p class="sec-label">Zones</p><h2 class="h2" id="t-zones">Deux zones, <em>deux tarifs</em></h2></div>
+        <p class="lead">La zone est déterminée par l'adresse d'intervention. Nous vous la confirmons au téléphone.</p>
+      </div>
+      <ul class="tf-zones">
+        {t.zones.map((z) => (
+          <li class="tf-zone"><b>Zone {z.code}</b><span>{z.libelle}</span></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec sec-sm" aria-labelledby="t-grille">
+    <div class="wrap">
+      <div class="c-head">
+        <div><p class="sec-label">Grille</p><h2 class="h2" id="t-grille">Le prix de <em>chaque prestation</em></h2></div>
+        <p class="lead">Prix hors taxes, TVA&nbsp;{t.tvaPct}&nbsp;% en sus, pour une intervention en semaine entre 8&nbsp;h et 18&nbsp;h. En dehors de ce créneau, la majoration ci-dessous s'applique.</p>
+      </div>
+
+      <table class="tf-tab">
+        <caption>Grille tarifaire HYDROFLASH — prix HT (TTC entre parenthèses)</caption>
+        <thead>
+          <tr>
+            <th scope="col">Prestation</th>
+            <th scope="col">Unité</th>
+            <th scope="col">Zone A</th>
+            <th scope="col">Zone B</th>
+          </tr>
+        </thead>
+        <tbody>
+          {categories.map((c) => (
+            <>
+              <tr class="tf-cat"><td colspan="4">{c.nom}</td></tr>
+              {c.lignes.map((p) => (
+                <tr>
+                  <th scope="row">{p.nom}<span class="tf-d">{p.detail}</span></th>
+                  <td class="tf-u">{p.unite}</td>
+                  <td class="tf-p" data-l="Zone A">
+                    {p.a === null ? 'Sur devis' : <>{eur(p.a)}<span class="tf-ttc"> ({eur(Math.round(p.a * coef * 100) / 100)} TTC)</span></>}
+                  </td>
+                  <td class="tf-p" data-l="Zone B">
+                    {p.b === null ? 'Sur devis' : <>{eur(p.b)}<span class="tf-ttc"> ({eur(Math.round(p.b * coef * 100) / 100)} TTC)</span></>}
+                  </td>
+                </tr>
+              ))}
+            </>
+          ))}
+        </tbody>
+      </table>
+
+      <p class="note">{t.regleDemiHeure}</p>
+    </div>
+  </section>
+
+  <section class="sec sec-sm on-dark" aria-labelledby="t-maj">
+    <div class="wrap c-grid2">
+      <div>
+        <p class="sec-label">Majorations</p>
+        <h2 class="h2" id="t-maj">Le soir, le week-end <em>et les jours fériés</em></h2>
+        <p class="lead">Intervenir à 2&nbsp;h du matin un dimanche coûte plus cher qu'un mardi après-midi&nbsp;: c'est une équipe réveillée et un camion sorti hors horaires. La majoration s'applique au prix de la zone, et vous est annoncée au téléphone avant tout déplacement.</p>
+      </div>
+      <div>
+        <table class="tf-maj">
+          <caption class="sr">Majorations par créneau horaire</caption>
+          <tbody>
+            {t.creneaux.map((c) => (
+              <tr><th scope="row">{c.libelle}</th><td>{c.maj === 0 ? 'Tarif de base' : `+ ${c.maj} %`}</td></tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec-sm" aria-labelledby="t-ex">
+    <div class="wrap">
+      <div class="c-head">
+        <div><p class="sec-label">Exemple</p><h2 class="h2" id="t-ex">Un cas concret, <em>du début à la fin</em></h2></div>
+        <p class="lead">{exemple.nom}, en zone A ({t.zones[0].libelle}), déplacement et première heure inclus.</p>
+      </div>
+      <ul class="tf-ex">
+        <li>
+          <b>Mardi 14&nbsp;h</b>
+          <strong>{eur(exemple.a!)} HT</strong>
+          <span>Tarif de base, soit {eur(Math.round(exemple.a! * coef * 100) / 100)} TTC.</span>
+        </li>
+        <li>
+          <b>{exSamedi.libelle}</b>
+          <strong>{eur(Math.round(exemple.a! * (1 + exSamedi.maj / 100) * 100) / 100)} HT</strong>
+          <span>Majoration de {exSamedi.maj}&nbsp;%, soit {eur(Math.round(exemple.a! * (1 + exSamedi.maj / 100) * coef * 100) / 100)} TTC.</span>
+        </li>
+        <li>
+          <b>{exDim.libelle}</b>
+          <strong>{eur(Math.round(exemple.a! * (1 + exDim.maj / 100) * 100) / 100)} HT</strong>
+          <span>Majoration de {exDim.maj}&nbsp;%, soit {eur(Math.round(exemple.a! * (1 + exDim.maj / 100) * coef * 100) / 100)} TTC.</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec sec-sm" aria-labelledby="t-faq">
+    <div class="wrap">
+      <div class="c-head">
+        <div><p class="sec-label">Questions</p><h2 class="h2" id="t-faq">Ce qu'on <em>nous demande</em></h2></div>
+      </div>
+      <div class="faq">
+        <details open>
+          <summary><span class="q-n">Q.01</span>Le prix annoncé est-il le prix payé&nbsp;?<span class="tog" aria-hidden="true"></span></summary>
+          <p class="ans">Oui, dès lors que l'intervention correspond à ce que vous nous avez décrit. Si nous découvrons sur place un problème d'une autre nature — un réseau effondré, un volume bien supérieur à ce qui était annoncé — nous vous le disons avant de continuer, et nous vous donnons le nouveau prix. Rien ne démarre sans votre accord.</p>
+        </details>
+        <details>
+          <summary><span class="q-n">Q.02</span>Le déplacement est-il facturé en plus&nbsp;?<span class="tog" aria-hidden="true"></span></summary>
+          <p class="ans">Non. Le déplacement et la première heure d'intervention sont compris dans les forfaits de débouchage. Si l'intervention s'avère impossible, seul le diagnostic est facturé, soit {eur(diag.a!)} HT en zone A&nbsp;; 30&nbsp;% de cette somme sont déduits de votre facture si nous intervenons dans les 30&nbsp;jours qui suivent.</p>
+        </details>
+        <details>
+          <summary><span class="q-n">Q.03</span>Pourquoi un supplément la nuit et le week-end&nbsp;?<span class="tog" aria-hidden="true"></span></summary>
+          <p class="ans">Parce qu'intervenir en dehors des heures ouvrées mobilise une équipe d'astreinte. La majoration est connue d'avance, affichée ci-dessus, et va de {majorees[0].maj}&nbsp;% à {majMax}&nbsp;% selon le créneau. Elle ne s'applique jamais rétroactivement&nbsp;: c'est l'heure de notre arrivée sur place qui fait foi.</p>
+        </details>
+        <details>
+          <summary><span class="q-n">Q.04</span>Faites-vous des devis&nbsp;?<span class="tog" aria-hidden="true"></span></summary>
+          <p class="ans">Oui, pour tout ce qui sort de la grille&nbsp;: détartrage, inspection de plus de 30&nbsp;ml, curage de réseau complet, contrats d'entretien pour les syndics et les professionnels. Décrivez-nous le réseau depuis la page <a href="/contact/">Contact</a> ou appelez-nous au <a class="tel" href={e.telephone.lien}>{e.telephone.affiche}</a>.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <ContactCta
+    label="Devis"
+    titreD="Une question sur un tarif&nbsp;?"
+    titreDem="Appelez, c'est plus rapide."
+    titreM="Demandez votre prix."
+  />
+</Base>

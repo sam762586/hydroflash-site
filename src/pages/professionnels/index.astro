@@ -23,7 +23,7 @@ const dispoCourt = e.disponibilite.court.replace(/(\d+) ([hj])/g, '$1 $2');
 const livrable = e.passageCamera.livrable.replace(/'/g, '’');
 const minuscule = (s: string) => s.charAt(0).toLowerCase() + s.slice(1);
 const tbcHtml = (label: string) => (PROD ? '' : ` <span class="tbc" data-tbc>${label}</span>`);
-const majoration = e.sansMajoration ? ', sans majoration de nuit ni de week-end' : '';
+const majoration = ', avec un tarif annoncé avant tout déplacement';
 
 const description = `Colonnes, parties communes, cuisines : débouchage, curage, détartrage, passage caméra et entretien des réseaux pour syndics et pros, ${dispo} (76, 27).`;
 
@@ -40,7 +40,7 @@ const textesPro: Record<string, string> = {
 type Info = { k: string; v?: string; lien?: string; tbc?: boolean };
 const infos: Info[] = [
   { k: 'Disponibilité', v: `Intervention ${e.disponibilite.court}` },
-  ...(e.sansMajoration ? [{ k: 'Majoration', v: 'Aucune, de nuit comme le week-end' }] : []),
+  { k: 'Majoration', v: 'Soir, samedi, dimanche et jours fériés' },
   { k: 'Zone', v: e.zone.libelle },
   { k: 'Passage caméra', v: 'Photos remises sur clé USB' },
   { k: 'Téléphone', v: e.telephone.affiche, lien: e.telephone.lien },
@@ -115,7 +115,7 @@ const faq = [
           <ul class="checks">
             <li>Débouchage des évacuations de cuisine, de plonge et des sanitaires</li>
             <li>Curage des canalisations chargées en graisses</li>
-            <li>Intervention possible de nuit ou le week-end{e.sansMajoration && ', sans majoration'}</li>
+            <li>Intervention possible de nuit ou le week-end, au tarif majoré annoncé d'avance</li>
             <li>Entretien préventif pour espacer les incidents</li>
           </ul>
         </article>

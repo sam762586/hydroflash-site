@@ -44,7 +44,7 @@ const faq = [
   { q: 'Intervenez-vous dans les immeubles et copropriétés de Rouen et du Havre ?',
     a: `Oui. HYDROFLASH s'adresse aux particuliers comme aux syndics, gestionnaires et professionnels&nbsp;: colonnes d'évacuation, branchements, réseaux de copropriété. Le passage caméra permet de garder une trace de l'état du réseau&nbsp;: les photos vous sont remises sur clé USB.${tbc('modalités pour les syndics : à confirmer')}` },
   { q: 'Intervenez-vous la nuit et le week-end en Seine-Maritime ?',
-    a: `Oui, ${dispo}, sans majoration de nuit ni de week-end. Une estimation du délai d'intervention vous est donnée au téléphone, selon votre adresse.` },
+    a: `Oui, ${dispo}. Le tarif de nuit, de week-end ou de jour férié est majoré et vous est annoncé avant tout déplacement. Une estimation du délai d'intervention vous est donnée au téléphone, selon votre adresse.` },
   { q: 'Le bouchon est côté rue : qui contacter à Rouen ou au Havre ?',
     a: 'Le réseau public relève de la collectivité&nbsp;: la Métropole Rouen Normandie dans l\'agglomération rouennaise, Le Havre Seine Métropole dans l\'agglomération havraise, votre mairie ou votre intercommunalité ailleurs. Si vous ne savez pas de quel côté se trouve le bouchon, le passage caméra permet de le localiser.' },
   { q: 'Ma maison du pays de Caux n\'est pas raccordée au tout-à-l\'égout : pouvez-vous intervenir ?',
@@ -53,7 +53,7 @@ const faq = [
 ---
 <Base
   titre="Débouchage et curage en Seine-Maritime (76) | HYDROFLASH"
-  description={`Débouchage, curage, passage caméra et pompage en Seine-Maritime (76), ${dispo}, sans majoration de nuit ni de week-end. Appelez le ${e.telephone.affiche}.`}
+  description={`Débouchage, curage, passage caméra et pompage en Seine-Maritime (76), ${dispo}. Tarif annoncé avant déplacement. Appelez le ${e.telephone.affiche}.`}
   feuilles={[FEUILLE_CONTENU, { ordi: zonesOrdi, mobile: zonesMobile }]}
   jsonld={schemaEntreprise()}
 >
@@ -62,7 +62,7 @@ const faq = [
     surtitre="Département 76 · Seine-Maritime"
     titre="Débouchage, curage et assainissement"
     titreFin="en Seine-Maritime (76)."
-    intro={`Agglomérations de Rouen et du Havre, côte d'Albâtre, pays de Caux, pays de Bray&nbsp;: HYDROFLASH intervient en Seine-Maritime <strong>${dispo}, sans majoration</strong> de nuit ni de week-end.`}
+    intro={`Agglomérations de Rouen et du Havre, côte d'Albâtre, pays de Caux, pays de Bray&nbsp;: HYDROFLASH intervient en Seine-Maritime <strong>${dispo}</strong>, avec un tarif annoncé avant tout déplacement.`}
     picto="zone"
   />
 
@@ -166,7 +166,7 @@ const faq = [
       <div>
         <p class="sec-label">Urgence dans le 76</p>
         <h2 class="h2" id="t-urg">Ça déborde&nbsp;? <em>Appelez maintenant.</em></h2>
-        <p class="lead zurg-lead">De nuit comme le week-end, sans majoration. <a href="/urgence-debouchage-24h/">Les bons gestes en attendant notre arrivée</a>.</p>
+        <p class="lead zurg-lead">De nuit comme le week-end, avec un tarif annoncé avant déplacement. <a href="/urgence-debouchage-24h/">Les bons gestes en attendant notre arrivée</a>.</p>
       </div>
       <div class="callout callout-o">
         <h3>Intervention {dispo}</h3>

@@ -56,7 +56,7 @@ const altVehicule = `Véhicule d'intervention HYDROFLASH : pick-up orange à cab
           <a class="aud-l" href="/professionnels/"><img class="aud-ic" src="/img/pictos/syndic-blanc.svg" alt="" width="26" height="26">Syndic &amp; pro<span class="d-only">fessionnel</span></a>
         </div>
         <ul class="hero-micro">
-          <li><span class="pulse" aria-hidden="true"></span><span>Disponible <b>{nb(e.disponibilite.court)}{e.sansMajoration && ' · sans majoration'}</b></span></li>
+          <li><span class="pulse" aria-hidden="true"></span><span>Disponible <b>{nb(e.disponibilite.court)}</b></span></li>
           {devis && <li>Devis avant intervention{devis === 'tbc' && <> <Tbc /></>}</li>}
         </ul>
       </div>
@@ -83,7 +83,7 @@ const altVehicule = `Véhicule d'intervention HYDROFLASH : pick-up orange à cab
     <div class="wrap">
       <h2 class="sr" id="t-reass">Nos engagements</h2>
       <ul class="reass-card">
-        <li class="reass-item"><picture><source media="(max-width: 700px)" srcset="/img/pictos/permanence-24h-sur-orange.svg"><img class="picto" src="/img/pictos/permanence-24h-noir.svg" alt="" width="48" height="48"></picture><span class="mono r-idx r-idx--plain">R—01 · Permanence</span><h3>Disponible {nb(e.disponibilite.libelle)}</h3><p><span class="r-desc">Jour et nuit, pour vos urgences</span> {e.sansMajoration && <span class="r-tag r-ok">Sans majoration</span>}</p></li>
+        <li class="reass-item"><picture><source media="(max-width: 700px)" srcset="/img/pictos/permanence-24h-sur-orange.svg"><img class="picto" src="/img/pictos/permanence-24h-noir.svg" alt="" width="48" height="48"></picture><span class="mono r-idx r-idx--plain">R—01 · Permanence</span><h3>Disponible {nb(e.disponibilite.libelle)}</h3><p><span class="r-desc">Jour et nuit, pour vos urgences</span> <span class="r-tag r-ok">Tarif annoncé d'avance</span></p></li>
         {!PROD && <>
           <li class="reass-item"><picture><source media="(max-width: 700px)" srcset="/img/pictos/materiel-sur-orange.svg"><img class="picto" src="/img/pictos/materiel-noir.svg" alt="" width="48" height="48"></picture><span class="mono r-idx"><span class="r-n">R—02 · </span><Tbc /></span><h3>Matériel professionnel</h3><p><span class="r-desc">Haute pression, pompage <Tbc label="équipements à confirmer" /></span></p></li>
           <li class="reass-item"><picture><source media="(max-width: 700px)" srcset="/img/pictos/devis-sur-orange.svg"><img class="picto" src="/img/pictos/devis-noir.svg" alt="" width="48" height="48"></picture><span class="mono r-idx"><span class="r-n">R—03 · </span><Tbc /></span><h3>Devis clair</h3><p><span class="r-desc">Prix présenté avant intervention</span></p></li>
@@ -95,11 +95,11 @@ const altVehicule = `Véhicule d'intervention HYDROFLASH : pick-up orange à cab
         <ul>
           {devis && <li><svg class="ic" aria-hidden="true"><use href="#i-doc"/></svg><span>Devis présenté avant intervention{devis === 'tbc' && <> <Tbc /></>}</span></li>}
           {factu && <li><svg class="ic" aria-hidden="true"><use href="#i-doc"/></svg><span>{factu === 'ok' ? e.principeFacturation : <>Principe de facturation <Tbc /></>}</span></li>}
-          {e.sansMajoration && <li class="pn-ok"><svg class="ic" aria-hidden="true"><use href="#i-moon"/></svg><span><b>Sans majoration</b> de nuit ni de week-end</span></li>}
+          <li class="pn-ok"><svg class="ic" aria-hidden="true"><use href="#i-moon"/></svg><span><b>Tarif annoncé avant tout déplacement</b>, majoration comprise</span></li>
         </ul>
         <a class="pn-link" href="#faq">Comprendre nos prix <svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></a>
       </div>
-      {!PROD && <p class="reass-note mono d-only">24&nbsp;h/24, 7&nbsp;j/7 et sans majoration&nbsp;: confirmés par HYDROFLASH · autres engagements affichés après validation</p>}
+      {!PROD && <p class="reass-note mono d-only">24&nbsp;h/24, 7&nbsp;j/7 et grille tarifaire&nbsp;: confirmés par HYDROFLASH · autres engagements affichés après validation</p>}
     </div>
   </section>
 
@@ -343,7 +343,7 @@ const altVehicule = `Véhicule d'intervention HYDROFLASH : pick-up orange à cab
         <details open><summary><span class="q-n">Q.01</span>Comment savoir si ma canalisation est bouchée&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Écoulement lent, remontées d'eau, gargouillements ou mauvaises odeurs sont les signes les plus courants. Si plusieurs évacuations sont touchées en même temps, le bouchon se situe probablement plus loin, sur la canalisation principale.</p></details>
         <details><summary><span class="q-n">Q.02</span>Quelle différence entre débouchage et curage&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Le débouchage supprime un bouchon pour rétablir l'écoulement. Le curage nettoie toute la paroi de la canalisation à haute pression, pour retirer les dépôts accumulés et limiter les récidives.</p></details>
         <details><summary><span class="q-n">Q.03</span>Combien coûte une intervention&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Le prix dépend du type d'intervention, de l'accès et du matériel nécessaire.{devis && <> HYDROFLASH vous présente un devis avant intervention.</>}{!PROD && <> <Tbc label="Grille tarifaire à confirmer" /></>}</p></details>
-        <details><summary><span class="q-n">Q.04</span>Intervenez-vous en urgence&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Oui, HYDROFLASH est joignable et intervient {nb(e.disponibilite.libelle)}, en Seine-Maritime et dans l'Eure{e.sansMajoration && ', sans majoration de nuit ni de week-end'}.</p></details>
+        <details><summary><span class="q-n">Q.04</span>Intervenez-vous en urgence&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Oui, HYDROFLASH est joignable et intervient {nb(e.disponibilite.libelle)}, en Seine-Maritime et dans l'Eure. Le tarif, majoration de soirée, de week-end ou de jour férié comprise, vous est annoncé avant tout déplacement.</p></details>
         <details><summary><span class="q-n">Q.05</span>À quoi sert le passage caméra&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Il permet de voir l'intérieur de la canalisation sans rien casser&nbsp;: localiser un bouchon, des racines, un affaissement ou une contre-pente, et vérifier le résultat après un curage. {e.passageCamera.livrable}</p></details>
         <details><summary><span class="q-n">Q.06</span>Les produits déboucheurs chimiques sont-ils une bonne solution&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Ils peuvent abîmer certaines canalisations et restent souvent inefficaces sur les bouchons profonds. En cas de bouchon persistant, mieux vaut faire appel à un professionnel.</p></details>
         <details><summary><span class="q-n">Q.07</span>À quelle fréquence entretenir ses canalisations&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Cela dépend de l'usage&nbsp;: une maison, une copropriété et un restaurant n'ont pas les mêmes besoins. Une fréquence adaptée vous est conseillée après diagnostic.</p></details>
