@@ -13,7 +13,7 @@ $cible   = __DIR__ . '/../../config-mail.php';   // hors de www/
 $secours = __DIR__ . '/../config-mail.php';
 $dejaFait = is_file($cible) || is_file($secours);
 
-$err = null; $cle = null; $ok = false;
+$err = null; $cle = null; $ok = false; $chemin = null; $horsSite = true;
 
 if (!$dejaFait && ($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
     $user = trim((string)($_POST['user'] ?? ''));
@@ -46,7 +46,7 @@ if (!$dejaFait && ($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
             $cle = null;
         } else {
             @chmod($dest, 0600);
-            $ok = true;
+            $ok = true; $chemin = $dest; $horsSite = ($dest === $cible);
         }
     }
 }
@@ -73,7 +73,11 @@ button{font:inherit;font-weight:700;padding:13px 18px;border-radius:10px;border:
   <div class="ok"><b>L’envoi d’e-mails est déjà en place.</b><div class="m" style="margin-top:4px">Cette page ne sert qu’une fois. Pour repartir de zéro, supprime <code>config-mail.php</code> sur l’hébergement, puis recharge.</div></div></div>
 <?php elseif ($ok): ?>
   <div class="c"><h1>C’est installé</h1>
-  <div class="ok"><b>La configuration est écrite</b><div class="m" style="margin-top:4px">Ton mot de passe est enregistré hors du site. Il n’apparaît nulle part ailleurs.</div></div>
+  <div class="<?= $horsSite ? 'ok' : 'err' ?>"><b><?= $horsSite ? 'La configuration est écrite hors du site' : 'Attention : écrite À L’INTÉRIEUR du site' ?></b>
+    <div class="m" style="margin-top:4px"><?= htmlspecialchars((string)$chemin) ?></div>
+    <div class="m" style="margin-top:4px"><?= $horsSite
+      ? 'Ton mot de passe n’apparaît nulle part ailleurs.'
+      : 'Le dossier au-dessus n’était pas accessible en écriture. Le fichier n’est pas servi aux visiteurs, mais il sera effacé à la prochaine mise en ligne du site : déplace-le d’un niveau au-dessus dès que possible.' ?></div></div>
   <h2 style="margin-top:22px">Dernière étape</h2>
   <p class="m" style="margin:0">Copie cette clé et colle-la dans le logiciel, onglet <b>Société</b>, champ <b>Clé partagée</b>. Elle ne sera plus affichée.</p>
   <div class="cle" id="k"><?= htmlspecialchars($cle) ?></div>
