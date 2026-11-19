@@ -10,3 +10,6 @@ config-hydroflash.php
 # Secrets et fichiers serveur : jamais versionnes
 .htpasswd*
 config-hydroflash.php
+
+# Envoi d e-mails du logiciel : contient le mot de passe, jamais versionne
+config-mail.php

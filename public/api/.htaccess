@@ -1,0 +1,14 @@
+# Le logiciel HYDROFLASH doit pouvoir appeler ce script même quand le site
+# est en préproduction protégée par mot de passe.
+<IfModule mod_authz_core.c>
+  Require all granted
+</IfModule>
+
+# Rien d'autre que les scripts PHP ne doit sortir d'ici.
+<FilesMatch "\.(log|txt|md|ini|bak|exemple\.php)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+</FilesMatch>
+
+Options -Indexes
