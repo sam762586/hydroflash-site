@@ -124,3 +124,29 @@ picture > source { display: none; }
      plus étroite et demanderait 77 %. 76 % laisse moins de 2 % d'écart des deux côtés. */
   size-adjust: 76%;
 }
+
+/* ---------------------------------------------------------------------------
+   Archivo (police de marque) — sous-ensemble fabriqué pour le site
+   ---------------------------------------------------------------------------
+   Le paquet public pèse 88 Ko pour le latin. Il porte des graisses (100 à 400),
+   des largeurs (100 à 125 %) et des caractères que le site n'emploie nulle part.
+   Ici : graisses 400 à 900, largeurs 62 à 100 %, alphabet latin et ponctuation
+   courante — 52 Ko, soit 36 Ko de moins sur le chemin critique de chaque page.
+   Toutes les valeurs utilisées par les feuilles du site restent à l'intérieur de
+   ces bornes ; aucun rendu ne change.
+   Refabrication (après `pip install fonttools brotli`) :
+     fonttools varLib.instancer archivo-latin-standard-normal.ttf \
+       wght=400:900 wdth=62:100 -o restreint.ttf
+     pyftsubset restreint.ttf --flavor=woff2 --unicodes="U+0020-007E,U+00A0-00FF,…" \
+       --layout-features='kern,liga,calt,ccmp,locl,mark,mkmk,rlig'
+   Archivo © 2020 The Archivo Project Authors, licence SIL OFL 1.1
+   (texte complet : src/assets/polices/LICENCE-Archivo-OFL.txt).
+   --------------------------------------------------------------------------- */
+@font-face {
+  font-family: "Archivo Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400 900;
+  font-stretch: 62% 100%;
+  src: url(../assets/polices/archivo-variable-latin.woff2) format("woff2");
+}

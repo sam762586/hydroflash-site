@@ -1,9 +1,9 @@
 ---
 /** Gabarit commun : <head> (SEO, robots selon l'environnement), en-tête, menu, pied de page, barre d'appel.
  *  Feuilles : socle (global) + ordinateur (≥ 701 px, style C) + mobile (≤ 700 px, style A) + feuilles de page. */
-import '@fontsource-variable/archivo/standard.css';
-// Police principale (latin) préchargée : évite le décalage de mise en page à son arrivée (CLS).
-import policeArchivo from '@fontsource-variable/archivo/files/archivo-latin-standard-normal.woff2?url';
+// Police principale : sous-ensemble latin d'Archivo fabriqué pour le site (déclaré dans socle.css).
+// Préchargée : évite le décalage de mise en page à son arrivée (CLS).
+import policeArchivo from '../assets/polices/archivo-variable-latin.woff2?url';
 import '@fontsource/jetbrains-mono/400.css';
 import '@fontsource/jetbrains-mono/500.css';
 import '@fontsource/jetbrains-mono/600.css';

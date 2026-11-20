@@ -35,20 +35,28 @@ jobs:
         run: npm run build
         # Préproduction tant que les mentions légales ne sont pas renseignées.
         # Le jour du passage en production : remplacer par "npm run build:prod"
-        # et supprimer l'étape « Protection préproduction » ci-dessous.
+        # et supprimer la seule étape « Préproduction » ci-dessous.
 
-      # Tant que la société n'a pas de SIRET, le site est privé : accès par mot de
-      # passe (identifiant « hydroflash ») et invisible des moteurs de recherche.
-      # Le jour de l'immatriculation, supprimer cette étape et la ligne « put »
-      # de l'étape suivante : le site devient public et référençable.
+      # Mot de passe du site. Il sert à deux choses :
+      #   - aujourd'hui, à fermer tout le site (étape « Préproduction » suivante) ;
+      #   - en permanence, à protéger le relevé des contacts /mesure/rapport.php.
+      # CETTE ÉTAPE RESTE APRÈS LA MISE EN LIGNE PUBLIQUE, ainsi que la ligne
+      # « put » de l'étape d'envoi : sans elles, le relevé renverrait une erreur.
       #
       # Ci-dessous une empreinte bcrypt de coût 12 : le mot de passe en clair
       # n'est nulle part dans le dépôt et ne peut pas être retrouvé à partir
       # d'elle. Pour le changer, regénérer la ligne avec :
       #   htpasswd -nbB hydroflash "<nouveau mot de passe>"
+      - name: Mot de passe (site en préparation + relevé des contacts)
+        run: echo 'hydroflash:$2y$12$KNCcghV4Z2n6nACo2hrE6ejqnceKBMzoABY8QpNbByfy771Hu5lau' > .htpasswd-hydroflash
+
+      # Tant que la société n'a pas de SIRET, le site entier est privé : accès par
+      # mot de passe (identifiant « hydroflash ») et invisible des moteurs de
+      # recherche. Le jour de l'immatriculation, SUPPRIMER CETTE SEULE ÉTAPE :
+      # le site devient public et référençable, le relevé des contacts reste
+      # protégé par son propre .htaccess (public/mesure/.htaccess).
       - name: Préproduction (mot de passe + noindex)
         run: |
-          echo 'hydroflash:$2y$12$KNCcghV4Z2n6nACo2hrE6ejqnceKBMzoABY8QpNbByfy771Hu5lau' > .htpasswd-hydroflash
           python3 - <<'PY'
           p = 'dist/.htaccess'
           s = open(p, encoding='utf-8').read()

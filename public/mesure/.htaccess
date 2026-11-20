@@ -1,0 +1,51 @@
+# --- Compteur de contacts HYDROFLASH -----------------------------------------
+# La racine du site refuse l'execution de tout PHP sauf exceptions nommees, et
+# la preproduction demande un mot de passe. Ce dossier reouvre l'un et l'autre,
+# pour ces deux fichiers seulement.
+
+# 1. enregistrer.php : appele par le navigateur du visiteur a chaque clic sur le
+#    numero et a chaque demande envoyee. Doit repondre sans mot de passe.
+#    Il n'ecrit que des compteurs (aucun cookie, aucune adresse IP) et ne renvoie
+#    jamais de contenu.
+<Files "enregistrer.php">
+  <IfModule mod_authz_core.c>
+    Require all granted
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Satisfy any
+    Order deny,allow
+    Allow from all
+  </IfModule>
+</Files>
+
+# 2. rapport.php : les chiffres de l'entreprise. Mot de passe exige, aujourd'hui
+#    comme apres la mise en ligne publique du site (ce bloc ne depend pas de
+#    l'etape de preproduction).
+#    Les deux premieres conditions laissent passer SANS mot de passe les visites
+#    en http:// et sur www : dans un .htaccess, Apache verifie le mot de passe
+#    AVANT les redirections, et le navigateur l'enverrait donc en clair. Ces
+#    requetes ne recoivent aucun contenu, seulement la redirection vers
+#    https://hydroflash.fr posee a la racine.
+<Files "rapport.php">
+  AuthType Basic
+  AuthName "HYDROFLASH - releve des contacts"
+  AuthUserFile /home/uzdjkzv/.htpasswd-hydroflash
+  <RequireAny>
+    Require expr "%{HTTPS} != 'on' && %{HTTP:X-Forwarded-Proto} != 'https'"
+    Require expr "%{HTTP_HOST} =~ m#^www\.hydroflash\.fr\.?$#i"
+    Require valid-user
+  </RequireAny>
+</Files>
+
+# 3. Rien d'autre n'est servi depuis ce dossier.
+<FilesMatch "^(?!enregistrer\.php$|rapport\.php$).*$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
+Options -Indexes

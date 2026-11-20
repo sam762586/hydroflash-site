@@ -174,4 +174,25 @@
     }, { rootMargin: '0px 0px -8% 0px' });
     d.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
   }
+
+  /* ---------- Compteur de contacts ----------
+     Deux chiffres, et rien d'autre : combien de clics sur le numéro, combien de
+     demandes envoyées, et depuis quelle page. Aucun cookie, aucun identifiant de
+     visiteur, aucun service extérieur. Relevé : /mesure/rapport.php */
+  if (navigator.sendBeacon) {
+    var pageMesure = location.pathname.slice(0, 80);
+    var compter = function (type) {
+      try {
+        var corps = new URLSearchParams();
+        corps.set('e', type);
+        corps.set('p', pageMesure);
+        navigator.sendBeacon('/mesure/enregistrer.php', corps);
+      } catch (err) { /* la mesure ne doit jamais gêner le visiteur */ }
+    };
+    d.addEventListener('click', function (ev) {
+      var lien = ev.target && ev.target.closest ? ev.target.closest('a[href^="tel:"]') : null;
+      if (lien) compter('appel');
+    }, true);
+    if (pageMesure.replace(/\/$/, '') === '/contact/merci') compter('demande');
+  }
 })();

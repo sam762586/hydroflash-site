@@ -37,7 +37,7 @@ const description = `WC qui déborde, canalisation bouchée ? Intervention ${e.d
   <!-- 1. HERO -->
   <section class="hero u-hero" aria-labelledby="h1">
     <div class="hero-bg m-only" aria-hidden="true">
-      <Picture src={grillesNuit} alt="" widths={[480, 720, 960]} sizes="(max-width: 700px) 150vw, 1px" quality={50} formats={FORMATS} fallbackFormat="jpg" loading="eager" fetchpriority="high" />
+      <Picture src={grillesNuit} alt="" widths={[480, 720, 960]} sizes="(max-width: 700px) 100vw, 1px" quality={42} formats={FORMATS} fallbackFormat="jpg" loading="eager" fetchpriority="high" />
     </div>
     <svg class="hero-flux m-only" viewBox="-1 -1 114 126" aria-hidden="true"><use href="#flux-outline"/></svg>
     <div class="wrap u-grid">
@@ -59,7 +59,7 @@ const description = `WC qui déborde, canalisation bouchée ? Intervention ${e.d
 
     <div class="u-visual">
       <figure class="u-regard d-only">
-        <Picture src={grillesNuit} alt="" widths={[480, 800, 1200]} sizes="(max-width: 700px) 1px, (max-width: 900px) 420px, min(48vw, 780px)" formats={FORMATS} fallbackFormat="jpg" loading="eager" />
+        <Picture src={grillesNuit} alt="" widths={[480, 800, 1200]} sizes="(max-width: 700px) 1px, (max-width: 900px) 420px, min(48vw, 780px)" formats={FORMATS} fallbackFormat="jpg" loading="lazy" />
       </figure>
       <svg class="u-ring d-only" viewBox="0 0 200 200" aria-hidden="true"><circle class="r-track" cx="100" cy="100" r="96"/><circle class="r-flow" cx="100" cy="100" r="96"/></svg>
       <span class="u-tag mono d-only">Photo d'ambiance · libre de droits</span>
