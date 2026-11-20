@@ -109,6 +109,13 @@ a.card:hover .go .ic, a.card:focus-visible .go .ic { background: var(--o); color
 .chips a:hover { border-color: var(--ink2); }
 .on-dark .chips li, .on-dark .chips a { border-color: var(--line-d); }
 .note { font-size: 14.5px; color: var(--grey); }
+/* Variante mise en avant : « votre commune n'est pas listée ? » doit se voir — beaucoup
+   de visiteurs cherchent une commune qui n'a pas encore sa page. */
+.note-fort { font-size: 16px; color: var(--ink); background: var(--mist);
+  border-left: 3px solid var(--o); padding: 12px 14px; border-radius: 0 6px 6px 0; }
+.note-fort b { color: var(--o-text); }
+.on-dark .note-fort { color: var(--paper); background: rgba(255, 255, 255, .06); }
+.on-dark .note-fort b { color: var(--o); }
 .on-dark .note { color: var(--grey-d); }
 
 @media (max-width: 1100px) {

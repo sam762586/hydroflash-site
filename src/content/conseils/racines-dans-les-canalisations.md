@@ -63,7 +63,7 @@ Une intrusion racinaire prise au début, c'est un curage. Prise cinq ans plus ta
 
 Entre les deux, il n'y a souvent qu'une seule différence : quelqu'un a regardé à l'intérieur du tuyau pendant que c'était encore réparable.
 
-Nous réalisons l'inspection caméra avec remise des photos sur clé USB : vous gardez la trace de l'état du réseau, utile pour un devis de réparation, une assurance ou une vente. Les tarifs sont [publiés en ligne](/tarifs/).
+Nous réalisons l'inspection caméra et vous transmettons le rapport par e-mail au format PDF : vous gardez la trace de l'état du réseau, utile pour un devis de réparation, une assurance ou une vente. Les tarifs sont [publiés en ligne](/tarifs/).
 
 ## Un point juridique utile
 

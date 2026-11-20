@@ -64,11 +64,17 @@ export const entreprise = {
       { nom: 'Julien Memain',    poste: 'Technicien de terrain et chef d\u2019équipe',      role: 'terrain', annees: 18 },
       { nom: 'Souad Tliche',     poste: 'Devis, accueil téléphonique et administratif',     role: 'bureau',  annees: 4 },
     ],
+    /** Expérience cumulée telle qu'elle est communiquée par HYDROFLASH (20/11/2026).
+        Le total des trois parcours ci-dessus fait 39 ans ; l'entreprise arrondit à 40
+        et ajoute le volume horaire. Ces deux chiffres sont ceux à afficher. */
+    experience: { annees: 40, heures: 63000 },
     /** Photo de groupe : non fournie. */
     photo: null as null | string,
   },
 
-  passageCamera: { livrable: 'Les photos de l\'inspection vous sont remises sur clé USB.' },
+  /** Livrable de l'inspection caméra. Confirmé le 20/11/2026 : rapport PDF par e-mail,
+      clé USB seulement sur demande (auparavant : photos remises sur clé USB). */
+  passageCamera: { livrable: 'Un rapport complet de l\'inspection, photos à l\'appui, vous est transmis par e\u2011mail au format PDF\u00a0; une clé USB est disponible sur demande.' },
   vehicule: { type: 'Pick-up à caisson', couleur: 'RAL 2009', marquage: 'à venir' },
 
   // ——— Non confirmé (null) ———
@@ -96,7 +102,10 @@ export const entreprise = {
       l'intervention s'avère impossible (prestation « Diagnostic ou déplacement seul »).
       Ne jamais écrire « déplacement gratuit » : ce serait faux. */
   devisGratuit: true,
-  principeFacturation: null as string | null,
+  /** Moyens de paiement acceptés. Confirmé le 20/11/2026. */
+  principeFacturation: 'Carte bancaire ou espèces\u00a0; virement également pour les professionnels.' as string | null,
+  /** Version complète, pour les endroits où il y a la place de tout dire. */
+  moyensPaiementDetail: 'Les particuliers règlent par carte bancaire ou en espèces. Les professionnels peuvent également régler par virement. Les chèques ne sont pas acceptés.',
   typesOuvragesPompage: null as string | null,
   materiel: null as null | { hautePression?: string; camera?: string; pompage?: string },
   dureeConservationDemandes: null as string | null, // RGPD : à définir

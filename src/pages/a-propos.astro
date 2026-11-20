@@ -18,34 +18,31 @@ import vehiculeLivraison from '../assets/photos/vehicule-livraison.webp';
 /* Espaces insécables dans « 24 h/24 · 7 j/7 » (évite « 24 / h/24 » en fin de ligne). */
 const dispo = e.disponibilite.libelle.replace(/(\d) /g, '$1\u00a0');
 const f = e.fondateurs;
-/** Du plus ancien au plus récent : l'expérience la plus longue en premier. */
-const equipe = [...f.equipe].sort((x, y) => y.annees - x.annees);
-const cumul = equipe.reduce((t, m) => t + m.annees, 0);
-/** « 18, 17 et 4 ans » */
-const detailAnnees = equipe.slice(0, -1).map((m) => m.annees).join(', ') + ' et ' + equipe[equipe.length - 1].annees + '\u00a0ans';
-/** « SD », « JM » — initiales affichées tant qu'il n'y a pas de photo. */
-const initiales = (nom: string) => nom.split(' ').map((m) => m[0]).join('');
+/** Chiffres communiqués par HYDROFLASH : 40 ans cumulés, plus de 63 000 heures.
+    Le détail par personne n'est plus affiché (choix du 20/11/2026). */
+const cumul = f.experience.annees;
+const heures = f.experience.heures.toLocaleString('fr-FR').replace(/\u202f|\u00a0/g, '\u00a0');
 ---
 <Base
   titre={`À propos : ${cumul} ans d'expérience en assainissement | HYDROFLASH`}
-  description={`${f.nombre} professionnels de l'assainissement près de Rouen, ${cumul} ans d'expérience cumulée. Débouchage, curage et caméra en Seine-Maritime et dans l'Eure, ${dispo}.`}
+  description={`Trois professionnels de l'assainissement près de Rouen, ${cumul} ans d'expérience cumulée et plus de ${heures} heures de terrain. Débouchage, curage et caméra en Seine-Maritime et dans l'Eure, ${dispo}.`}
   feuilles={[FEUILLE_CONTENU, { ordi: contactOrdi, mobile: contactMobile }]}
   jsonld={schemaEntreprise()}
 >
   <SousHero
     ariane={[{ label: 'À propos' }]}
     surtitre={`À propos · ${cumul} ans d'expérience`}
-    titre={`${cumul} ans de canalisations,`}
-    titreFin="et trois associés qui descendent encore dedans."
-    intro={`HYDROFLASH, ce n'est pas une enseigne qui sous-traite&nbsp;: ce sont ${f.nombre} professionnels du métier qui ont décidé de travailler pour eux. ${detailAnnees} passés sur le terrain, comme ${f.postes}. Quand vous appelez, vous tombez sur l'un de nous ${f.nombre}, jamais sur un centre d'appels.`}
+    titre="HYDROFLASH&nbsp;: pas de sous-traitance,"
+    titreFin="que des experts du terrain."
+    intro={`Trois professionnels de l'assainissement, ${cumul}&nbsp;ans d'expérience cumulée et plus de ${heures}&nbsp;heures de travail dans ce domaine. Techniciens, chefs d'équipe ou responsables techniques, nous avons décidé de mettre l'ensemble de nos connaissances, de nos compétences et de notre expérience à votre service.`}
     picto="technicien"
   />
 
   <section class="sec sec-xs" aria-label="HYDROFLASH en chiffres">
     <div class="wrap">
       <ul class="ap-stats">
-        <li><b>{cumul}</b><span>ans d'expérience</span><em>à {f.nombre}&nbsp;: {detailAnnees}</em></li>
-        <li><b>{f.nombre}</b><span>associés, zéro sous-traitant</span><em>2 sur le terrain, 1 au bureau</em></li>
+        <li><b>{cumul}</b><span>ans d'expérience cumulée</span><em>dans l'assainissement</em></li>
+        <li><b>{heures}</b><span>heures sur le terrain</span><em>à trois, depuis nos débuts</em></li>
         <li><b>24/7</b><span>jour, nuit et week-end</span><em>un seul numéro</em></li>
         <li><b>2</b><span>départements couverts</span><em>Seine-Maritime et Eure</em></li>
       </ul>
@@ -56,15 +53,16 @@ const initiales = (nom: string) => nom.split(' ').map((m) => m[0]).join('');
     <div class="wrap c-grid2">
       <div>
         <p class="sec-label">Pourquoi HYDROFLASH</p>
-        <h2 class="h2" id="t-qui">Trois parcours, <em>une même lassitude</em></h2>
+        <h2 class="h2" id="t-qui">Trois experts, <em>une même conviction</em></h2>
         <div class="prose ap-prose">
-          <p>Nous avons passé {detailAnnees} dans l'assainissement, comme {f.postes}, chez des employeurs qui envoyaient les équipes chez des bailleurs sociaux, des syndics, des entreprises et des particuliers.</p>
-          <p>On y voit toujours les mêmes scènes&nbsp;: un client qui découvre le prix une fois le camion garé devant chez lui, une intervention bâclée qu'il faut refaire trois mois plus tard, un standard qui promet une heure d'arrivée que personne ne tiendra. <strong>Nous avons monté HYDROFLASH pour faire le contraire.</strong></p>
-          <p>Même métier, mêmes machines, mêmes gestes — mais nos prix sont <a href="/tarifs/">affichés en ligne</a>, et vous avez toujours quelqu'un au bout du fil. Nous couvrons la <a href="/zones-intervention/seine-maritime-76/">Seine-Maritime (76)</a> et l'<a href="/zones-intervention/eure-27/">Eure (27)</a>, {dispo}.</p>
+          <p>À trois, nous cumulons {cumul}&nbsp;ans d'expérience et plus de {heures}&nbsp;heures de travail dans l'assainissement, comme technicien, chef d'équipe et responsable technique. Nous avons accompagné des bailleurs sociaux, des syndics, des entreprises et des particuliers.</p>
+          <p>Cette expérience nous a convaincus de ce qui compte vraiment pour un client&nbsp;: connaître le prix avant l'intervention, bénéficier d'un travail bien fait, et pouvoir joindre quelqu'un qui connaît le sujet. <strong>C'est la promesse au cœur de HYDROFLASH.</strong></p>
+          <p>Pour la tenir, nous avons investi dans un camion et du matériel de dernière génération. Nos prix sont <a href="/tarifs/">affichés en ligne</a> et vous avez toujours quelqu'un au bout du fil. Nous couvrons la <a href="/zones-intervention/seine-maritime-76/">Seine-Maritime (76)</a> et l'<a href="/zones-intervention/eure-27/">Eure (27)</a>, {dispo}.</p>
+          <p>Au bout du fil&nbsp;? L'un d'entre nous. Sur le terrain&nbsp;? L'un d'entre nous aussi. Du premier appel au rendez-vous, jusqu'à la réalisation de la prestation, vous avez affaire aux mêmes personnes&nbsp;: <strong>pas de standard, pas d'intermédiaire, pas de sous-traitant.</strong></p>
         </div>
       </div>
       <dl class="kv ap-kv">
-        <dt>Expérience</dt><dd>{cumul}&nbsp;ans cumulés à {f.nombre}&nbsp;: {detailAnnees} dans l'assainissement</dd>
+        <dt>Expérience</dt><dd>{cumul}&nbsp;ans cumulés et plus de {heures}&nbsp;heures dans l'assainissement</dd>
         <dt>Métier</dt><dd>Assainissement&nbsp;: débouchage, curage, détartrage, passage caméra, pompage, entretien des réseaux</dd>
         <dt>Zone</dt><dd>{e.zone.libelle}</dd>
         <dt>Disponibilité</dt><dd>Intervention {dispo}</dd>
@@ -108,7 +106,7 @@ const initiales = (nom: string) => nom.split(' ').map((m) => m[0]).join('');
           </tr>
           <tr>
             <td class="vs-a">Un standard qui note votre adresse et envoie un sous-traitant que personne ne connaît.</td>
-            <td class="vs-b"><strong>Souad prend votre appel, Samuel ou Julien se déplace.</strong> Aucune plateforme, aucune sous-traitance.</td>
+            <td class="vs-b"><strong>L'un de nous répond, l'un de nous se déplace.</strong> Aucune plateforme, aucune sous-traitance.</td>
           </tr>
           <tr>
             <td class="vs-a">Un coup de furet, et le bouchon qui revient trois mois plus tard.</td>
@@ -123,25 +121,6 @@ const initiales = (nom: string) => nom.split(' ').map((m) => m[0]).join('');
     </div>
   </section>
 
-  <section class="sec sec-sm bg-mist" aria-labelledby="t-eq">
-    <div class="wrap">
-      <div class="c-head">
-        <div><p class="sec-label">L'équipe</p><h2 class="h2" id="t-eq">Les {f.nombre} personnes <em>que vous aurez au bout du fil</em></h2></div>
-        <p class="lead">Pas de standard, pas de commercial&nbsp;: Souad prend les appels et établit les devis, Samuel et Julien sont sur le terrain.</p>
-      </div>
-      <ul class="ap-eq">
-        {equipe.map((m) => (
-          <li>
-            <span class="eq-av" aria-hidden="true">{initiales(m.nom)}</span>
-            <h3>{m.nom}</h3>
-            <p class="eq-poste">{m.poste}</p>
-            <p class="eq-ans"><b>{m.annees}</b> ans dans l'assainissement</p>
-          </li>
-        ))}
-      </ul>
-      <p class="note">À eux {f.nombre}, {cumul}&nbsp;ans de réseaux, de colonnes et de bacs à graisse en Normandie.</p>
-    </div>
-  </section>
 
   {!PROD && (
     <section class="sec sec-sm ap-tbc" aria-labelledby="t-hist">
@@ -152,7 +131,7 @@ const initiales = (nom: string) => nom.split(' ').map((m) => m[0]).join('');
         </div>
         <dl class="kv">
           <dt>Histoire</dt><dd>Année de création <Tbc /></dd>
-          <dt>Photo de l'équipe</dt><dd>Une photo des {f.nombre} associés devant le véhicule, pour remplacer les initiales <Tbc /></dd>
+          <dt>Photo de l'équipe</dt><dd>Une photo des associés devant le véhicule, à placer sur cette page <Tbc /></dd>
           <dt>Qualifications</dt><dd>Formations et habilitations (CATEC, etc.) <Tbc /></dd>
           <dt>Chiffres clés</dt><dd>Nombre d'interventions, de clients <Tbc /></dd>
           <dt>Matériel</dt><dd>Hydrocureuse haute pression, caméra d'inspection, pompage (modèles, capacités) <Tbc /></dd>
@@ -220,7 +199,7 @@ const initiales = (nom: string) => nom.split(' ').map((m) => m[0]).join('');
         <li><strong>Devis gratuit et tarif transparent</strong>&nbsp;: le prix vous est donné avant que nous partions, et il ne bouge pas en arrivant.</li>
         <li><strong>Intervention {dispo}</strong>, la nuit comme le week-end, avec un seul numéro&nbsp;: <a class="tel" href={e.telephone.lien}>{e.telephone.affiche}</a>.</li>
         <li><strong>Rappel immédiat</strong> après une demande envoyée depuis le site.</li>
-        <li><strong>Passage caméra</strong>&nbsp;: les photos de l'inspection vous sont remises sur clé USB, pas gardées par l'entreprise.</li>
+        <li><strong>Passage caméra</strong>&nbsp;: le rapport de l'inspection vous est transmis par e&#8209;mail, photos comprises&nbsp;; il vous appartient.</li>
       </ul>
     </div>
   </section>

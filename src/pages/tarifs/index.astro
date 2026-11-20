@@ -44,9 +44,9 @@ const diag = t.prestations.find((p) => p.nom.startsWith('Diagnostic'))!;
   <SousHero
     ariane={[{ label: 'Tarifs' }]}
     surtitre={`Tarifs · ${t.prestations.length} prestations`}
-    titre="Nos prix, affichés,"
-    titreFin="et transparents, jusqu'à la majoration."
-    intro="Vous savez ce que vous payez avant que le camion démarre. Le tarif dépend de deux choses seulement&nbsp;: la distance depuis Rouen et le moment de l'intervention. Pas de forfait surprise à l'arrivée."
+    titre="Des prix affichés,"
+    titreFin="clairs et transparents, majoration comprise."
+    intro="Vous connaissez le prix avant notre départ. Chaque prestation a son tarif, qui varie selon deux critères seulement&nbsp;: la distance depuis Rouen et le moment de l'intervention. Aucune mauvaise surprise à l'arrivée."
     picto="devis"
   />
 
@@ -110,8 +110,8 @@ const diag = t.prestations.find((p) => p.nom.startsWith('Diagnostic'))!;
     <div class="wrap c-grid2">
       <div>
         <p class="sec-label">Majorations</p>
-        <h2 class="h2" id="t-maj">Le soir, le week-end <em>et les jours fériés</em></h2>
-        <p class="lead">Intervenir à 2&nbsp;h du matin un dimanche coûte plus cher qu'un mardi après-midi&nbsp;: c'est une équipe réveillée et un camion sorti hors horaires. La majoration s'applique au prix de la zone, et vous est donnée au téléphone, avant que nous partions.</p>
+        <h2 class="h2" id="t-maj">Le soir, la nuit, le week-end <em>et les jours fériés</em></h2>
+        <p class="lead">Nous intervenons à toute heure, y compris à 2&nbsp;h du matin un dimanche. Une majoration s'applique alors au prix de votre zone, pour couvrir la mobilisation d'une équipe et d'un camion hors horaires habituels. Elle vous est toujours confirmée par téléphone, avant notre départ.</p>
       </div>
       <div>
         <table class="tf-maj">
@@ -180,8 +180,8 @@ const diag = t.prestations.find((p) => p.nom.startsWith('Diagnostic'))!;
 
   <ContactCta
     label="Devis"
-    titreD="Une question sur un tarif&nbsp;?"
-    titreDem="Appelez, c'est plus rapide."
+    titreD={'Une question sur un tarif\u00a0?'}
+    titreDem="Appelez-nous, nous vous répondons tout de suite."
     titreM="Demandez votre prix."
   />
 </Base>

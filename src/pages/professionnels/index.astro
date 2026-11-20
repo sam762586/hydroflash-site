@@ -42,12 +42,11 @@ const infos: Info[] = [
   { k: 'Disponibilité', v: `Intervention ${e.disponibilite.court}` },
   { k: 'Majoration', v: 'Soir, samedi, dimanche et jours fériés' },
   { k: 'Zone', v: e.zone.libelle },
-  { k: 'Passage caméra', v: 'Photos remises sur clé USB' },
+  { k: 'Passage caméra', v: 'Rapport PDF transmis par e\u2011mail' },
   { k: 'Téléphone', v: e.telephone.affiche, lien: e.telephone.lien },
   { k: 'E-mail', v: e.email, lien: `mailto:${e.email}` },
-  { k: 'Documents remis', tbc: true },
+  { k: 'Documents remis', v: 'Compte rendu PDF par e\u2011mail' },
   { k: 'Contrat d’entretien', tbc: true },
-  { k: 'Rapport écrit, vidéo', tbc: true },
   ...(e.assuranceRcPro ? [{ k: 'Assurance RC pro', v: e.assuranceRcPro }] : [{ k: 'Assurance RC pro', tbc: true }]),
 ].filter((i) => !(PROD && i.tbc));
 
@@ -57,7 +56,7 @@ const faq = [
   { q: 'Pouvez-vous intervenir en dehors des heures d’ouverture d’un commerce ?',
     a: `HYDROFLASH intervient ${dispo}${majoration}. Indiquez vos contraintes d’horaires lors de votre demande afin d’organiser l’intervention au moment le plus adapté.` },
   { q: 'Quels documents remettez-vous après une intervention ?',
-    a: `Après un passage caméra, ${minuscule(livrable)} Elles documentent l’état du réseau au jour de l’inspection.${tbcHtml('autres documents (compte rendu, attestation) : à confirmer')}` },
+    a: `Un compte rendu d’intervention complet, avec photos et schéma de principe, vous est remis par e-mail au format PDF. Une clé USB est disponible sur demande.` },
   { q: 'Comment se planifie l’entretien des réseaux d’un immeuble ?',
     a: `À partir d’un état des lieux (colonnes, collecteurs, regards, historique des bouchons), les interventions utiles et leur fréquence vous sont proposées, puis ajustées au fil des passages. En savoir plus sur <a href="/entretien-reseaux-assainissement/">l’entretien des réseaux d’assainissement</a>.${tbcHtml('formule contractuelle : à confirmer')}` },
   { q: 'Comment obtenir un devis pour un immeuble ou un local ?',
@@ -82,18 +81,18 @@ const faq = [
   <section class="sec sec-sm" aria-labelledby="t-profils">
     <div class="wrap">
       <div class="c-head">
-        <div><p class="sec-label">Vos besoins</p><h2 class="h2" id="t-profils">Trois métiers, <em>trois façons de travailler</em></h2></div>
+        <div><p class="sec-label">Nos clients professionnels</p><h2 class="h2" id="t-profils">Trois profils, <em>trois façons de travailler</em></h2></div>
         <p class="lead">Les contraintes d’un syndic, d’un gestionnaire ou d’un restaurateur ne sont pas les mêmes. Voici ce que HYDROFLASH prend en charge pour chacun.</p>
       </div>
       <div class="pro-profils reveal">
         <article class="pro-profil" aria-labelledby="t-syndics">
           <img src="/img/pictos/syndic-noir.svg" alt="" width="56" height="56" decoding="async" />
           <h3 id="t-syndics">Syndics de copropriété</h3>
-          <p>Un incident sur une colonne ou un collecteur touche tous les occupants. Il appelle une intervention efficace en partie commune et une trace de l’état du réseau.</p>
+          <p>Un incident sur une colonne ou un collecteur touche tous les occupants. Il exige une intervention efficace en partie commune et un état documenté du réseau.</p>
           <ul class="checks">
-            <li>Débouchage et curage des colonnes d’eaux usées et d’eaux vannes</li>
+            <li>Curage et débouchage des colonnes d’eaux usées et d’eaux vannes</li>
             <li>Détartrage des chutes et colonnes anciennes</li>
-            <li>Passage caméra des collecteurs, photos remises sur clé USB</li>
+            <li>Passage caméra des collecteurs, avec photos remises au gestionnaire</li>
             <li>Entretien planifié des réseaux des parties communes</li>
           </ul>
         </article>
@@ -104,7 +103,7 @@ const faq = [
           <ul class="checks">
             <li>Un seul numéro, joignable {dispo}</li>
             <li>Interventions dans les logements et les parties communes</li>
-            <li>Regards, sous-sols et ouvrages des résidences</li>
+            <li>Inspection caméra et intervention sur les regards, sous-sols et ouvrages des résidences</li>
             <li>Demande de devis détaillé en ligne</li>
           </ul>
         </article>
@@ -113,9 +112,9 @@ const faq = [
           <h3 id="t-commerces">Commerces et restauration</h3>
           <p>Une évacuation bouchée en plein service, c’est une activité à l’arrêt. Et les graisses de cuisine encrassent vite les canalisations.</p>
           <ul class="checks">
-            <li>Débouchage des évacuations de cuisine, de plonge et des sanitaires</li>
+            <li>Intervention sur les évacuations de cuisine, de plonge et les sanitaires</li>
             <li>Curage des canalisations chargées en graisses</li>
-            <li>Intervention possible de nuit ou le week-end, au tarif majoré publié dans notre grille</li>
+            <li>Intervention possible de nuit ou le week-end, avec la majoration publiée dans notre grille</li>
             <li>Entretien préventif pour espacer les incidents</li>
           </ul>
         </article>
@@ -147,10 +146,11 @@ const faq = [
     <div class="wrap c-grid2">
       <div>
         <p class="sec-label">Traçabilité</p>
-        <h2 class="h2" id="t-trace">Une trace <em>de l’état de vos réseaux</em></h2>
+        <h2 class="h2" id="t-trace">Un état documenté <em>de vos réseaux</em></h2>
         <div class="prose">
-          <p><strong>{livrable}</strong> Pour un syndic ou un gestionnaire, ces images sont précieuses&nbsp;: elles documentent l’état d’une colonne ou d’un collecteur à une date donnée, peuvent être présentées au conseil syndical ou jointes au dossier de l’immeuble, et servent de point de comparaison lors de l’inspection suivante.</p>
-          <p>Elles aident aussi à décider&nbsp;: un tronçon simplement encrassé relève d’un <a href="/curage-canalisation/">curage</a>, une colonne chargée de tartre d’un <a href="/detartrage-canalisation/">détartrage</a>, une canalisation cassée ou affaissée d’une réparation.</p>
+          <p><strong>Un compte rendu d’intervention complet, avec photos et schéma de principe, vous est remis par e&#8209;mail au format PDF. Une clé USB est disponible sur demande.</strong></p>
+          <p>Pour un syndic ou un gestionnaire, ces documents sont précieux&nbsp;: ils décrivent l’état d’une colonne ou d’un collecteur à une date donnée, peuvent être présentés au conseil syndical ou joints au dossier de l’immeuble, et servent de point de comparaison lors de l’inspection suivante.</p>
+          <p>Ils aident aussi à choisir la bonne intervention&nbsp;: un tronçon simplement encrassé relève d’un <a href="/curage-canalisation/">curage</a>, une colonne chargée de tartre d’un <a href="/detartrage-canalisation/">détartrage</a>, une canalisation cassée ou affaissée d’une réparation.</p>
           {!PROD && <p class="note">Autres documents remis (compte rendu, attestation d’intervention)&nbsp;: <Tbc /></p>}
         </div>
         <figure class="pr-fig pr-fig--photo pro-fig">
@@ -200,5 +200,5 @@ const faq = [
 
   <Faq items={faq} intro={'Syndics, gestionnaires, commerçants\u00a0: les réponses aux questions que vous vous posez avant de faire appel à nous.'} />
 
-  <ContactCta label="Devis professionnels" titreD={'Un immeuble ou un local à traiter\u00a0?'} titreDem="Demandez un devis détaillé." titreM="Parlons de votre réseau." />
+  <ContactCta label="Devis professionnels" titreD={'Un réseau à inspecter, à entretenir ou à dépanner\u00a0?'} titreDem="Demandez un devis détaillé." titreM="Parlons de votre réseau." />
 </Base>

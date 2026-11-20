@@ -24,8 +24,8 @@ const faq = [
     a: `Saisissez votre code postal dans le vérificateur ci-dessus&nbsp;: il indique si votre commune se trouve en Seine-Maritime (76) ou dans l'Eure (27). En cas de doute, appelez le ${tel}.${tbc('couverture de chaque commune : à confirmer')}` },
   { q: 'Intervenez-vous en dehors de la Seine-Maritime et de l\'Eure ?',
     a: `Notre zone d'intervention est la Seine-Maritime (76) et l'Eure (27). Si votre adresse se trouve dans un département voisin, appelez-nous pour en parler.` },
-  { q: 'Le prix change-t-il la nuit ou le week-end ?',
-    a: `Non. HYDROFLASH intervient ${dispo} dans les deux départements. Le tarif dépend de la zone (Rouen et 20 km autour, ou au-delà) et du créneau\u00a0: les deux sont publiés dans notre grille, donc vous connaissez le prix avant que nous partions.` },
+  { q: 'Y a-t-il un surcoût la nuit ou le week-end ?',
+    a: `Une majoration s'applique en soirée, la nuit, le week-end et les jours fériés : elle correspond à la mobilisation d'une équipe hors horaires habituels. Elle est <a href="/tarifs/">publiée dans notre grille tarifaire</a>, et vous connaissez le prix exact avant toute intervention. Nous intervenons ${dispo} en Seine-Maritime et dans l'Eure.` },
   { q: 'Dans quel délai pouvez-vous intervenir ?',
     a: `Cela dépend de votre adresse et des interventions en cours&nbsp;: une estimation vous est donnée au téléphone, au ${tel}.${tbc('délai d\'intervention : à confirmer')}` },
 ];
@@ -103,7 +103,7 @@ const deps = [
           <li>Tarif transparent&nbsp;: le prix est donné avant notre départ, majoration comprise.</li>
           <li>Un seul numéro&nbsp;: <a class="tel" href={e.telephone.lien}>{e.telephone.affiche}</a>.</li>
           <li>Rappel immédiat après une demande envoyée depuis le site.</li>
-          <li>Passage caméra&nbsp;: les photos de l'inspection vous sont remises sur clé USB.</li>
+          <li>Passage caméra&nbsp;: le rapport de l'inspection vous est transmis par e&#8209;mail, photos comprises.</li>
         </ul>
         <h3 class="zh-h3">Nos prestations</h3>
         <ul class="chips">

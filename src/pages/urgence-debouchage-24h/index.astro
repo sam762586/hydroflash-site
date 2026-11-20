@@ -123,11 +123,7 @@ const description = `WC qui déborde, canalisation bouchée ? Intervention ${e.d
       <ol class="u-steps">
         <li class="u-step"><span class="u-node" aria-hidden="true" data-n="1">01</span><h3>Vous décrivez la situation</h3><p>Quels points d'eau, depuis quand, accès au logement ou au regard.</p></li>
         <li class="u-step"><span class="u-node" aria-hidden="true" data-n="2">02</span><h3>Nous vous indiquons les conditions d'intervention</h3>
-          {factu ? (
-            <p>{factu === 'ok' ? e.principeFacturation : <>Principe de facturation <Tbc /></>}, majoration de soirée, de week-end ou de jour férié comprise, communiqué avant que nous partions.</p>
-          ) : (
-            <p>Le devis est gratuit et le tarif transparent&nbsp;: vous connaissez le prix applicable avant que nous partions, et aucun frais caché ne s'ajoute à l'arrivée.</p>
-          )}
+          <p>Le devis est gratuit et le tarif transparent&nbsp;: vous connaissez le prix, majoration de soirée, de week-end ou de jour férié comprise, avant que nous partions.{factu === 'ok' && <> Règlement par carte bancaire ou en espèces, par virement pour les professionnels.</>}{factu === 'tbc' && <> Principe de facturation <Tbc /></>}</p>
         </li>
         <li class="u-step"><span class="u-node" aria-hidden="true" data-n="3">03</span><h3>Sur place, le technicien localise le bouchon</h3>
           <p>Passage caméra si nécessaire{devis ? <>, devis présenté avant d'agir{devis === 'tbc' && <> <Tbc /></>}</> : null}.</p>
@@ -190,7 +186,7 @@ const description = `WC qui déborde, canalisation bouchée ? Intervention ${e.d
         <div class="u-price-body">
           <ul class="u-ticket">
             {devis && <li><svg class="ic" aria-hidden="true"><use href="#i-doc"/></svg><span>Devis présenté avant intervention</span>{devis === 'tbc' && <Tbc />}</li>}
-            {factu && <li><svg class="ic" aria-hidden="true"><use href="#i-doc"/></svg><span>Principe de facturation{factu === 'ok' && <>&nbsp;: {e.principeFacturation}</>}</span>{factu === 'tbc' && <Tbc />}</li>}
+            {factu && <li><svg class="ic" aria-hidden="true"><use href="#i-doc"/></svg><span>Règlement{factu === 'ok' && <>&nbsp;: {e.principeFacturation}</>}</span>{factu === 'tbc' && <Tbc />}</li>}
             <li class="u-tk-ok"><svg class="ic" aria-hidden="true"><use href="#i-moon"/></svg><span>Majoration&nbsp;:</span><span class="u-ok">annoncée d'avance</span></li>
           </ul>
           {!PROD && <p class="u-rule">Aucun montant n'est affiché tant qu'il n'est pas validé par HYDROFLASH.</p>}
@@ -232,9 +228,9 @@ const description = `WC qui déborde, canalisation bouchée ? Intervention ${e.d
       </div>
       <div class="faq" data-faq-fold>
         <details open><summary><span class="q-n">Q.01</span>Pouvez-vous intervenir la nuit&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Oui, HYDROFLASH est joignable et intervient {nb(e.disponibilite.libelle)}.</p></details>
-        <details><summary><span class="q-n">Q.02</span>Dans combien de temps arrivez-vous&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Cela dépend de votre adresse et des interventions en cours&nbsp;; une estimation vous est donnée au téléphone{!PROD && <> <Tbc /></>}. Nous n'affichons pas de délai garanti.</p></details>
+        <details><summary><span class="q-n">Q.02</span>Dans combien de temps arrivez-vous&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Cela dépend de votre adresse et des interventions en cours&nbsp;; une estimation vous est donnée au téléphone{!PROD && <> <Tbc /></>}.</p></details>
         <details><summary><span class="q-n">Q.03</span>Y a-t-il un supplément la nuit ou le week-end&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Oui. Une majoration s'applique le samedi, en soirée, la nuit, le dimanche et les jours fériés. Elle est calculée sur le tarif de base et vous est annoncée au téléphone, avant tout déplacement&nbsp;: <a href="/tarifs/">voir le détail des majorations</a>.</p></details>
-        <details><summary><span class="q-n">Q.04</span>Que faire si l'eau continue de monter&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Coupez l'arrivée d'eau générale, n'utilisez plus aucun point d'eau et appelez-nous au <a href={e.telephone.lien}>{tel}</a>.</p></details>
+        <details><summary><span class="q-n">Q.04</span>Que faire si l'eau continue de monter&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Coupez si possible l'arrivée d'eau générale, n'utilisez plus aucun point d'eau et appelez-nous au <a href={e.telephone.lien}>{tel}</a>.</p></details>
       </div>
     </div>
   </section>
@@ -247,7 +243,7 @@ const description = `WC qui déborde, canalisation bouchée ? Intervention ${e.d
         <svg class="deco d-only" viewBox="0 0 520 300" aria-hidden="true"><path d="M-20,90 H250 Q360,90 360,200 V340" fill="none" stroke="#fff" stroke-width="40"/></svg>
         <div class="cta-txt">
           <p class="sec-label sec-label-nb d-only">08 — Urgence</p>
-          <h2 class="h2" id="t-cta">Ça déborde&nbsp;? <em>N'attendez pas.</em></h2>
+          <h2 class="h2" id="t-cta">Une urgence sur vos canalisations&nbsp;? <em>N'attendez pas.</em></h2>
           <div class="cta-btns">
             <a class="btn btn-dark btn-xl u-fcall" href={e.telephone.lien}><svg class="ic" aria-hidden="true"><use class="u-d" href="#i-tel"/><use class="u-m" href="#i-tel-f"/></svg><span class="btn-txt"><span class="l1">Appeler<span class="d-only"> maintenant</span></span><span class="l2">{tel}</span></span></a>
             <a class="btn btn-line btn-xl" href="#rappel" data-rappel aria-controls="rappel"><svg class="ic" aria-hidden="true"><use href="#i-cb"/></svg>Être rappelé</a>

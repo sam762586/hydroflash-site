@@ -97,7 +97,6 @@ picture > source { display: none; }
 .li-c { display: contents; }
 .sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
 /* repères du véhicule annoté (accueil, ordinateur) */
-[data-co="1"] { --x: 49.7%; --y: 6.5%; } [data-co="2"] { --x: 60.5%; --y: 31%; } [data-co="3"] { --x: 50.6%; --y: 45%; } [data-co="4"] { --x: 91.9%; --y: 58%; }
 
 /* ---------------------------------------------------------------------------
    Police de repli des titres sur smartphone.

@@ -14,7 +14,6 @@ import tunnelLumiere from '../assets/photos/tunnel-lumiere.webp';
 import grillesNuit from '../assets/photos/grilles-nuit.webp';
 import vehiculeDetoure from '../assets/photos/vehicule-marque-detoure.png';
 import vehiculeAtelier from '../assets/photos/vehicule-marque-atelier.jpg';
-import vehiculeLivraison from '../assets/photos/vehicule-livraison.webp';
 
 const svc = Object.fromEntries(services.map((s) => [s.slug, s]));
 const tel = e.telephone.affiche.replace(/ /g, ' ');
@@ -44,7 +43,7 @@ const altVehicule = `Véhicule d'intervention HYDROFLASH : pick-up orange à cab
     <div class="wrap hero-grid">
       <div class="hero-txt">
         <p class="eyebrow"><span class="dot" aria-hidden="true"></span>Assainissement · Canalisations · <span class="eb-zone">{e.zone.libelle}</span></p>
-        <h1 id="h1"><span class="h1a">Canalisation bouchée&nbsp;?</span> <span class="h1b"><span class="h1-brand">HYDROFLASH</span> <em>débloque</em> la&nbsp;situation.</span></h1>
+        <h1 id="h1"><span class="h1a">Un souci sur vos canalisations&nbsp;?</span> <span class="h1b"><span class="h1-brand">HYDROFLASH</span> a <em>la&nbsp;solution.</em></span></h1>
         <p class="lead">Débouchage, curage, détartrage, passage caméra et pompage&nbsp;: HYDROFLASH intervient sur vos canalisations et réseaux d'assainissement, pour les particuliers, les professionnels, les syndics et les gestionnaires d'immeubles, en Seine-Maritime et dans l'Eure.</p>
         <div class="hero-ctas">
           <a class="btn btn-call btn-xl hero-call" href={e.telephone.lien}><span class="ic-round"><svg class="ic" aria-hidden="true"><use class="u-d" href="#i-tel"/><use class="u-m" href="#i-tel-f"/></svg></span><span class="btn-txt"><span class="l1">Appeler HYDROFLASH</span><span class="l2">{tel}</span></span></a>
@@ -83,7 +82,7 @@ const altVehicule = `Véhicule d'intervention HYDROFLASH : pick-up orange à cab
     <div class="wrap">
       <h2 class="sr" id="t-reass">Nos engagements</h2>
       <ul class="reass-card">
-        <li class="reass-item"><picture><source media="(max-width: 700px)" srcset="/img/pictos/permanence-24h-sur-orange.svg"><img class="picto" src="/img/pictos/permanence-24h-noir.svg" alt="" width="48" height="48"></picture><span class="mono r-idx r-idx--plain">R—01 · Permanence</span><h3>Disponible {nb(e.disponibilite.libelle)}</h3><p><span class="r-desc">Jour et nuit, pour vos urgences</span> <span class="r-tag r-ok">Devis gratuit</span></p></li>
+        <li class="reass-item"><picture><source media="(max-width: 700px)" srcset="/img/pictos/permanence-24h-sur-orange.svg"><img class="picto" src="/img/pictos/permanence-24h-noir.svg" alt="" width="48" height="48"></picture><span class="mono r-idx r-idx--plain">R—01 · Permanence</span><h3>Disponible {nb(e.disponibilite.libelle)}</h3><p><span class="r-desc">Jour et nuit, urgence ou rendez-vous</span> <span class="r-tag r-ok">Devis gratuit</span></p></li>
         {!PROD && <>
           <li class="reass-item"><picture><source media="(max-width: 700px)" srcset="/img/pictos/materiel-sur-orange.svg"><img class="picto" src="/img/pictos/materiel-noir.svg" alt="" width="48" height="48"></picture><span class="mono r-idx"><span class="r-n">R—02 · </span><Tbc /></span><h3>Matériel professionnel</h3><p><span class="r-desc">Haute pression, pompage <Tbc label="équipements à confirmer" /></span></p></li>
           <li class="reass-item"><picture><source media="(max-width: 700px)" srcset="/img/pictos/devis-sur-orange.svg"><img class="picto" src="/img/pictos/devis-noir.svg" alt="" width="48" height="48"></picture><span class="mono r-idx"><span class="r-n">R—03 · </span><Tbc /></span><h3>Devis clair</h3><p><span class="r-desc">Prix présenté avant intervention</span></p></li>
@@ -114,7 +113,7 @@ const altVehicule = `Véhicule d'intervention HYDROFLASH : pick-up orange à cab
         </div>
         <div>
           <p class="lead d-only">Du débouchage au pompage, HYDROFLASH couvre toute la chaîne d'intervention{aff(e.typesOuvragesPompage) === 'tbc' && <> <span class="tbc-wrap"><Tbc label="périmètre du pompage à confirmer" /></span></>}&nbsp;: un seul interlocuteur, et la bonne technique selon la canalisation, l'accès et l'origine du problème.</p>
-          <p class="chain mono d-only" aria-label="Chaîne d'intervention"><span>Débouchage</span><i></i><span>Curage</span><i></i><span>Détartrage</span><i></i><span>Passage caméra</span><i></i><span>Pompage</span><i></i><span>Entretien</span></p>
+          <p class="chain mono d-only" aria-label="Chaîne d'intervention"><span>Débouchage</span><i></i><span>Curage</span><i></i><span>Détartrage</span><i></i><span>Passage caméra</span><i></i><span>Pompage</span><i></i><span>Entretien des réseaux</span></p>
           <a class="link-arrow m-only" href="/services/">Toutes nos prestations <span aria-hidden="true">→</span></a>
         </div>
       </div>
@@ -200,23 +199,6 @@ const altVehicule = `Véhicule d'intervention HYDROFLASH : pick-up orange à cab
         </div>
       </div>
 
-      <figure class="bp reveal">
-        <div class="bp-frame">
-          <Picture src={vehiculeDetoure} alt="Le véhicule d'intervention HYDROFLASH vu de profil, avec repères : gyrophares, marquage, caisson à compartiments, équipement embarqué (visuel du marquage à venir)" widths={[480, 800, 1200, 1720]} sizes="(max-width: 960px) 92vw, 900px" formats={FORMATS} fallbackFormat="png" />
-          <!-- Repères en % de la photo détourée (1720 × 672) : --x / --y, à recaler si le visuel change -->
-          <span class="co co--up co--r" data-co="1"><span class="num">1</span><span class="co-l"><b>Gyrophares</b>Signalisation lumineuse</span></span>
-          <span class="co co--up" data-co="2"><span class="num">2</span><span class="co-l"><b>Marquage à venir</b>Logo officiel + {tel}</span></span>
-          <span class="co co--down co--r" data-co="3"><span class="num">3</span><span class="co-l"><b>Caisson à compartiments</b>Rangement latéral du matériel</span></span>
-          {!PROD && <span class="co co--down co--r" data-co="4"><span class="num">4</span><span class="co-l"><b>Équipement embarqué</b><Tbc /></span></span>}
-        </div>
-        <figcaption class="bp-tag mono">Véhicule HYDROFLASH — visuel du marquage à venir · repères de principe</figcaption>
-        <ol class="bp-legend">
-          <li>Gyrophares — signalisation lumineuse</li>
-          <li>Marquage à venir&nbsp;: logo officiel + {tel}</li>
-          <li>Caisson à compartiments — rangement latéral du matériel</li>
-          {!PROD && <li>Équipement embarqué <Tbc /></li>}
-        </ol>
-      </figure>
 
       <div class="veh reveal">
         <figure class="veh-photo">
@@ -225,15 +207,7 @@ const altVehicule = `Véhicule d'intervention HYDROFLASH : pick-up orange à cab
         </figure>
         <div class="veh-txt">
           <p class="mono">Notre véhicule d'intervention</p>
-          <h3>Un pick-up à caisson, <em>bientôt marqué HYDROFLASH.</em></h3>
-          <figure class="veh-raw">
-            <Picture src={vehiculeLivraison} alt="Photo réelle du même véhicule à sa livraison, avant marquage" widths={[132, 264, 400]} sizes="132px" formats={FORMATS} fallbackFormat="jpg" />
-            <figcaption class="mono">Photo réelle — véhicule HYDROFLASH à sa livraison, avant marquage</figcaption>
-          </figure>
-          <ul>
-            <li>Cabine simple, caisson à compartiments</li>
-            {!PROD && <li>Équipement embarqué <Tbc /></li>}
-          </ul>
+          <h3>Un véhicule et du matériel de <em>dernière génération.</em></h3>
         </div>
       </div>
 

@@ -11,7 +11,7 @@ export const services: Service[] = [
   { numero: '03', slug: 'detartrage', url: '/detartrage-canalisation/', titre: 'Détartrage de canalisation', court: 'Détartrage', picto: 'detartrage',
     resume: 'Retrait mécanique des dépôts calcaires et des concrétions qui réduisent le diamètre utile de vos conduites.' },
   { numero: '04', slug: 'passage-camera', url: '/inspection-camera-canalisation/', titre: 'Passage caméra', court: 'Passage caméra', picto: 'inspection-camera',
-    resume: 'Inspection vidéo de la canalisation pour localiser le bouchon ou le défaut et contrôler le résultat. Photos remises sur clé USB.' },
+    resume: 'Inspection vidéo de la canalisation pour localiser le bouchon ou le défaut et contrôler le résultat. Rapport PDF transmis par e\u2011mail.' },
   { numero: '05', slug: 'pompage', url: '/pompage-vidange/', titre: 'Pompage', court: 'Pompage', picto: 'pompage',
     resume: 'Pompage et vidange de regards, bacs et ouvrages d\'assainissement.' },
   { numero: '06', slug: 'entretien', url: '/entretien-reseaux-assainissement/', titre: 'Entretien des réseaux', court: 'Entretien des réseaux', picto: 'entretien',

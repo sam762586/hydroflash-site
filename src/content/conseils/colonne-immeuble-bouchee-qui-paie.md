@@ -54,7 +54,7 @@ Tant que personne ne sait où se situe l'obstruction, la discussion sur le payeu
 
 À l'issue, vous disposez d'un support daté, avec photos, qui désigne l'emplacement exact. C'est ce document qui permet au syndic d'engager la bonne dépense, au propriétaire de justifier une réparation, ou au locataire de démontrer que la cause ne lui est pas imputable.
 
-Chez HYDROFLASH, les photos de l'inspection vous sont remises sur clé USB. Elles vous appartiennent, et vous pouvez les transmettre à qui de droit — syndic, assurance, bailleur.
+Chez HYDROFLASH, un rapport complet de l'inspection, photos à l'appui, vous est transmis par e-mail au format PDF (une clé USB est disponible sur demande). Il vous appartient, et vous pouvez le transmettre à qui de droit — syndic, assurance, bailleur.
 
 ## En pratique, dans l'urgence
 
