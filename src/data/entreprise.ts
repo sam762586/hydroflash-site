@@ -82,14 +82,20 @@ export const entreprise = {
   adresse: null as null | { rue: string; cp: string; ville: string }, // base / dépôt
   accueilClients: null as boolean | null,
   raisonSociale: null as string | null,
-  formeJuridique: null as string | null,
+  /** Confirmé par Samuel le 19/11/2026. */
+  formeJuridique: 'SARL' as string | null,
   capital: null as string | null,
   siret: null as string | null,
   rcsOuRm: null as string | null,
   tvaIntracom: null as string | null,
-  directeurPublication: null as string | null,
+  /** Le gérant qui engage la publication du site. Samuel est co-gérant et porte le projet ;
+      à corriger si les associés désignent quelqu'un d'autre. */
+  directeurPublication: 'Samuel Delacourt' as string | null,
   mediateur: null as null | { nom: string; adresse: string; site: string },
-  hebergeur: null as null | { nom: string; adresse: string; telephone: string },
+  /** Hébergement mutualisé OVH (offre Starter, cluster129), commandé le 19/11/2026.
+      Mentions relevées sur les mentions légales d'OVH ; le 1007 est le numéro attribué
+      à OVH par l'Arcep pour son service client. */
+  hebergeur: { nom: 'OVH SAS', adresse: '2 rue Kellermann, 59100 Roubaix, France', telephone: '1007 (ou +33 9 72 10 10 07)' } as null | { nom: string; adresse: string; telephone: string },
   assuranceRcPro: null as string | null,
   /** Délai d'arrivée. Confirmé par Samuel le 19/11/2026 : environ 30 minutes.
       Ce délai vaut pour la ZONE A seulement (Rouen et 20 km autour). Au-delà,
@@ -108,7 +114,9 @@ export const entreprise = {
   moyensPaiementDetail: 'Les particuliers règlent par carte bancaire ou en espèces. Les professionnels peuvent également régler par virement. Les chèques ne sont pas acceptés.',
   typesOuvragesPompage: null as string | null,
   materiel: null as null | { hautePression?: string; camera?: string; pompage?: string },
-  dureeConservationDemandes: null as string | null, // RGPD : à définir
+  /** Durée proposée, alignée sur la référence de la CNIL pour les prospects (3 ans après
+      le dernier contact). À valider par les associés ; modifiable à tout moment. */
+  dureeConservationDemandes: 'Trois ans à compter de votre dernier contact avec HYDROFLASH. Si la demande donne lieu à une intervention, les éléments nécessaires au suivi et aux obligations comptables sont conservés plus longtemps, selon les durées légales.' as string | null,
   googleBusinessProfile: null as string | null,
 };
 

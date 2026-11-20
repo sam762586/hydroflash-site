@@ -11,7 +11,7 @@ import { entreprise as e } from '../../data/entreprise';
 import legalOrdi from '../../styles/pages/legal-ordinateur.css?url';
 import legalMobile from '../../styles/pages/legal-mobile.css?url';
 
-const MAJ = { iso: '2026-11-18', texte: '18 novembre 2026' };
+const MAJ = { iso: '2026-11-20', texte: '20 novembre 2026' };
 const adresse = e.adresse ? `${e.adresse.rue}, ${e.adresse.cp} ${e.adresse.ville}` : null;
 const sommaire = [
   { id: 'responsable', label: 'Responsable du traitement' },
@@ -84,10 +84,10 @@ const sommaire = [
             <dt>Destinataires</dt>
             <dd>
               <p>HYDROFLASH uniquement. Les données ne sont ni vendues, ni louées, ni utilisées à des fins publicitaires.</p>
-              <p>Prestataires techniques qui les traitent pour notre compte&nbsp;: l'hébergeur du site {e.hebergeur ? <>({e.hebergeur.nom})</> : <Tbc label="hébergeur à confirmer" />}, par lequel transite la demande, et la messagerie Gmail (Google), dans laquelle HYDROFLASH reçoit les demandes.</p>
+              <p>Un seul prestataire technique les traite pour notre compte&nbsp;: {e.hebergeur ? <>{e.hebergeur.nom}</> : <Tbc label="hébergeur à confirmer" />}, qui héberge à la fois le site, par lequel transite la demande, et la messagerie professionnelle dans laquelle HYDROFLASH la reçoit.</p>
             </dd>
             <dt>Transfert hors de l'Union européenne</dt>
-            <dd>Google peut traiter les messages reçus dans Gmail sur des serveurs situés hors de l'Union européenne, notamment aux États-Unis. Google indique encadrer ces transferts par les garanties prévues par le RGPD (décision d'adéquation ou clauses contractuelles types de la Commission européenne). <Tbc label="garanties à vérifier par HYDROFLASH" /></dd>
+            <dd>Aucun. Le site et la messagerie sont hébergés par {e.hebergeur ? <>{e.hebergeur.nom}</> : <Tbc label="hébergeur à confirmer" />}, en Europe&nbsp;; vos données ne quittent pas l'Union européenne.</dd>
             <dt>Durée de conservation</dt><dd>{e.dureeConservationDemandes ?? <Tbc label="durée à définir par HYDROFLASH" />}</dd>
             <dt>Photo jointe</dt><dd>La photo est convertie au format JPEG avant l'envoi&nbsp;: ses métadonnées (dont une éventuelle position GPS) sont supprimées. Elle est jointe à l'e-mail adressé à HYDROFLASH et n'est pas conservée sur le serveur du site.</dd>
             <dt>Copie de secours</dt><dd>Pour qu'une demande ne soit pas perdue en cas de panne de la messagerie, une copie (sans la photo) peut être conservée sur le serveur, hors de l'espace public du site, puis supprimée automatiquement. <Tbc label="activation et durée à confirmer" /></dd>
@@ -99,7 +99,7 @@ const sommaire = [
           <p>Base légale&nbsp;: intérêt légitime d'HYDROFLASH à protéger son service (article 6.1.f du RGPD).</p>
 
           <h2 id="journaux">Journaux techniques de l'hébergeur</h2>
-          <p>Comme tout serveur, celui qui héberge ce site enregistre des journaux techniques (adresse IP, date et heure, page demandée, type de navigateur). Ils sont tenus par l'hébergeur pour la sécurité et le bon fonctionnement du service, et conservés selon ses règles et ses obligations légales. <Tbc label="durée à confirmer après le choix de l'hébergeur" /></p>
+          <p>Comme tout serveur, celui qui héberge ce site enregistre des journaux techniques (adresse IP, date et heure, page demandée, type de navigateur). Ils sont tenus par {e.hebergeur ? <>{e.hebergeur.nom}</> : <Tbc label="hébergeur à confirmer" />}, hébergeur du site, pour la sécurité et le bon fonctionnement du service. Les données de connexion permettant d'identifier l'auteur d'un contenu mis en ligne sont conservées un an, conformément à la réglementation française.</p>
 
           <h2 id="contact-direct">Appels et e-mails</h2>
           <p>Les boutons «&nbsp;Appeler&nbsp;» et les liens e-mail ouvrent simplement votre téléphone ou votre messagerie&nbsp;: le site n'enregistre rien. Les informations que vous nous donnez ensuite par téléphone ou par e-mail servent uniquement à traiter votre demande.</p>
