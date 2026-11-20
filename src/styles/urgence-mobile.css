@@ -57,7 +57,17 @@
 
 /* Être rappelé : volet qui s'ouvre sous le bouton (fermé par défaut, ouvert sans script) */
 .u-rappel { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; padding: 16px 16px 14px; background: var(--ink2); border-radius: var(--radius); border-top: 5px solid var(--o); scroll-margin-top: 16px; }
-.js .u-rappel:not(.is-open) { display: none; }
+/* Volet « Être rappelé » replié par défaut quand JavaScript est disponible.
+   La classe .js est posée par hf.js, chargé en différé : le volet s'affichait donc ouvert au
+   premier rendu, puis se repliait à l'exécution du script — 200 px de contenu qui remontaient
+   d'un coup (CLS 0,08 sur la page la plus importante du site).
+   « scripting: enabled » est connu du navigateur dès le premier rendu, sans attendre le script.
+   « :target » garde le volet ouvrable par son ancre (#rappel) même si hf.js ne se charge pas.
+   La règle .js reste pour les navigateurs qui ne connaissent pas encore la requête « scripting ». */
+@media (scripting: enabled) {
+  .u-rappel:not(.is-open):not(:target) { display: none; }
+}
+.js .u-rappel:not(.is-open):not(:target) { display: none; }
 .u-rappel .fld { order: 1; }
 .u-rp-btn { order: 2; grid-column: 1 / -1; width: 100%; --h: 54px; }
 .u-rp-head { order: 3; grid-column: 1 / -1; }

@@ -98,3 +98,29 @@ picture > source { display: none; }
 .sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
 /* repères du véhicule annoté (accueil, ordinateur) */
 [data-co="1"] { --x: 49.7%; --y: 6.5%; } [data-co="2"] { --x: 60.5%; --y: 31%; } [data-co="3"] { --x: 50.6%; --y: 45%; } [data-co="4"] { --x: 91.9%; --y: 58%; }
+
+/* ---------------------------------------------------------------------------
+   Police de repli des titres sur smartphone.
+   Archivo est chargée en « swap » : tant qu'elle n'est pas arrivée, le navigateur
+   affiche une police système. Or les titres mobiles sont en Archivo très condensé
+   (largeur 66 %, graisse 900) : une police système est environ un tiers plus large,
+   le titre prend une ligne de plus, puis se resserre à l'arrivée d'Archivo et tout
+   le contenu remonte d'un coup (mesuré : 40 à 60 px sur la page Urgence, CLS 0,08).
+   Cette police de repli est la police grasse du système réduite à 76 % (rapport de
+   largeur mesuré entre Archivo 900 / 66 % et Arial Bold : 74,7 %).
+   Le titre occupe donc la même place avant et après, et plus rien ne bouge.
+   Si aucune des polices locales n'existe, le navigateur passe à la suivante de la
+   liste : comportement inchangé, aucun risque.
+   --------------------------------------------------------------------------- */
+@font-face {
+  font-family: "Archivo Repli Titres";
+  /* Ordre : noms exacts d'abord. « Liberation Sans Bold » passe en tête parce que, sous Linux,
+     une recherche de « Arial Bold » peut retomber sur la variante étroite et fausser le calage. */
+  src: local("Liberation Sans Bold"), local("LiberationSans-Bold"),
+       local("Arial Bold"), local("Arial-BoldMT"), local("Helvetica Neue Bold"), local("HelveticaNeue-Bold"),
+       local("Roboto Bold"), local("Roboto-Bold"), local("Roboto"), local("Arial");
+  font-weight: 100 900;
+  /* 74,7 % mesuré face à Arial Bold (iPhone, Windows, Mac) ; Roboto Bold (Android) est un peu
+     plus étroite et demanderait 77 %. 76 % laisse moins de 2 % d'écart des deux côtés. */
+  size-adjust: 76%;
+}
