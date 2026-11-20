@@ -14,7 +14,7 @@
   Allow from all
 </IfModule>
 
-# 2. Reautoriser nos deux scripts, refuses par la regle generale de la racine.
+# 2. Reautoriser le script d'envoi, refuse par la regle generale de la racine.
 <Files "envoi.php">
   <IfModule mod_authz_core.c>
     Require all granted
@@ -25,16 +25,13 @@
     Allow from all
   </IfModule>
 </Files>
-<Files "installer.php">
-  <IfModule mod_authz_core.c>
-    Require all granted
-  </IfModule>
-  <IfModule !mod_authz_core.c>
-    Satisfy any
-    Order deny,allow
-    Allow from all
-  </IfModule>
-</Files>
+# installer.php a été retiré du site le 20/11/2026, une fois la configuration écrite.
+# Il était accessible sans mot de passe, et sa seule protection était l'existence du fichier
+# config-mail.php : si ce fichier disparaissait (suppression, restauration de l'hébergement),
+# le premier venu pouvait relancer l'installation, choisir le compte d'envoi et récupérer la clé.
+# Pour reconfigurer l'envoi : le restaurer depuis l'historique git le temps de l'opération
+#   git checkout 4233025 -- public/api/installer.php
+# puis le supprimer de nouveau.
 
 # 3. Le dossier lib/ ne doit jamais etre servi directement.
 <FilesMatch "^(PHPMailer|SMTP|Exception)\.php$">

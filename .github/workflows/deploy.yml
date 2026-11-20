@@ -7,6 +7,10 @@ on:
     branches: [main]
   workflow_dispatch:        # permet aussi un lancement manuel depuis GitHub
 
+# Le déploiement ne fait que lire le dépôt : on retire au jeton GitHub tout droit d'écriture.
+permissions:
+  contents: read
+
 concurrency:
   group: deploiement-ovh
   cancel-in-progress: false
@@ -52,7 +56,16 @@ jobs:
           AuthType Basic
           AuthName "HYDROFLASH - site en preparation"
           AuthUserFile /home/uzdjkzv/.htpasswd-hydroflash
-          Require valid-user
+          # Dans un .htaccess, Apache vérifie le mot de passe AVANT d'appliquer les redirections.
+          # Sans précaution, une visite en http:// recevait donc la demande de mot de passe en
+          # clair, et le navigateur l'envoyait non chiffré. Les deux premières lignes laissent
+          # passer ces requêtes SANS mot de passe : elles ne reçoivent aucun contenu, seulement
+          # la redirection 301 vers https://hydroflash.fr posée plus bas (règles 1 et 2).
+          <RequireAny>
+            Require expr "%{HTTPS} != 'on' && %{HTTP:X-Forwarded-Proto} != 'https'"
+            Require expr "%{HTTP_HOST} =~ m#^www\\.hydroflash\\.fr\\.?$#i"
+            Require valid-user
+          </RequireAny>
           <If "%{REQUEST_URI} =~ m#^/\\.well-known/#">
             Require all granted
           </If>
@@ -72,7 +85,10 @@ jobs:
 
       - name: Envoyer sur OVH par SFTP
         env:
-          MDP_FTP: ${{ secrets.OVH_FTP_PASSWORD }}
+          # lftp lit LFTP_PASSWORD de lui-même (--env-password) : le mot de passe n'est plus
+          # recopié dans la ligne de commande, donc ni visible dans la liste des processus
+          # ni sensible aux caractères spéciaux qu'il contient.
+          LFTP_PASSWORD: ${{ secrets.OVH_FTP_PASSWORD }}
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq lftp
@@ -80,7 +96,7 @@ jobs:
             set sftp:auto-confirm yes;
             set net:max-retries 3;
             set net:timeout 30;
-            open -u uzdjkzv,'$MDP_FTP' sftp://ftp.cluster129.hosting.ovh.net;
+            open --user uzdjkzv --env-password sftp://ftp.cluster129.hosting.ovh.net;
             put -O . .htpasswd-hydroflash;
             mirror -R --delete --parallel=4 --verbose=1 dist/ www/;
           "
