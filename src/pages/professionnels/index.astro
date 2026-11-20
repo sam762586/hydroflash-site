@@ -46,7 +46,7 @@ const infos: Info[] = [
   { k: 'Téléphone', v: e.telephone.affiche, lien: e.telephone.lien },
   { k: 'E-mail', v: e.email, lien: `mailto:${e.email}` },
   { k: 'Documents remis', v: 'Compte rendu PDF par e\u2011mail' },
-  { k: 'Contrat d’entretien', tbc: true },
+  { k: 'Contrat d’entretien', v: e.contratEntretien },
   ...(e.assuranceRcPro ? [{ k: 'Assurance RC pro', v: e.assuranceRcPro }] : [{ k: 'Assurance RC pro', tbc: true }]),
 ].filter((i) => !(PROD && i.tbc));
 
@@ -151,7 +151,7 @@ const faq = [
           <p><strong>Un compte rendu d’intervention complet, avec photos et schéma de principe, vous est remis par e&#8209;mail au format PDF. Une clé USB est disponible sur demande.</strong></p>
           <p>Pour un syndic ou un gestionnaire, ces documents sont précieux&nbsp;: ils décrivent l’état d’une colonne ou d’un collecteur à une date donnée, peuvent être présentés au conseil syndical ou joints au dossier de l’immeuble, et servent de point de comparaison lors de l’inspection suivante.</p>
           <p>Ils aident aussi à choisir la bonne intervention&nbsp;: un tronçon simplement encrassé relève d’un <a href="/curage-canalisation/">curage</a>, une colonne chargée de tartre d’un <a href="/detartrage-canalisation/">détartrage</a>, une canalisation cassée ou affaissée d’une réparation.</p>
-          {!PROD && <p class="note">Autres documents remis (compte rendu, attestation d’intervention)&nbsp;: <Tbc /></p>}
+          <p class="note">Après un pompage, les documents de suivi des déchets vous sont également remis, à conserver dans votre registre.</p>
         </div>
         <figure class="pr-fig pr-fig--photo pro-fig">
           <Image src={photoGants} alt="Mains d’un professionnel portant des gants de travail." widths={[480, 720, 960]} sizes="(min-width: 1101px) 50vw, 100vw" loading="lazy" />
@@ -178,7 +178,7 @@ const faq = [
         <li><h3>Votre demande</h3><p>Par téléphone ou via le formulaire&nbsp;: adresse d’intervention, type de bien, nature du problème. Ajoutez votre référence de dossier dans le message si besoin.</p></li>
         <li><h3>L’organisation de l’accès</h3><p>Gardien, codes, clés, locaux techniques&nbsp;: les modalités d’accès sont convenues avec vous avant l’intervention.</p></li>
         <li><h3>L’intervention</h3><p>Débouchage, curage, détartrage, passage caméra ou pompage, selon ce que révèle le diagnostic.</p></li>
-        <li><h3>La trace</h3><p>{livrable} <Tbc label="autres documents : à confirmer" /></p></li>
+        <li><h3>La trace</h3><p>{livrable}</p></li>
       </ol>
     </div>
   </section>

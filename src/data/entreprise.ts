@@ -75,6 +75,13 @@ export const entreprise = {
   /** Livrable de l'inspection caméra. Confirmé le 20/11/2026 : rapport PDF par e-mail,
       clé USB seulement sur demande (auparavant : photos remises sur clé USB). */
   passageCamera: { livrable: 'Un rapport complet de l\'inspection, photos à l\'appui, vous est transmis par e\u2011mail au format PDF\u00a0; une clé USB est disponible sur demande.' },
+  /** Entretien récurrent. Confirmé le 20/11/2026 : passages à fréquence définie,
+      calée sur l'activité réelle du client et non sur un calendrier théorique. */
+  contratEntretien: 'Passages à fréquence définie, calée sur votre activité réelle',
+  /** Après un pompage, les matières partent en centre de traitement : les documents de
+      suivi (bordereau de suivi des déchets) sont remis au client, à conserver dans son
+      registre. Confirmé le 20/11/2026. */
+  documentsPompage: 'Documents de suivi des déchets remis après chaque pompage',
   vehicule: { type: 'Pick-up à caisson', couleur: 'RAL 2009', marquage: 'à venir' },
 
   // ——— Non confirmé (null) ———
