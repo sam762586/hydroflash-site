@@ -4,7 +4,7 @@ seoTitre: "Colonne d'immeuble bouchée : qui paie ? | HYDROFLASH"
 seoDescription: "Locataire, propriétaire ou syndic : qui règle le débouchage ? Ce que dit le décret du 26 août 1987, et comment trancher quand l'eau remonte chez le voisin."
 resume: "La règle tient en une phrase, mais tout se joue sur l'endroit où se trouve le bouchon. Voici comment le déterminer, et qui paie dans chaque cas."
 date: 2026-11-19
-relu: false
+relu: true
 prestationsLiees:
   - debouchage-canalisation
   - inspection-camera-canalisation

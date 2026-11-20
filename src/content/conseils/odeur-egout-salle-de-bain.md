@@ -4,7 +4,7 @@ seoTitre: "Odeur d'égout dans la salle de bain : les causes | HYDROFLASH"
 seoDescription: "Une odeur d'égout dans la douche ou le lavabo vient presque toujours d'un siphon, d'une ventilation ou d'un réseau encrassé. Comment identifier laquelle."
 resume: "Quatre causes expliquent la quasi-totalité des cas. Trois se règlent soi-même en dix minutes ; la quatrième demande une caméra."
 date: 2026-11-19
-relu: false
+relu: true
 prestationsLiees:
   - debouchage-canalisation
   - inspection-camera-canalisation

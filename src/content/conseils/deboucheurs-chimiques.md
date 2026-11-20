@@ -4,7 +4,7 @@ seoTitre: "Déboucheurs chimiques : pourquoi les éviter ? | HYDROFLASH"
 seoDescription: "Déboucheurs chimiques : risques pour vous, vos canalisations et votre fosse septique, cas où ils sont inefficaces, et alternatives plus sûres pour déboucher."
 resume: "Ils promettent de tout déboucher en quelques minutes. Risques pour vous et pour vos canalisations, cas où ils ne servent à rien, et alternatives plus sûres."
 date: 2026-11-18
-relu: false
+relu: true
 prestationsLiees:
   - debouchage-canalisation
   - entretien-reseaux-assainissement

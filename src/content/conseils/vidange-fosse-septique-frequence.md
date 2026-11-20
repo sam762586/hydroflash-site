@@ -4,7 +4,7 @@ seoTitre: "Vidange de fosse toutes eaux : quelle fréquence ? | HYDROFLASH"
 seoDescription: "Ni tous les 3 ans ni tous les 5 : la règle est le niveau de boues, qui ne doit pas dépasser 50 % du volume utile. Ce que dit l'arrêté du 7 septembre 2009."
 resume: "On entend tout et son contraire. La réglementation ne fixe aucun calendrier : elle fixe un seuil, et c'est ce seuil qu'il faut savoir mesurer."
 date: 2026-11-19
-relu: false
+relu: true
 prestationsLiees:
   - pompage-vidange
   - entretien-reseaux-assainissement
@@ -69,7 +69,7 @@ La liste des vidangeurs agréés de votre département est publiée par la préf
 
 ## Ce que fait HYDROFLASH
 
-Nous assurons le **pompage des eaux usées, des eaux pluviales et des bacs à graisse**, avec retraitement des déchets inclus et remise des documents de suivi. Nos tarifs sont [publiés en ligne](/tarifs/).
+Nous assurons le **pompage des eaux usées, des eaux pluviales et des bacs à graisse**. Le retraitement des déchets est compris dans le forfait pour les eaux usées et les bacs à graisse ; il ne s'applique pas aux eaux pluviales, qui n'en relèvent pas. Nos tarifs sont [publiés en ligne](/tarifs/).
 
 Pour une inspection du réseau avant ou après vidange — savoir si l'épandage est colmaté, si une canalisation est déboîtée, si les boues sont reparties en aval —, l'[inspection caméra](/inspection-camera-canalisation/) vous donne la réponse sans terrassement, photos à l'appui.
 

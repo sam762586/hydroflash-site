@@ -4,7 +4,7 @@ seoTitre: "Bac à graisse restaurant : obligations et vidange | HYDROFLASH"
 seoDescription: "Bac à graisse obligatoire en restaurant : quels textes s'appliquent, à quelle fréquence vidanger, quels justificatifs garder en cas de contrôle."
 resume: "Il n'existe pas un texte national unique. Ce qui vous oblige, c'est le règlement d'assainissement de votre commune — et ce qu'on vous demandera en contrôle, c'est un registre."
 date: 2026-11-19
-relu: false
+relu: true
 prestationsLiees:
   - pompage-vidange
   - entretien-reseaux-assainissement

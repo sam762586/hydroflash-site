@@ -4,7 +4,7 @@ seoTitre: "Racines dans les canalisations : signes et solutions | HYDROFLASH"
 seoDescription: "Les racines entrent par un joint et finissent par obstruer la canalisation. Les signes qui doivent alerter, ce qui marche vraiment, et ce qui ne sert à rien."
 resume: "Un bouchon qui revient tous les six mois au même endroit, c'est rarement un hasard. Voici comment reconnaître une intrusion racinaire et ce qu'on peut en faire."
 date: 2026-11-19
-relu: false
+relu: true
 prestationsLiees:
   - inspection-camera-canalisation
   - curage-canalisation

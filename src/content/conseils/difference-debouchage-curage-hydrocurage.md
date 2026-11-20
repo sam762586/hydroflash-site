@@ -4,7 +4,7 @@ seoTitre: "Débouchage, curage, hydrocurage : quelles différences ? | HYDROFLAS
 seoDescription: "Débouchage, curage, hydrocurage, détartrage : ce que recouvre chaque intervention sur vos canalisations, à quel moment y recourir et le rôle du passage caméra."
 resume: "Trois mots souvent confondus pour des interventions qui n'ont pas le même but : ce que recouvre chacune, quand y recourir, et le rôle du passage caméra."
 date: 2026-11-18
-relu: false
+relu: true
 prestationsLiees:
   - debouchage-canalisation
   - curage-canalisation

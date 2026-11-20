@@ -4,7 +4,7 @@ seoTitre: "WC bouchés : que faire en attendant le professionnel ? | HYDROFLASH"
 seoDescription: "Toilettes bouchées : les bons gestes pour éviter le débordement, ce qu'il vaut mieux ne pas faire et les signes qui doivent vous faire appeler un professionnel."
 resume: "Les bons gestes pour éviter que l'eau ne déborde, ce qu'il vaut mieux ne pas faire, et les signes qui montrent que le bouchon est hors de votre portée."
 date: 2026-11-18
-relu: false
+relu: true
 prestationsLiees:
   - debouchage-canalisation
   - inspection-camera-canalisation
