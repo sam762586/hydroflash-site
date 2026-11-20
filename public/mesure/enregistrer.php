@@ -26,11 +26,18 @@ const HF_MAX_PAGES    = 400;      // nombre de pages distinctes suivies par mois
 const HF_MAX_OCTETS   = 262144;   // garde-fou sur la taille du fichier mensuel
 const HF_MAX_PAR_JOUR = 20000;    // garde-fou contre un envoi massif automatisé
 
-/** Termine sans rien dire : le visiteur ne doit jamais voir d'erreur de mesure. */
-function hf_fin(): void
+/**
+ * Termine sans rien dire : le visiteur ne doit jamais voir d'erreur de mesure.
+ * $etat n'est renvoye que pour les demandes acceptees, en en-tete : il sert a
+ * verifier de l'exterieur que l'ecriture fonctionne, sans divulguer un chiffre.
+ */
+function hf_fin(string $etat = ''): void
 {
     http_response_code(204);
     header_remove('Content-Type');
+    if ($etat !== '') {
+        header('X-Mesure: ' . $etat);
+    }
     exit;
 }
 
@@ -61,18 +68,18 @@ if ($page === '' || strlen($page) > 80 || !preg_match('#^/[A-Za-z0-9/_.-]*$#', $
 
 $dossier = dirname(__DIR__, 2) . '/mesures-hydroflash';
 if (!is_dir($dossier) && !@mkdir($dossier, 0700, true) && !is_dir($dossier)) {
-    hf_fin();
+    hf_fin('dossier-impossible');
 }
 
 $fichier = $dossier . '/' . date('Y-m') . '.json';
 $f = @fopen($fichier, 'c+');
 if ($f === false) {
-    hf_fin();
+    hf_fin('fichier-impossible');
 }
 
 if (!flock($f, LOCK_EX)) {
     fclose($f);
-    hf_fin();
+    hf_fin('verrou-impossible');
 }
 
 $taille  = (int) (fstat($f)['size'] ?? 0);
@@ -99,6 +106,7 @@ foreach ($donnees[$jour] as $parEvenement) {
 
 $connue  = isset($donnees[$jour][$evenement][$page]);
 $place   = $connue || (count($donnees[$jour][$evenement]) < HF_MAX_PAGES && $taille < HF_MAX_OCTETS);
+$etat    = 'plein';
 if ($place && $total < HF_MAX_PAR_JOUR) {
     $donnees[$jour][$evenement][$page] = (int) ($donnees[$jour][$evenement][$page] ?? 0) + 1;
 
@@ -106,7 +114,7 @@ if ($place && $total < HF_MAX_PAR_JOUR) {
     if (is_string($json)) {
         ftruncate($f, 0);
         rewind($f);
-        fwrite($f, $json);
+        $etat = fwrite($f, $json) !== false ? 'ok' : 'ecriture-impossible';
         fflush($f);
     }
 }
@@ -114,4 +122,4 @@ if ($place && $total < HF_MAX_PAR_JOUR) {
 flock($f, LOCK_UN);
 fclose($f);
 @chmod($fichier, 0600);
-hf_fin();
+hf_fin($etat);
