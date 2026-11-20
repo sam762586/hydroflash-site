@@ -24,8 +24,6 @@
 .lg-bref .checks { margin-top: 14px; }
 
 /* Statut de conformité */
-.lg-etat { display: inline-flex; align-items: center; gap: 10px; padding: 8px 14px; background: var(--ink2); color: #fff; font: 800 16px/1.2 var(--f-display); font-stretch: 85%; text-transform: uppercase; letter-spacing: .04em; }
-.lg-etat::before { content: ""; width: 9px; height: 9px; background: var(--o); transform: rotate(45deg); }
 
 /* Plan du site */
 .pds-grid { display: grid; gap: 30px; }

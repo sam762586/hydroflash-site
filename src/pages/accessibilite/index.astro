@@ -1,64 +1,68 @@
 ---
-/* Déclaration d'accessibilité. État : « non conforme » tant qu'aucun audit RGAA complet n'a été réalisé.
-   Seuls les contrôles réellement effectués sont cités (tests automatisés axe-core, contrastes calculés).
-   Après un audit : remplacer l'état, le taux de conformité, la liste des non-conformités et la date. */
+/* Page d'accessibilité — engagement, PAS une déclaration de conformité RGAA.
+   La déclaration formelle (avec l'état « conforme / partiellement / non conforme ») n'est exigée
+   que des organismes publics, des délégataires de service public et des entreprises privées
+   dépassant 250 M€ de chiffre d'affaires en France (loi 2005-102 art. 47, décret 2019-768).
+   HYDROFLASH n'entre dans aucune de ces catégories, et le site ne vend rien en ligne : le
+   régime européen (EAA) ne s'applique pas davantage, les entreprises de moins de 10 personnes
+   en étant de toute façon exemptées. Afficher « non conforme » n'apportait donc rien et se
+   retournait contre l'entreprise.
+   Seuls les contrôles réellement effectués sont cités. Si un audit RGAA est mené un jour,
+   cette page peut redevenir une déclaration formelle. */
 import Base from '../../layouts/Base.astro';
 import SousHero from '../../components/SousHero.astro';
-import Tbc from '../../components/Tbc.astro';
 import { FEUILLE_CONTENU } from '../../lib/feuilles';
 import { SITE_URL } from '../../lib/env';
 import { entreprise as e } from '../../data/entreprise';
 import legalOrdi from '../../styles/pages/legal-ordinateur.css?url';
 import legalMobile from '../../styles/pages/legal-mobile.css?url';
 
-const MAJ = { iso: '2026-11-18', texte: '18 novembre 2026' };
+const MAJ = { iso: '2026-11-20', texte: '20 novembre 2026' };
 const site = e.siteUrl || SITE_URL;
 const domaine = new URL(site).host;
 const sommaire = [
-  { id: 'etat', label: 'État de conformité' },
-  { id: 'controles', label: 'Contrôles déjà réalisés' },
+  { id: 'engagement', label: 'Notre engagement' },
+  { id: 'controles', label: 'Ce qui a été vérifié' },
   { id: 'conception', label: 'Points pris en compte' },
-  { id: 'non-accessibles', label: 'Contenus non accessibles' },
-  { id: 'etablissement', label: 'Établissement de la déclaration' },
+  { id: 'reste', label: 'Ce qui reste à vérifier' },
   { id: 'signaler', label: 'Signaler un problème' },
-  { id: 'recours', label: 'Voies de recours' },
+  { id: 'recours', label: 'Si vous n\'obtenez pas de réponse' },
 ];
 ---
 <Base
-  titre="Déclaration d'accessibilité | HYDROFLASH"
-  description={`État de conformité du site ${domaine} au RGAA, contrôles réalisés, signalement d'un problème d'accessibilité et voies de recours.`}
+  titre="Accessibilité du site | HYDROFLASH"
+  description={`Accessibilité du site ${domaine} : ce qui a été vérifié, ce qui reste à faire, et comment nous signaler une difficulté.`}
   feuilles={[FEUILLE_CONTENU, { ordi: legalOrdi, mobile: legalMobile }]}
 >
   <SousHero
     ariane={[{ label: 'Accessibilité' }]}
     surtitre="Accessibilité numérique"
-    titre="Déclaration d'accessibilité"
-    intro={`Cette déclaration s'applique au site ${domaine}. Elle indique honnêtement où en est son accessibilité et comment nous signaler une difficulté.`}
+    titre="Accessibilité du site"
+    intro={`Ce site doit pouvoir être utilisé par tout le monde&nbsp;: au clavier, avec un lecteur d'écran, ou avec un fort agrandissement. Voici où en est ${domaine}, et comment nous prévenir si quelque chose vous bloque.`}
     actions={false}
     compact
   />
 
-  <section class="sec sec-sm lg-body" aria-label="Déclaration d'accessibilité">
+  <section class="sec sec-sm lg-body" aria-label="Accessibilité du site">
     <div class="wrap lg-grid">
       <nav class="lg-toc" aria-labelledby="toc-t">
         <p class="lg-toc-t" id="toc-t">Sommaire</p>
         <ol>{sommaire.map((s) => <li><a href={`#${s.id}`}>{s.label}</a></li>)}</ol>
-        <p class="lg-maj">Établie le&nbsp;<time datetime={MAJ.iso}>{MAJ.texte}</time></p>
+        <p class="lg-maj">Mise à jour le&nbsp;<time datetime={MAJ.iso}>{MAJ.texte}</time></p>
       </nav>
 
       <div class="prose">
-        <h2 id="etat">État de conformité</h2>
-        <p><span class="lg-etat">Non conforme</span></p>
-        <p>Le site <a href={site}>{domaine}</a> est <strong>non conforme</strong> au référentiel général d'amélioration de l'accessibilité (RGAA, version&nbsp;4.1), car <strong>aucun audit de conformité complet n'a encore été réalisé</strong>. Cette mention ne signifie pas que des défauts ont été constatés&nbsp;: elle signifie que la conformité n'a pas encore été mesurée.</p>
-        <p class="note">L'obligation légale applicable à HYDROFLASH dépend de la taille de l'entreprise et des services concernés. <Tbc label="à qualifier par le conseil juridique" /></p>
+        <h2 id="engagement">Notre engagement</h2>
+        <p>Le site <a href={site}>{domaine}</a> a été construit en visant les critères du référentiel général d'amélioration de l'accessibilité (RGAA, version&nbsp;4.1) et des règles internationales WCAG&nbsp;2.1 de niveau&nbsp;AA, qui nous servent de référence.</p>
+        <p>Nous ne revendiquons pas pour autant une conformité certifiée&nbsp;: <strong>aucun audit complet n'a été réalisé</strong> à ce jour. Autrement dit, le soin a été pris dès la conception, mais la mesure officielle reste à faire. Vous trouverez plus bas ce qui a été vérifié, et ce qui ne l'a pas été.</p>
 
-        <h2 id="controles">Contrôles déjà réalisés</h2>
+        <h2 id="controles">Ce qui a été vérifié</h2>
         <p>Ces contrôles ont été menés pendant la conception du site. Ils ne remplacent pas un audit&nbsp;:</p>
         <ul>
           <li><strong>Tests automatisés</strong> avec l'outil axe-core (version 4.14), selon les règles des WCAG 2.0, 2.1 et 2.2 aux niveaux A et AA, sur les pages du site en affichage ordinateur (1&nbsp;440&nbsp;px) et smartphone (390&nbsp;px)&nbsp;: aucune erreur détectée par l'outil.</li>
           <li><strong>Contrastes des couleurs</strong> de la charte calculés selon la méthode des WCAG, pour choisir les couples de couleurs du texte et des boutons.</li>
         </ul>
-        <p>Les outils automatiques ne détectent qu'une partie des problèmes possibles. La navigation au clavier, l'usage avec un lecteur d'écran ou un agrandissement important doivent encore être vérifiés lors d'un audit.</p>
+        <p>Les outils automatiques ne détectent qu'une partie des problèmes possibles&nbsp;: ils vérifient le code, pas l'expérience réelle.</p>
 
         <h2 id="conception">Points pris en compte lors de la conception</h2>
         <ul>
@@ -70,15 +74,21 @@ const sommaire = [
           <li>le respect du réglage «&nbsp;réduire les animations&nbsp;» de votre appareil.</li>
         </ul>
 
-        <h2 id="non-accessibles">Contenus non accessibles</h2>
-        <p>En l'absence d'audit, la liste des contenus non accessibles n'est pas encore établie. Si une page ou une fonction vous pose problème, signalez-le-nous&nbsp;: nous chercherons une solution et vous transmettrons l'information sous une autre forme.</p>
+        <h2 id="reste">Ce qui reste à vérifier</h2>
+        <p>Nous préférons le dire plutôt que de le taire. N'ont pas encore été testés&nbsp;:</p>
+        <ul>
+          <li>l'usage du site avec un <strong>lecteur d'écran</strong> réel (NVDA, VoiceOver, TalkBack)&nbsp;;</li>
+          <li>le parcours complet de chaque page <strong>au clavier seul</strong>&nbsp;;</li>
+          <li>l'affichage avec un <strong>agrandissement important</strong> du texte ou de la page.</li>
+        </ul>
+        <p>Aucune liste de contenus inaccessibles n'est donc établie à ce jour. Si une page ou une fonction vous pose problème, dites-le-nous&nbsp;: nous chercherons une solution et vous transmettrons l'information sous une autre forme.</p>
 
-        <h2 id="etablissement">Établissement de la déclaration</h2>
+        <h2 class="sr">Comment cette page a été établie</h2>
         <dl class="kv">
-          <dt>Date</dt><dd><time datetime={MAJ.iso}>{MAJ.texte}</time></dd>
+          <dt>Mise à jour</dt><dd><time datetime={MAJ.iso}>{MAJ.texte}</time></dd>
           <dt>Technologies utilisées</dt><dd>HTML, CSS, SVG, JavaScript (facultatif pour l'essentiel du site)</dd>
           <dt>Environnement de test</dt><dd>Navigateur Chromium (via Playwright), affichages 1&nbsp;440&nbsp;px et 390&nbsp;px, axe-core 4.14</dd>
-          <dt>Audit RGAA</dt><dd>Non réalisé à ce jour</dd>
+          <dt>Audit RGAA complet</dt><dd>Non réalisé à ce jour</dd>
         </dl>
 
         <h2 id="signaler">Signaler un problème</h2>
@@ -88,8 +98,8 @@ const sommaire = [
           <li>par téléphone&nbsp;: <a href={e.telephone.lien}>{e.telephone.affiche}</a> ({e.disponibilite.libelle}).</li>
         </ul>
 
-        <h2 id="recours">Voies de recours</h2>
-        <p>Si vous nous avez signalé un défaut d'accessibilité qui vous empêche d'accéder à un contenu ou à un service, et que vous n'avez pas obtenu de réponse satisfaisante, vous pouvez saisir le Défenseur des droits&nbsp;:</p>
+        <h2 id="recours">Si vous n'obtenez pas de réponse</h2>
+        <p>Si vous nous avez signalé une difficulté d'accès à un contenu ou à un service et que notre réponse ne vous satisfait pas, vous pouvez saisir le Défenseur des droits&nbsp;:</p>
         <ul>
           <li>en ligne, sur <a href="https://www.defenseurdesdroits.fr/" rel="noopener">www.defenseurdesdroits.fr</a>, ou auprès de l'un de ses délégués près de chez vous&nbsp;;</li>
           <li>par courrier, gratuitement et sans timbre&nbsp;: <address>Défenseur des droits, Libre réponse 71120, 75342 Paris Cedex 07</address></li>
