@@ -9,7 +9,7 @@
 import { entreprise as e } from '../data/entreprise';
 import { communes } from '../data/communes';
 import { PROD } from '../lib/env';
-import { eligibleTvaReduite, tvaReduiteActive, type Prestation } from '../lib/prix';
+import { eligibleTvaReduite, tvaReduiteActive, regleTva, type Prestation } from '../lib/prix';
 import Tbc from './Tbc.astro';
 
 interface Props {
@@ -113,7 +113,10 @@ const tel = e.telephone.affiche.replace(/ /g, ' ');
           <label><input type="radio" name="c" value="pro"><span>Professionnel</span></label>
         </fieldset>
         {tvaReduiteActive && (
-          <label class="calc-log"><input type="checkbox" name="log" checked><span>Logement achevé depuis plus de 2&nbsp;ans</span></label>
+          <div class="calc-tva" data-tva>
+            <label class="calc-log"><input type="checkbox" name="log" checked><span>Logement achevé depuis plus de 2&nbsp;ans</span></label>
+            <p class="calc-aide">TVA à {t.tvaReduitePct}&nbsp;% dans ce cas. {regleTva.justificatif} Sinon, TVA à {t.tvaPct}&nbsp;%.</p>
+          </div>
         )}
         <a class="calc-grille" href={grilleHref}>Voir toute la grille tarifaire <svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></a>
       </form>

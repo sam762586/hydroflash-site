@@ -22,6 +22,8 @@
 .calc-cpmsg:empty { display: none; }
 .calc-log { display: flex; align-items: center; gap: 10px; font-size: 15px; color: #E6E8EB; }
 .calc-log input { width: 22px; height: 22px; accent-color: var(--o); }
+.calc-tva { display: grid; gap: 6px; }
+.calc-aide { font-size: 13.5px; line-height: 1.45; color: var(--grey-d); }
 .calc-grille { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-weight: 800; font-size: 15px; color: #fff; }
 .calc-grille .ic { width: 24px; height: 24px; padding: 5px; border-radius: 50%; background: var(--o); color: var(--ink2); }
 .calc-note .tbc, .tv .tbc, .pv .tbc, .prose .tbc, .callout .tbc { white-space: normal; }

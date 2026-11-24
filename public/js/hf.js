@@ -166,6 +166,15 @@
     });
   });
 
+  /* ---------- Lien vers une question repliée (ex. /tarifs/#tva) : la question s'ouvre ---------- */
+  var ouvrirAncre = function () {
+    var id = location.hash ? decodeURIComponent(location.hash.slice(1)) : '';
+    var cible = id && d.getElementById(id);
+    if (cible && cible.tagName === 'DETAILS') cible.open = true;
+  };
+  ouvrirAncre();
+  window.addEventListener('hashchange', ouvrirAncre);
+
   /* ---------- Contact : présélection du type de problème depuis l'URL (?prestation=curage) ----------
      Table « slug → rang de l'option » fournie par [data-presel] (pas de script en ligne : CSP). */
   var presel = d.querySelector('[data-presel]');

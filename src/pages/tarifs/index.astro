@@ -12,7 +12,7 @@ import tarifsOrdi from '../../styles/pages/tarifs-ordinateur.css?url';
 import tarifsMobile from '../../styles/pages/tarifs-mobile.css?url';
 import { entreprise as e } from '../../data/entreprise';
 import { schemaEntreprise } from '../../lib/schema';
-import { tauxParticulier, tvaReduiteActive, ttc } from '../../lib/prix';
+import { tauxParticulier, tvaReduiteActive, ttc, regleTva } from '../../lib/prix';
 
 const FEUILLE_TARIFS = { ordi: tarifsOrdi, mobile: tarifsMobile };
 const t = e.tarifs;
@@ -104,7 +104,7 @@ const diag = t.prestations.find((p) => p.nom.startsWith('Diagnostic'))!;
                   {[{ v: p.a, l: 'Zone A' }, { v: p.b, l: 'Zone B' }].map((z) => (
                     <td class="tf-p" data-l={z.l}>
                       {z.v === null ? 'Sur devis' : <>
-                        <span class="px-part">{eur(ttc(z.v, tauxParticulier(p)))} TTC<span class="tf-ttc"> ({eur(z.v)} HT)</span></span>
+                        <span class="px-part">{eur(ttc(z.v, tauxParticulier(p)))} TTC<span class="tf-ttc"> ({eur(z.v)} HT · TVA {tauxParticulier(p)}&nbsp;%)</span></span>
                         <span class="px-pro">{eur(z.v)} HT<span class="tf-ttc"> ({eur(Math.round(z.v * coef * 100) / 100)} TTC)</span></span>
                       </>}
                     </td>
@@ -118,9 +118,11 @@ const diag = t.prestations.find((p) => p.nom.startsWith('Diagnostic'))!;
 
       <p class="note">{t.regleDemiHeure}</p>
       <p class="vue-note vue-note-part">{tvaReduiteActive
-        ? <>Prix TTC avec la TVA à {t.tvaReduitePct}&nbsp;% pour le débouchage, le curage, le détartrage et les bacs à graisse dans un logement achevé depuis plus de deux ans&nbsp;; TVA à {t.tvaPct}&nbsp;% dans les autres cas.</>
+        ? <>{regleTva.conditions} {regleTva.justificatif} {regleTva.sinon} <a href="#tva">Les conditions en détail</a></>
         : <>Prix TTC avec la TVA à {t.tvaPct}&nbsp;%. <Tbc label={`TVA à ${t.tvaReduitePct} % pour les logements de plus de 2 ans : à confirmer par le comptable`} /></>}</p>
-      <p class="vue-note vue-note-pro">Prix HT, TVA en sus au taux applicable à vos locaux.</p>
+      <p class="vue-note vue-note-pro">{tvaReduiteActive
+        ? <>Prix HT, TVA en sus. Débouchage, curage, détartrage et bacs à graisse&nbsp;: {t.tvaReduitePct}&nbsp;% dans des locaux d'habitation achevés depuis plus de deux ans (logements, parties communes d'immeubles d'habitation), {t.tvaPct}&nbsp;% dans les autres locaux. Autres prestations&nbsp;: {t.tvaPct}&nbsp;%. <a href="#tva">Les conditions en détail</a></>
+        : <>Prix HT, TVA en sus au taux applicable à vos locaux.</>}</p>
       </div>
     </div>
   </section>
@@ -149,7 +151,7 @@ const diag = t.prestations.find((p) => p.nom.startsWith('Diagnostic'))!;
     <div class="wrap">
       <div class="c-head">
         <div><p class="sec-label">Exemple</p><h2 class="h2" id="t-ex">Un cas concret, <em>du début à la fin</em></h2></div>
-        <p class="lead">{exemple.nom}, en zone A ({t.zones[0].libelle}), déplacement et première heure inclus.</p>
+        <p class="lead">{exemple.nom}, en zone A ({t.zones[0].libelle}), déplacement et première heure inclus{tauxParticulier(exemple) === t.tvaReduitePct ? ', chez un particulier dont le logement a plus de deux ans' : ''}.</p>
       </div>
       <ul class="tf-ex">
         {[{ b: 'Mardi 14 h', maj: 0 }, { b: exSamedi.libelle, maj: exSamedi.maj }, { b: exDim.libelle, maj: exDim.maj }].map((x) => {
@@ -158,7 +160,7 @@ const diag = t.prestations.find((p) => p.nom.startsWith('Diagnostic'))!;
             <li>
               <b>{x.b}</b>
               <strong>{eur(ttc(ht, tauxParticulier(exemple)))} TTC</strong>
-              <span>{x.maj ? `Majoration de ${x.maj} %` : 'Tarif de base'}, soit {eur(ht)} HT.</span>
+              <span>{x.maj ? `Majoration de ${x.maj} %` : 'Tarif de base'}, soit {eur(ht)} HT, TVA {tauxParticulier(exemple)}&nbsp;% comprise.</span>
             </li>
           );
         })}
@@ -178,7 +180,7 @@ const diag = t.prestations.find((p) => p.nom.startsWith('Diagnostic'))!;
         </details>
         <details>
           <summary><span class="q-n">Q.02</span>Le déplacement est-il facturé en plus&nbsp;?<span class="tog" aria-hidden="true"></span></summary>
-          <p class="ans">Non. Le déplacement et la première heure d'intervention sont compris dans les forfaits de débouchage. Si l'intervention s'avère impossible, seul le diagnostic est facturé, soit {eur(diag.a!)} HT en zone A&nbsp;; 30&nbsp;% de cette somme sont déduits de votre facture si nous intervenons dans les 30&nbsp;jours qui suivent.</p>
+          <p class="ans">Non. Le déplacement et la première heure d'intervention sont compris dans les forfaits de débouchage. Si l'intervention s'avère impossible, seul le diagnostic est facturé, soit {eur(ttc(diag.a!, tauxParticulier(diag)))} TTC ({eur(diag.a!)} HT) en zone A&nbsp;; 30&nbsp;% de cette somme sont déduits de votre facture si nous intervenons dans les 30&nbsp;jours qui suivent.</p>
         </details>
         <details>
           <summary><span class="q-n">Q.03</span>Pourquoi un supplément la nuit et le week-end&nbsp;?<span class="tog" aria-hidden="true"></span></summary>
@@ -188,6 +190,21 @@ const diag = t.prestations.find((p) => p.nom.startsWith('Diagnostic'))!;
           <summary><span class="q-n">Q.04</span>Faites-vous des devis&nbsp;?<span class="tog" aria-hidden="true"></span></summary>
           <p class="ans">Oui, pour tout ce qui sort de la grille&nbsp;: détartrage, inspection de plus de 30&nbsp;ml, curage de réseau complet, contrats d'entretien pour les syndics et les professionnels. Décrivez-nous le réseau depuis la page <a href="/contact/">Contact</a> ou appelez-nous au <a class="tel" href={e.telephone.lien}>{e.telephone.affiche}</a>.</p>
         </details>
+        {tvaReduiteActive && (
+          <details id="tva">
+            <summary><span class="q-n">Q.05</span>Pourquoi la TVA est-elle à {t.tvaReduitePct}&nbsp;% sur certaines lignes&nbsp;?<span class="tog" aria-hidden="true"></span></summary>
+            <div class="ans prose">
+              <p>Parce que la loi prévoit un taux réduit de {t.tvaReduitePct}&nbsp;% pour l'entretien des logements achevés depuis plus de deux&nbsp;ans (article 279-0 bis du code général des impôts). Il s'applique ici&nbsp;:</p>
+              <ul>
+                <li>au <strong>débouchage</strong>, au <strong>curage</strong>, au <strong>détartrage</strong> des canalisations et au <strong>nettoyage des bacs à graisse</strong>&nbsp;;</li>
+                <li>dans un <strong>local d'habitation</strong> (maison, appartement, parties communes d'un immeuble d'habitation) <strong>achevé depuis plus de deux&nbsp;ans</strong>&nbsp;;</li>
+                <li>que vous en soyez propriétaire, locataire, bailleur ou syndic&nbsp;: c'est le logement qui compte, pas le client.</li>
+              </ul>
+              <p>{regleTva.justificatif} Vous y confirmez que le logement est achevé depuis plus de deux&nbsp;ans et que l'intervention ne s'inscrit pas dans une construction neuve ni dans un agrandissement de plus de 10&nbsp;% de la surface. Gardez votre exemplaire.</p>
+              <p>{regleTva.sinon}</p>
+            </div>
+          </details>
+        )}
       </div>
     </div>
   </section>

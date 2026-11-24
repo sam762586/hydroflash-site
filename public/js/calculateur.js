@@ -99,6 +99,9 @@
       if (mlBox) mlBox.hidden = !o.ml;
       var zone = valeurRadio('z') || 'A';
       var client = valeurRadio('c') || 'part';
+      /* Case « logement de plus de 2 ans » : utile seulement pour un particulier et une prestation éligible. */
+      var tvaBox = box.querySelector('[data-tva]');
+      if (tvaBox) tvaBox.hidden = !(client === 'part' && o.r);
       var choixQ = champ('q').value;
       var code = choixQ === 'auto' ? creneauDe(maintenantParis()) : choixQ;
       var cr = parCode[code] || data.creneaux[0];
@@ -128,14 +131,18 @@
       var taux = (client === 'part' && data.tva.actif && o.r && logement) ? data.tva.reduit : data.tva.normal;
       var ttc = arrondi(ht * (1 + taux / 100));
 
+      var reduite = data.tva.actif && o.r;
       if (client === 'pro') {
         out('px').textContent = nf(ht);
         out('unite').textContent = 'HT';
-        out('px2').textContent = 'TVA en sus, au taux applicable à vos locaux.';
+        out('px2').textContent = reduite
+          ? 'TVA en sus : ' + data.tva.reduit + '\u00a0% dans un local d\u2019habitation achevé depuis plus de 2\u00a0ans, ' + data.tva.normal + '\u00a0% sinon.'
+          : 'TVA en sus, au taux de ' + data.tva.normal + '\u00a0%.';
       } else {
         out('px').textContent = nf(ttc);
         out('unite').textContent = 'TTC';
-        out('px2').textContent = 'Soit ' + nf(ht) + ' HT, TVA ' + taux + ' % comprise.';
+        out('px2').textContent = 'Soit ' + nf(ht) + ' HT, TVA ' + taux + '\u00a0% comprise'
+          + (reduite ? (logement ? ' (logement de plus de 2\u00a0ans).' : ' (logement de moins de 2\u00a0ans).') : '.');
       }
     };
 

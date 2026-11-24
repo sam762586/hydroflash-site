@@ -27,6 +27,8 @@
 .calc-cpmsg:empty { display: none; }
 .calc-log { display: flex; align-items: center; gap: 10px; font-size: 15px; color: var(--ink2); cursor: pointer; }
 .calc-log input { width: 20px; height: 20px; accent-color: var(--o); }
+.calc-tva { display: grid; gap: 6px; }
+.calc-aide { font-size: 13.5px; line-height: 1.45; color: var(--grey); }
 
 .calc-res { display: flex; flex-direction: column; gap: 16px; padding: 36px; background: var(--ink2); color: #fff; border-radius: 0 28px 28px 0; }
 .calc-res-t { color: var(--grey-d); font-size: 12px; }

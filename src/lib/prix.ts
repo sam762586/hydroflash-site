@@ -21,3 +21,19 @@ export const ttc = (ht: number, taux: number) => Math.round(ht * (1 + taux / 100
 /** 1 234,50 € — espace insécable avant l'euro, virgule décimale. */
 export const eur = (v: number) =>
   v.toLocaleString('fr-FR', { minimumFractionDigits: v % 1 ? 2 : 0, maximumFractionDigits: 2 }) + ' €';
+
+/** Règle d'application de la TVA à 10 %, telle qu'elle est affichée sur le site (calculateur, tarifs, communes).
+ *  Sources : CGI art. 279-0 bis ; BOFiP BOI-ANNX-000210 ; loi de finances pour 2025 (mention du client sur le
+ *  devis ou la facture, en vigueur depuis le 16/02/2025). Le taux dépend du local, pas de la qualité du client. */
+const R = e.tarifs.tvaReduitePct;
+const N = e.tarifs.tvaPct;
+export const regleTva = {
+  /** Étiquette courte, après un prix. */
+  court: `TVA à ${R} % pour un logement achevé depuis plus de 2 ans`,
+  /** Conditions, en une phrase. */
+  conditions: `La TVA est à ${R} % pour le débouchage, le curage, le détartrage et le nettoyage des bacs à graisse dans un logement achevé depuis plus de deux ans, que vous en soyez propriétaire, locataire, bailleur ou syndic.`,
+  /** Justificatif demandé au client. */
+  justificatif: `Vous le certifiez par une simple mention sur le devis ou la facture.`,
+  /** Cas facturés au taux normal. */
+  sinon: `Logement de moins de deux ans, local professionnel, pompage, inspection caméra ou diagnostic seuls : TVA à ${N} %.`,
+};
