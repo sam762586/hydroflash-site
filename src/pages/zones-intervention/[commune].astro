@@ -116,7 +116,7 @@ const proches = (voisines(c).length ? voisines(c) : memeDepartement(c)).slice(0,
 
 const faq = [
   { q: `Combien coûte un débouchage ${aNom} ?`,
-    a: `Un débouchage manuel est à ${eurTtc(ttcManuel)} TTC (${eur(prixManuel)} HT), un débouchage à l'hydrocureur à ${eurTtc(ttcHydro)} TTC (${eur(prixHydro)} HT), déplacement et première heure compris${tvaReduiteActive ? `, ${regleTva.court}` : ''}. ${c.nom} est ${libZone}.${c.zone === 'AB' ? ' Selon l\'adresse exacte, le tarif retenu est celui de la zone A ou de la zone B : nous vous le confirmons au téléphone, avant tout déplacement.' : ''} Le détail complet est sur notre <a href="/tarifs/">grille tarifaire</a> et, pour les particuliers, ces prix valent de jour comme de nuit, sans majoration. Le devis est gratuit.` },
+    a: `Pour un particulier, un débouchage manuel est à ${eurTtc(ttcManuel)} TTC, un débouchage à l'hydrocureur à ${eurTtc(ttcHydro)} TTC, déplacement et première heure compris${tvaReduiteActive ? `, ${regleTva.court}` : ''}. ${c.nom} est ${libZone}.${c.zone === 'AB' ? ' Selon l\'adresse exacte, le tarif retenu est celui de la zone A ou de la zone B : nous vous le confirmons au téléphone, avant tout déplacement.' : ''} Le détail complet est sur notre <a href="/tarifs/">grille tarifaire</a> et, pour les particuliers, ces prix valent de jour comme de nuit, sans majoration. Le devis est gratuit.` },
   { q: `Intervenez-vous la nuit et le week-end ${aNom} ?`,
     a: `Oui, ${dispo}. Pour un particulier, c'est au même prix qu'en journée : aucune majoration la nuit, le week-end ni les jours fériés (<a href="/tarifs/">voir la grille</a>). Le prix vous est annoncé au téléphone avant que nous partions.` },
   { q: `Quel est le délai d'intervention ${aNom} ?`,
@@ -163,8 +163,8 @@ const descPage = descLong.length <= 170 ? descLong : `Débouchage, curage et pom
       <dl class="kv">
         <dt>Commune</dt><dd>{c.nom} ({c.cp}), {departement}</dd>
         <dt>Zone tarifaire</dt><dd>{c.zone === 'AB' ? 'À la limite des zones A et B — confirmée au téléphone selon votre adresse' : `Zone ${c.zone}`}</dd>
-        <dt>Débouchage manuel</dt><dd>à partir de {eurTtc(ttcManuel)} TTC ({eur(prixManuel)} HT), déplacement et 1<sup>re</sup>&nbsp;heure compris</dd>
-        <dt>Débouchage hydrocureur</dt><dd>à partir de {eurTtc(ttcHydro)} TTC ({eur(prixHydro)} HT), déplacement et 1<sup>re</sup>&nbsp;heure compris</dd>
+        <dt>Débouchage manuel</dt><dd>à partir de {eurTtc(ttcManuel)} TTC, déplacement et 1<sup>re</sup>&nbsp;heure compris</dd>
+        <dt>Débouchage hydrocureur</dt><dd>à partir de {eurTtc(ttcHydro)} TTC, déplacement et 1<sup>re</sup>&nbsp;heure compris</dd>
         <dt>TVA</dt><dd>{noteTva}{tvaReduiteActive && <> (<a href="/tarifs/#tva">conditions</a>)</>}</dd>
         <dt>Devis</dt><dd>Gratuit, sans engagement</dd>
         <dt>Délai d'intervention</dt><dd>{c.zone === 'A' ? `Généralement ${e.delaiZoneA}` : 'Estimé au téléphone, selon la route'}</dd>

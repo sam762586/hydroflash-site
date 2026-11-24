@@ -6,16 +6,14 @@ import { entreprise as e } from '../data/entreprise';
 import { PROD } from '../lib/env';
 import Tbc from './Tbc.astro';
 
-/* pros = true sur les pages professionnelles : la promesse « même prix à toute heure » ne vaut que pour les particuliers. */
+/* pros = true sur les pages professionnelles : pas de carte « prix publiés » (aucun prix pro sur le site). */
 interface Props { numero?: string; sombre?: boolean; id?: string; pros?: boolean }
 const { numero, sombre = false, id = 'preuves', pros = false } = Astro.props;
 
 type Preuve = { titre: string; texte?: string; lien?: { href: string; label: string }; manque?: string; tbcExtra?: string };
 const m = e.mediateur;
 const preuves: Preuve[] = [
-  { titre: 'Des prix publiés', texte: pros
-    ? 'Toute la grille est en ligne, prestation par prestation et zone par zone.'
-    : 'Toute la grille est en ligne. Pour les particuliers, elle s’applique à toute heure : aucune majoration la nuit, le week-end ni les jours fériés.', lien: { href: '/tarifs/', label: 'Voir la grille tarifaire' } },
+  { titre: 'Des prix publiés', texte: 'Toute la grille des particuliers est en ligne, et elle s’applique à toute heure : aucune majoration la nuit, le week-end ni les jours fériés.', lien: { href: '/tarifs/', label: 'Voir la grille tarifaire' } },
   e.devisAvantIntervention
     ? { titre: 'Un devis avant d’intervenir', texte: 'Le prix vous est donné avant notre départ. Si la situation est différente sur place, nous vous le disons avant de continuer.' }
     : { titre: 'Un devis avant d’intervenir', manque: 'à confirmer' },
@@ -38,7 +36,7 @@ const preuves: Preuve[] = [
     ? { titre: 'Une entreprise immatriculée', texte: `SIRET ${e.siret}${e.rcsOuRm ? ` · ${e.rcsOuRm}` : ''}.` }
     : { titre: 'Une entreprise immatriculée', manque: 'SIRET à venir' },
 ];
-const visibles = preuves.filter((p) => !(PROD && p.manque));
+const visibles = preuves.filter((p) => !(PROD && p.manque) && !(pros && p.titre === 'Des prix publiés'));
 /* L'accroche ne parle de « numéros officiels » que si au moins un numéro (agrément, récépissé, SIRET) est confirmé. */
 const numerosOfficiels = Boolean(e.agrementVidangeur || e.recepisseTransportDechets || e.siret);
 const accroche = numerosOfficiels || !PROD

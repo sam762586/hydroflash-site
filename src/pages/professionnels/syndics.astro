@@ -2,7 +2,7 @@
 /* SYNDICS DE COPROPRIÉTÉ ET GESTIONNAIRES — angle « dossier prêt pour l'assemblée générale ».
  * Uniquement des informations confirmées (src/data/entreprise.ts) ; le reste passe par <Tbc /> et disparaît en production.
  * Calendrier : l'assemblée générale se réunit dans les six mois suivant la clôture de l'exercice (fiche INC),
- * convocation au moins 21 jours avant (service-public.fr, F2615). Prix : entreprise.tarifs uniquement. */
+ * convocation au moins 21 jours avant (service-public.fr, F2615). Aucun prix affiché : tarifs pros sur devis (démarchage avec plaquettes). */
 import Base from '../../layouts/Base.astro';
 import SousHero from '../../components/SousHero.astro';
 import Faq from '../../components/Faq.astro';
@@ -11,13 +11,11 @@ import Preuves from '../../components/Preuves.astro';
 import { FEUILLE_CONTENU, FEUILLE_BLOCS } from '../../lib/feuilles';
 import { schemaService } from '../../lib/schema';
 import { entreprise as e } from '../../data/entreprise';
-import { eur } from '../../lib/prix';
 import cssOrdi from '../../styles/pages/prestation-ordinateur.css?url';
 import cssMobile from '../../styles/pages/prestation-mobile.css?url';
 
 const dispo = e.disponibilite.libelle;
 const t = e.tarifs;
-const camera = t.prestations.find((p) => p.nom.startsWith('Inspection caméra avec'));
 const livrable = e.passageCamera.livrable.replace(/'/g, '’');
 const SOURCE_AG = 'https://www.inc-conso.fr/content/copropriete-quel-moment-lassemblee-generale-doit-elle-obligatoirement-se-reunir';
 const SOURCE_CONVOC = 'https://www.service-public.gouv.fr/particuliers/vosdroits/F2615';
@@ -26,8 +24,8 @@ const description = `Syndics : passage caméra des colonnes, rapport PDF et devi
 
 type Info = { k: string; v: string; lien?: string };
 const infos: Info[] = [
-  ...(camera && camera.a !== null ? [{ k: 'Passage caméra avec rapport', v: `${eur(camera.a)} HT en zone A, jusqu’à 30 ml` }] : []),
-  { k: 'Inspection de plus de 30 ml', v: 'Sur devis' },
+  { k: 'Tarifs', v: 'Sur devis, adaptés à votre parc' },
+  { k: 'Passage caméra', v: 'Compte rendu PDF avec photos' },
   { k: 'Détartrage de colonne', v: 'Sur devis, après passage caméra' },
   { k: 'Contrat d’entretien', v: e.contratEntretien },
   { k: 'Urgences', v: `Intervention ${e.disponibilite.court}, tarif annoncé avant le départ` },

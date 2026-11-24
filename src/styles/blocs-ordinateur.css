@@ -1,5 +1,5 @@
 /* HYDROFLASH — blocs partagés, rendu ordinateur / tablette (style C), ≥ 701 px :
-   calculateur de prix (.calc), « Vérifiez-nous » (.pv), « Ce qu'on a trouvé » (.tv), bascule Particulier/Pro (.vue).
+   calculateur de prix (.calc), « Vérifiez-nous » (.pv), « Ce qu'on a trouvé » (.tv).
    Chargé par les pages qui utilisent ces blocs (FEUILLE_BLOCS). */
 
 /* ---------- Calculateur ---------- */
@@ -72,12 +72,3 @@
 .tv-ph .ic { width: 44px; height: 44px; }
 
 /* ---------- Bascule Particulier / Professionnel (grille tarifaire) ---------- */
-.vue-bascule { display: inline-flex; gap: 6px; padding: 6px; border-radius: 16px; background: var(--mist); margin-bottom: 18px; }
-.vue-bascule label { position: relative; cursor: pointer; }
-.vue-bascule input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
-.vue-bascule span { display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; border-radius: 11px; font-weight: 700; font-size: 15.5px; color: var(--ink2); }
-.vue-bascule input:checked + span { background: var(--ink2); color: #fff; }
-.vue-bascule input:focus-visible + span { box-shadow: 0 0 0 4px var(--o-a35); }
-.vue:has(#vue-pro:checked) .px-part, .vue:has(#vue-part:checked) .px-pro { display: none; }
-.vue-note { margin-top: 12px; font-size: 14.5px; color: var(--grey); }
-.vue:has(#vue-pro:checked) .vue-note-part, .vue:has(#vue-part:checked) .vue-note-pro { display: none; }

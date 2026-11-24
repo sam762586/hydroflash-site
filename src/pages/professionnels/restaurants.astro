@@ -1,6 +1,6 @@
 ---
 /* RESTAURANTS ET MÉTIERS DE BOUCHE — bac à graisse, conformité au règlement d'assainissement, traçabilité.
- * Uniquement des informations confirmées (src/data/entreprise.ts) ; prix lus dans entreprise.tarifs.
+ * Uniquement des informations confirmées (src/data/entreprise.ts). Aucun prix affiché : tarifs pros sur devis.
  * Règlement cité : règlement de service d'assainissement collectif de la Métropole Rouen Normandie
  * (délibération du 18 décembre 2023). La restauration y est « assimilée domestique » (annexe I) ;
  * prescriptions : annexe II, fiche « Activités de restauration » ; graisses et huiles : article 26.
@@ -15,15 +15,12 @@ import { PROD } from '../../lib/env';
 import { FEUILLE_CONTENU, FEUILLE_BLOCS } from '../../lib/feuilles';
 import { schemaService } from '../../lib/schema';
 import { entreprise as e } from '../../data/entreprise';
-import { eur } from '../../lib/prix';
 import cssOrdi from '../../styles/pages/prestation-ordinateur.css?url';
 import cssMobile from '../../styles/pages/prestation-mobile.css?url';
 
 const dispo = e.disponibilite.libelle;
 const t = e.tarifs;
 const bac = t.prestations.find((p) => p.nom.startsWith('Pompage de petit bac'));
-const curageH = t.prestations.find((p) => p.cat === 'Curage' && p.unite === 'heure');
-const curageMl = t.prestations.find((p) => p.cat === 'Curage' && p.unite === 'ml');
 const REGLEMENT = 'https://metropole-rouen-normandie.fr/file-download/download/public/251254';
 const ARTICLE = '/conseils/bac-a-graisse-restaurant-obligations/';
 
@@ -31,9 +28,9 @@ const description = `Restaurants : pompage du bac à graisse, retraitement inclu
 
 type Info = { k: string; v: string; lien?: string };
 const infos: Info[] = [
-  ...(bac && bac.a !== null && bac.b !== null ? [{ k: 'Pompage de petit bac à graisse', v: `${eur(bac.a)} HT en zone A · ${eur(bac.b)} HT en zone B` }, { k: 'Compris', v: bac.detail }] : []),
-  ...(curageH && curageMl && curageH.a !== null && curageMl.a !== null ? [{ k: 'Curage du branchement', v: `${eur(curageH.a)} HT la première heure, puis ${eur(curageMl.a)} HT le mètre (zone A)` }] : []),
-  { k: 'Hors horaires', v: 'Intervention possible, tarif précisé sur devis' },
+  ...(bac ? [{ k: 'Pompage du bac à graisse', v: bac.detail }] : []),
+  { k: 'Curage du branchement', v: 'Haute pression, quand il est encrassé' },
+  { k: 'Tarifs', v: 'Sur devis, y compris en dehors des heures ouvrées' },
   { k: 'Documents remis', v: e.documentsPompage },
   { k: 'Contrat d’entretien', v: e.contratEntretien },
   { k: 'Téléphone', v: e.telephone.affiche, lien: e.telephone.lien },
@@ -47,7 +44,7 @@ const faq = [
   { q: 'Les bio-additifs remplacent-ils la vidange ?',
     a: 'Non. Ils peuvent limiter les odeurs, mais ne font pas disparaître les graisses&nbsp;: ils les émulsionnent, et celles-ci repartent plus loin dans le réseau où elles se redéposent.' },
   { q: 'Pouvez-vous intervenir en dehors du service ?',
-    a: `HYDROFLASH intervient ${dispo}. ${e.tarifs.horsHorairesPro} Indiquez vos contraintes d’horaires lors de votre demande afin d’organiser l’intervention au moment le plus adapté.` },
+    a: `HYDROFLASH intervient ${dispo}, sur devis. Indiquez vos contraintes d’horaires lors de votre demande afin d’organiser l’intervention au moment le plus adapté.` },
 ];
 ---
 <Base
@@ -85,7 +82,7 @@ const faq = [
         </div>
       </div>
       <aside class="pr-infos c-sticky" aria-labelledby="t-infos">
-        <p class="pr-infos-t" id="t-infos">Tarifs et conditions</p>
+        <p class="pr-infos-t" id="t-infos">Prestations et conditions</p>
         <dl>
           {infos.map((i) => <div><dt>{i.k}</dt><dd>{i.lien ? <a href={i.lien}>{i.v}</a> : i.v}</dd></div>)}
         </dl>

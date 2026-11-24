@@ -1,7 +1,7 @@
 ---
-/** Calculateur « Votre prix exact » : prestation, code postal (zone A/B), particulier ou professionnel.
- *  Particuliers : même prix à toute heure (aucune majoration). Professionnels : prix valables en semaine de 8 h à 18 h,
- *  hors de ces horaires tarif sur devis (entreprise.tarifs.horsHorairesPro) — décision du 24/11/2026.
+/** Calculateur « Votre prix exact » : prestation, code postal (zone A/B).
+ *  Particuliers uniquement : prix TTC, le même à toute heure (aucune majoration). Aucun prix pro : les professionnels
+ *  sont renvoyés vers un devis (entreprise.tarifs.tarifsPro) — décisions du 24/11/2026.
  *  Données : entreprise.tarifs (source unique) et communes.ts (zone par commune), passées en attribut
  *  data-calc (aucun script en ligne : la politique de sécurité du site les interdit).
  *  Comportement : public/js/calculateur.js. Sans JavaScript : lien vers la grille complète.
@@ -68,7 +68,6 @@ const data = {
   noms: nomsCp,
   deps: e.zone.departements.map((d) => d.code),
   delaiA: e.delaiZoneA,
-  horaires: { part: 'Même prix jour et nuit, week-end et jours fériés', pro: t.horsHorairesPro },
 };
 const tel = e.telephone.affiche.replace(/ /g, ' ');
 ---
@@ -79,7 +78,7 @@ const tel = e.telephone.affiche.replace(/ /g, ' ');
         <p class="sec-label">{numero && <span class="sl-n">{numero} — </span>}Votre prix</p>
         <h2 class="h2" id={`${id}-t`}>{titre} <em>{titreFin}</em></h2>
       </div>
-      <p class="lead">Choisissez l'intervention et votre code postal&nbsp;: le prix s'affiche. Pour un particulier, c'est le même de jour comme de nuit, le week-end et les jours fériés&nbsp;; c'est celui que nous vous annoncerons au téléphone.</p>
+      <p class="lead">Choisissez l'intervention et votre code postal&nbsp;: le prix TTC s'affiche, le même de jour comme de nuit, le week-end et les jours fériés. C'est celui que nous vous annoncerons au téléphone.</p>
     </div>
 
     <div class="calc" data-calc={JSON.stringify(data)} data-id={id}>
@@ -100,28 +99,24 @@ const tel = e.telephone.affiche.replace(/ /g, ' ');
           {t.zones.map((z, i) => <label><input type="radio" name="z" value={z.code} checked={i === 0}><span>{z.libelle}</span></label>)}
         </fieldset>
         <p class="calc-cpmsg" data-out="cpmsg" aria-live="polite"></p>
-        <fieldset class="calc-choix">
-          <legend>Vous êtes</legend>
-          <label><input type="radio" name="c" value="part" checked><span>Particulier</span></label>
-          <label><input type="radio" name="c" value="pro"><span>Professionnel</span></label>
-        </fieldset>
         {tvaReduiteActive && (
           <div class="calc-tva" data-tva>
             <label class="calc-log"><input type="checkbox" name="log" checked><span>Logement achevé depuis plus de 2&nbsp;ans</span></label>
             <p class="calc-aide">TVA à {t.tvaReduitePct}&nbsp;% dans ce cas. {regleTva.justificatif} Sinon, TVA à {t.tvaPct}&nbsp;%.</p>
           </div>
         )}
+        <p class="calc-aide">{t.tarifsPro} <a href="/professionnels/">Nous contacter</a></p>
         <a class="calc-grille" href={grilleHref}>Voir toute la grille tarifaire <svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></a>
       </form>
 
       <div class="calc-res">
         <div class="calc-out" aria-live="polite" aria-atomic="true">
-          <p class="calc-res-t mono">Prix annoncé</p>
+          <p class="calc-res-t mono">Prix annoncé · particuliers</p>
           <p class="calc-px"><strong data-out="px">—</strong> <span data-out="unite"></span></p>
           <p class="calc-px2" data-out="px2"></p>
         </div>
         <dl class="calc-det">
-          <div><dt>Horaires</dt><dd data-out="horaires">Même prix jour et nuit, week-end et jours fériés</dd></div>
+          <div><dt>Horaires</dt><dd>Même prix jour et nuit, week-end et jours fériés</dd></div>
           <div><dt>Zone</dt><dd data-out="zone"></dd></div>
           <div><dt>Délai</dt><dd data-out="delai"></dd></div>
           <div><dt>Compris</dt><dd data-out="detail"></dd></div>

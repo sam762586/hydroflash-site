@@ -69,12 +69,3 @@
 .tv-ph .ic { width: 40px; height: 40px; }
 
 /* ---------- Bascule Particulier / Professionnel (grille tarifaire) ---------- */
-.vue-bascule { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 5px; background: var(--mist); border-radius: var(--radius); margin-bottom: 14px; }
-.vue-bascule label { position: relative; }
-.vue-bascule input { position: absolute; opacity: 0; inset: 0; margin: 0; }
-.vue-bascule span { display: flex; align-items: center; justify-content: center; min-height: 46px; border-radius: var(--radius); font: 800 15px/1 var(--f-display); font-stretch: 85%; text-transform: uppercase; letter-spacing: .04em; color: var(--ink2); }
-.vue-bascule input:checked + span { background: var(--ink2); color: #fff; }
-.vue-bascule input:focus-visible + span { box-shadow: 0 0 0 3px var(--o-a35); }
-.vue:has(#vue-pro:checked) .px-part, .vue:has(#vue-part:checked) .px-pro { display: none; }
-.vue-note { margin-top: 10px; font-size: 14px; color: var(--grey); }
-.vue:has(#vue-pro:checked) .vue-note-part, .vue:has(#vue-part:checked) .vue-note-pro { display: none; }
