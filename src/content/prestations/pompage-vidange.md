@@ -5,7 +5,7 @@ titreCourt: "Pompage"
 seoTitre: "Pompage et vidange d'ouvrages d'assainissement | HYDROFLASH"
 seoDescription: "Regard plein, bac ou ouvrage d'assainissement à vider ? Pompage et vidange en Seine-Maritime (76) et dans l'Eure (27), {disponibilite}. Appelez le {telephone}."
 h1a: "Pompage et vidange"
-h1b: "Regards, bacs et ouvrages d'assainissement"
+h1b: "Regards, bacs, ouvrages et pompes de relevage"
 intro: "Un regard plein qui ne se vide plus, un bac ou un ouvrage d'assainissement à vidanger : le pompage aspire les eaux et les dépôts accumulés pour remettre l'installation en service ou permettre d'intervenir dessus."
 picto: "pompage"
 symptomes:
@@ -33,6 +33,8 @@ faq:
     a: "Le type d'ouvrage (regard, bac…), son emplacement, sa profondeur ou son volume approximatif, et la distance jusqu'à l'endroit où un véhicule peut stationner. Une photo jointe au <a href=\"#devis\">formulaire de demande</a> aide beaucoup à préparer l'intervention."
   - q: "Peut-on faire pomper un ouvrage la nuit ou le week-end ?"
     a: "HYDROFLASH intervient {disponibilite}. Appelez le {telephone} et décrivez l'ouvrage : nous faisons le point avec vous sur l'intervention possible."
+  - q: "Entretenez-vous les pompes de relevage ?"
+    a: "Oui. L'entretien d'un poste de relevage comprend le pompage et le nettoyage de la cuve, le retrait des dépôts et des lingettes, et le contrôle du déclenchement des pompes et des flotteurs. Le prix est établi sur devis, selon le type de poste et son accès. Dans un logement achevé depuis plus de deux ans, la TVA est à 10 %."
   - q: "Pourquoi un regard plein dégage-t-il de mauvaises odeurs ?"
     a: "Les eaux et les dépôts qui stagnent fermentent et dégagent des gaz malodorants. Une fois l'ouvrage pompé et la cause de l'engorgement traitée, les odeurs disparaissent en général. Si elles persistent, un <a href=\"/inspection-camera-canalisation/\">passage caméra</a> permet de rechercher un défaut sur le réseau."
 liees:
@@ -56,6 +58,10 @@ Regards de visite, regards de branchement, bacs et ouvrages d'assainissement : c
 ### Ne descendez jamais dans un ouvrage
 
 Un regard profond ou un ouvrage enterré est un espace confiné. Les gaz issus de la fermentation des eaux usées, dont l'hydrogène sulfuré, peuvent s'y accumuler et devenir dangereux. N'y descendez pas, gardez enfants et animaux à distance d'un tampon ouvert et n'essayez pas de vider l'ouvrage avec une pompe d'arrosage : les matières chargées l'endommagent vite et le problème reste entier.
+
+### Entretien des pompes de relevage
+
+Quand les eaux usées ne peuvent pas rejoindre le réseau par gravité (sous-sol, maison en contrebas de la rue), un poste de relevage les remonte. Graisses, lingettes et dépôts finissent par encrasser la cuve et bloquer les flotteurs : la pompe tourne dans le vide, ou ne se déclenche plus et le poste déborde. L'entretien consiste à pomper et nettoyer la cuve, retirer ce qui gêne les pompes et vérifier qu'elles se déclenchent normalement. Il est réalisé sur devis.
 
 ### Ce qui fait varier le prix
 

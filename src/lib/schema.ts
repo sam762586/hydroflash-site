@@ -36,7 +36,7 @@ export function schemaEntreprise(ville?: { nom: string; cp: string; dep: string 
       'débouchage de canalisation', 'débouchage de WC', "débouchage d'évier",
       'curage de canalisation', 'hydrocurage haute pression', 'détartrage de canalisation',
       'inspection caméra de canalisation', 'inspection télévisée de réseau',
-      'pompage de bac à graisse', 'pompage des eaux usées', 'pompage des eaux pluviales',
+      'pompage de bac à graisse', 'pompage des eaux usées', 'pompage des eaux pluviales', 'entretien de pompe de relevage',
       "entretien de réseau d'assainissement", 'colonne d\'évacuation', 'assainissement',
     ],
     /* Catalogue de prestations avec leur prix d'appel : c'est ce qui permet d'apparaître

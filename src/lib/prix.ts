@@ -31,7 +31,7 @@ export const regleTva = {
   /** Étiquette courte, après un prix. */
   court: `TVA à ${R} % pour un logement achevé depuis plus de 2 ans`,
   /** Conditions, en une phrase. */
-  conditions: `La TVA est à ${R} % pour le débouchage, le curage, le détartrage et le nettoyage des bacs à graisse dans un logement achevé depuis plus de deux ans, que vous en soyez propriétaire, locataire, bailleur ou syndic.`,
+  conditions: `La TVA est à ${R} % pour le débouchage, le curage, le détartrage et l'entretien des pompes de relevage dans un logement achevé depuis plus de deux ans, que vous en soyez propriétaire, locataire, bailleur ou syndic.`,
   /** Justificatif demandé au client. */
   justificatif: `Vous le certifiez par une simple mention sur le devis ou la facture.`,
   /** Cas facturés au taux normal. */
