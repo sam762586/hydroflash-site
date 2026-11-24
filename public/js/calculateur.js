@@ -1,54 +1,12 @@
 /* HYDROFLASH — calculateur de prix (composant CalculateurPrix.astro).
-   Données : attribut data-calc (grille tarifaire, créneaux, zones, TVA), produit à la construction depuis
+   Données : attribut data-calc (grille tarifaire, zones, TVA), produit à la construction depuis
    src/data/entreprise.ts. Aucun montant n'est écrit ici.
-   Créneau « Maintenant » : heure locale du visiteur, jours fériés français compris. Une nuit appartient au
-   jour où elle commence (samedi 18 h → dimanche 8 h = « samedi nuit »). */
+   Même prix à toute heure : aucune majoration de nuit, de week-end ni de jour férié (décision du 24/11/2026). */
 (function () {
   'use strict';
   if (window.HF_CALC) return;
   window.HF_CALC = true;
   var d = document;
-
-  /* ---------- Jours fériés (France métropolitaine) ---------- */
-  var paques = function (y) {
-    var a = y % 19, b = Math.floor(y / 100), c = y % 100, dd = Math.floor(b / 4), e = b % 4;
-    var f = Math.floor((b + 8) / 25), g = Math.floor((b - f + 1) / 3), h = (19 * a + b - dd - g + 15) % 30;
-    var i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7, m = Math.floor((a + 11 * h + 22 * l) / 451);
-    var mois = Math.floor((h + l - 7 * m + 114) / 31), jour = ((h + l - 7 * m + 114) % 31) + 1;
-    return new Date(y, mois - 1, jour);
-  };
-  var cacheFeries = {};
-  var feries = function (y) {
-    if (cacheFeries[y]) return cacheFeries[y];
-    var p = paques(y);
-    var plus = function (n) { var x = new Date(p.getFullYear(), p.getMonth(), p.getDate()); x.setDate(x.getDate() + n); return x; };
-    var l = [new Date(y, 0, 1), plus(1), new Date(y, 4, 1), new Date(y, 4, 8), plus(39), plus(50),
-      new Date(y, 6, 14), new Date(y, 7, 15), new Date(y, 10, 1), new Date(y, 10, 11), new Date(y, 11, 25)];
-    cacheFeries[y] = l.map(function (x) { return x.getMonth() + '-' + x.getDate(); });
-    return cacheFeries[y];
-  };
-  var estFerie = function (j) { return feries(j.getFullYear()).indexOf(j.getMonth() + '-' + j.getDate()) >= 0; };
-
-  /** Code du créneau tarifaire pour une date donnée. */
-  var creneauDe = function (now) {
-    var h = now.getHours();
-    var jour = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    var nuit = h < 8 || h >= 18;
-    if (h < 8) jour.setDate(jour.getDate() - 1); // la nuit a commencé la veille
-    var dim = jour.getDay() === 0 || estFerie(jour), sam = jour.getDay() === 6;
-    if (!nuit) return dim ? 'dim' : (sam ? 'samedi' : 'semaine');
-    return dim ? 'dim_nuit' : (sam ? 'samedi_nuit' : 'nuit');
-  };
-
-  /* Heure de Paris, quel que soit le fuseau réglé sur l'appareil du visiteur (« 24:05 » possible à minuit). */
-  var maintenantParis = function () {
-    try {
-      var t = new Date().toLocaleString('en-US', { timeZone: 'Europe/Paris', hour12: false });
-      var m = /(\d+)\/(\d+)\/(\d+),?\s*(\d+):(\d+)/.exec(t);
-      if (m) return new Date(+m[3], +m[1] - 1, +m[2], +m[4] % 24, +m[5]);
-    } catch (e) { /* navigateur ancien : heure de l'appareil */ }
-    return new Date();
-  };
 
   var nf = function (v) {
     var cents = Math.round(v * 100) / 100;
@@ -62,8 +20,6 @@
     var form = box.querySelector('form');
     var out = function (k) { return box.querySelector('[data-out="' + k + '"]'); };
     var champ = function (n) { return form.elements[n]; };
-    var parCode = {};
-    data.creneaux.forEach(function (c) { parCode[c.code] = c; });
     var zoneLib = {};
     data.zones.forEach(function (z) { zoneLib[z.code] = z.libelle; });
     var options = {};
@@ -102,12 +58,6 @@
       /* Case « logement de plus de 2 ans » : utile seulement pour un particulier et une prestation éligible. */
       var tvaBox = box.querySelector('[data-tva]');
       if (tvaBox) tvaBox.hidden = !(client === 'part' && o.r);
-      var choixQ = champ('q').value;
-      var code = choixQ === 'auto' ? creneauDe(maintenantParis()) : choixQ;
-      var cr = parCode[code] || data.creneaux[0];
-
-      var majTxt = cr.maj > 0 ? '+ ' + cr.maj + ' %' : 'tarif de base';
-      out('creneau').textContent = (choixQ === 'auto' ? 'Maintenant : ' : '') + cr.libelle + ' (' + majTxt + ')';
       out('zone').textContent = 'Zone ' + zone + ' : ' + zoneLib[zone];
       out('delai').textContent = zone === 'A'
         ? 'Sur place en ' + data.delaiA + ' environ'
@@ -126,7 +76,7 @@
         if (!(m > 0)) m = 0;
         base = base + (zone === 'A' ? o.ml.a : o.ml.b) * m;
       }
-      var ht = arrondi(base * (1 + cr.maj / 100));
+      var ht = arrondi(base);
       var logement = champ('log') ? champ('log').checked : true;
       var taux = (client === 'part' && data.tva.actif && o.r && logement) ? data.tva.reduit : data.tva.normal;
       var ttc = arrondi(ht * (1 + taux / 100));
@@ -153,8 +103,6 @@
       calculer();
     });
     calculer();
-    /* « Maintenant » suit l'horloge : nouveau calcul chaque minute */
-    setInterval(function () { if (champ('q').value === 'auto') calculer(); }, 60000);
     box.classList.add('is-on');
   });
 })();

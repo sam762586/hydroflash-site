@@ -12,7 +12,7 @@ const { numero, sombre = false, id = 'preuves' } = Astro.props;
 type Preuve = { titre: string; texte?: string; lien?: { href: string; label: string }; manque?: string; tbcExtra?: string };
 const m = e.mediateur;
 const preuves: Preuve[] = [
-  { titre: 'Des prix publiés', texte: 'Toute la grille est en ligne, majorations de nuit, du week-end et des jours fériés comprises.', lien: { href: '/tarifs/', label: 'Voir la grille tarifaire' } },
+  { titre: 'Des prix publiés', texte: 'Toute la grille est en ligne, et elle s’applique à toute heure : aucune majoration la nuit, le week-end ni les jours fériés.', lien: { href: '/tarifs/', label: 'Voir la grille tarifaire' } },
   e.devisAvantIntervention
     ? { titre: 'Un devis avant d’intervenir', texte: 'Le prix vous est donné avant notre départ. Si la situation est différente sur place, nous vous le disons avant de continuer.' }
     : { titre: 'Un devis avant d’intervenir', manque: 'à confirmer' },
