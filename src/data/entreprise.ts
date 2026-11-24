@@ -15,16 +15,16 @@ export const entreprise = {
   email: 'contact@hydroflash.fr',
   disponibilite: { libelle: '24\u00a0h/24, 7\u00a0j/7', court: '24\u00a0h/24 · 7\u00a0j/7' }, // espaces insécables
   /** Décision du 24/11/2026 : PARTICULIERS = même prix à toute heure (aucune majoration la nuit, le week-end ni
-      les jours fériés). Professionnels (syndics, cabinets immobiliers, entreprises) : majorations maintenues hors heures
-      ouvrées, NON affichées sur le site, précisées sur devis et dans les conditions de vente pros. Ne jamais écrire
-      « sans majoration » sans préciser « pour les particuliers » (pratique trompeuse, y compris envers un pro). */
+      les jours fériés). Professionnels (syndics, cabinets immobiliers, entreprises) : AUCUN PRIX PRO SUR LE SITE (démarchage
+      direct avec plaquettes et devis ; majorations hors heures ouvrées). Ne jamais écrire « sans majoration » sans
+      préciser « pour les particuliers » (pratique trompeuse, y compris envers un pro). */
   sansMajorationParticuliers: true,
 
-  /** Grille tarifaire HYDROFLASH (confirmée le 19/11/2026). Prix HT. Particuliers : valables à toute heure.
-      Professionnels : valables en semaine, de 8 h à 18 h (voir horsHorairesPro). */
+  /** Grille tarifaire HYDROFLASH (confirmée le 19/11/2026). Prix HT, base de calcul des prix TTC PARTICULIERS affichés
+      sur le site (valables à toute heure). Les montants HT ne sont jamais affichés : pas de prix pros sur le site. */
   tarifs: {
-    /** Phrase affichée partout où un professionnel lit des prix (tarifs, calculateur, pages pros). */
-    horsHorairesPro: 'Prix professionnels valables en semaine, de 8\u00a0h à 18\u00a0h\u00a0; en dehors de ces horaires, tarif précisé sur devis.',
+    /** Phrase affichée là où un professionnel cherche un prix (tarifs, calculateur, pages pros). */
+    tarifsPro: 'Professionnels (syndics, cabinets immobiliers, entreprises)\u00a0: tarifs sur devis.',
     tvaPct: 20,
     /** TVA à 10 % (CGI, art. 279-0 bis) : débouchage, détartrage et curage de canalisations, curage de réseaux
         privés, nettoyage de bacs à graisse (BOFiP BOI-ANNX-000210 du 31/07/2024), dans des LOCAUX D'HABITATION

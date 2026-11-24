@@ -1,8 +1,8 @@
 /* HYDROFLASH — calculateur de prix (composant CalculateurPrix.astro).
    Données : attribut data-calc (grille tarifaire, zones, TVA), produit à la construction depuis
    src/data/entreprise.ts. Aucun montant n'est écrit ici.
-   Particuliers : même prix à toute heure. Professionnels : prix valables en semaine de 8 h à 18 h, sinon sur devis
-   (texte fourni par data-calc.horaires). Décision du 24/11/2026. */
+   Particuliers uniquement : prix TTC, le même à toute heure (aucune majoration). Aucun prix pro sur le site.
+   Décisions du 24/11/2026. */
 (function () {
   'use strict';
   if (window.HF_CALC) return;
@@ -55,11 +55,9 @@
       if (!o) return;
       if (mlBox) mlBox.hidden = !o.ml;
       var zone = valeurRadio('z') || 'A';
-      var client = valeurRadio('c') || 'part';
-      /* Case « logement de plus de 2 ans » : utile seulement pour un particulier et une prestation éligible. */
+      /* Case « logement de plus de 2 ans » : utile seulement pour une prestation éligible au taux réduit. */
       var tvaBox = box.querySelector('[data-tva]');
-      if (tvaBox) tvaBox.hidden = !(client === 'part' && o.r);
-      if (data.horaires) out('horaires').textContent = client === 'pro' ? data.horaires.pro : data.horaires.part;
+      if (tvaBox) tvaBox.hidden = !o.r;
       out('zone').textContent = 'Zone ' + zone + ' : ' + zoneLib[zone];
       out('delai').textContent = zone === 'A'
         ? 'Sur place en ' + data.delaiA + ' environ'
@@ -80,22 +78,14 @@
       }
       var ht = arrondi(base);
       var logement = champ('log') ? champ('log').checked : true;
-      var taux = (client === 'part' && data.tva.actif && o.r && logement) ? data.tva.reduit : data.tva.normal;
+      var taux = (data.tva.actif && o.r && logement) ? data.tva.reduit : data.tva.normal;
       var ttc = arrondi(ht * (1 + taux / 100));
 
       var reduite = data.tva.actif && o.r;
-      if (client === 'pro') {
-        out('px').textContent = nf(ht);
-        out('unite').textContent = 'HT';
-        out('px2').textContent = reduite
-          ? 'TVA en sus : ' + data.tva.reduit + '\u00a0% dans un local d\u2019habitation achevé depuis plus de 2\u00a0ans, ' + data.tva.normal + '\u00a0% sinon.'
-          : 'TVA en sus, au taux de ' + data.tva.normal + '\u00a0%.';
-      } else {
-        out('px').textContent = nf(ttc);
-        out('unite').textContent = 'TTC';
-        out('px2').textContent = 'Soit ' + nf(ht) + ' HT, TVA ' + taux + '\u00a0% comprise'
-          + (reduite ? (logement ? ' (logement de plus de 2\u00a0ans).' : ' (logement de moins de 2\u00a0ans).') : '.');
-      }
+      out('px').textContent = nf(ttc);
+      out('unite').textContent = 'TTC';
+      out('px2').textContent = 'TVA ' + taux + '\u00a0% comprise'
+        + (reduite ? (logement ? ' (logement de plus de 2\u00a0ans).' : ' (logement de moins de 2\u00a0ans).') : '.');
     };
 
     form.addEventListener('submit', function (ev) { ev.preventDefault(); calculer(); });

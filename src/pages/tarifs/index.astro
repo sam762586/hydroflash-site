@@ -1,5 +1,5 @@
 ---
-/* Page Tarifs : grille publique HYDROFLASH (zones, prestations ; particuliers : même prix à toute heure ; professionnels : prix en semaine 8 h–18 h, sinon sur devis).
+/* Page Tarifs : grille publique HYDROFLASH (zones, prestations) : prix TTC des particuliers, valables à toute heure. Aucun prix pro (tarifs sur devis).
    Source unique : entreprise.tarifs. Aucun prix écrit en dur ici. */
 import Base from '../../layouts/Base.astro';
 import SousHero from '../../components/SousHero.astro';
@@ -16,7 +16,6 @@ import { tauxParticulier, tvaReduiteActive, ttc, regleTva } from '../../lib/prix
 
 const FEUILLE_TARIFS = { ordi: tarifsOrdi, mobile: tarifsMobile };
 const t = e.tarifs;
-const coef = 1 + t.tvaPct / 100;
 const premier = t.prestations[0];
 
 /** 1 234,50 € — espace insécable fine avant l'euro, virgule décimale */
@@ -71,16 +70,11 @@ const diag = t.prestations.find((p) => p.nom.startsWith('Diagnostic'))!;
     <div class="wrap">
       <div class="c-head">
         <div><p class="sec-label">Grille</p><h2 class="h2" id="t-grille">Le prix de <em>chaque prestation</em></h2></div>
-        <p class="lead">Pour les particuliers, ces prix s'appliquent à toute heure&nbsp;: de jour comme de nuit, en semaine, le week-end et les jours fériés. Particulier ou professionnel&nbsp;: choisissez l'affichage qui vous concerne.</p>
+        <p class="lead">Prix TTC pour les particuliers, valables à toute heure&nbsp;: de jour comme de nuit, en semaine, le week-end et les jours fériés. {t.tarifsPro} <a href="/professionnels/">Nous contacter</a>.</p>
       </div>
 
-      <div class="vue">
-      <div class="vue-bascule" role="radiogroup" aria-label="Affichage des prix">
-        <label><input type="radio" name="vue" id="vue-part" value="part" checked><span>Particulier · TTC</span></label>
-        <label><input type="radio" name="vue" id="vue-pro" value="pro"><span>Professionnel · HT</span></label>
-      </div>
       <table class="tf-tab">
-        <caption><span class="px-part">Grille tarifaire HYDROFLASH — prix TTC pour les particuliers (HT entre parenthèses)</span><span class="px-pro">Grille tarifaire HYDROFLASH — prix HT pour les professionnels, en semaine de 8&nbsp;h à 18&nbsp;h (TTC à {t.tvaPct}&nbsp;% entre parenthèses)</span></caption>
+        <caption>Grille tarifaire HYDROFLASH — prix TTC pour les particuliers</caption>
         <thead>
           <tr>
             <th scope="col">Prestation</th>
@@ -99,10 +93,7 @@ const diag = t.prestations.find((p) => p.nom.startsWith('Diagnostic'))!;
                   <td class="tf-u">{p.unite}</td>
                   {[{ v: p.a, l: 'Zone A' }, { v: p.b, l: 'Zone B' }].map((z) => (
                     <td class="tf-p" data-l={z.l}>
-                      {z.v === null ? 'Sur devis' : <>
-                        <span class="px-part">{eur(ttc(z.v, tauxParticulier(p)))} TTC<span class="tf-ttc"> ({eur(z.v)} HT · TVA {tauxParticulier(p)}&nbsp;%)</span></span>
-                        <span class="px-pro">{eur(z.v)} HT<span class="tf-ttc"> ({eur(Math.round(z.v * coef * 100) / 100)} TTC)</span></span>
-                      </>}
+                      {z.v === null ? 'Sur devis' : <>{eur(ttc(z.v, tauxParticulier(p)))} TTC<span class="tf-ttc"> · TVA {tauxParticulier(p)}&nbsp;%</span></>}
                     </td>
                   ))}
                 </tr>
@@ -113,13 +104,9 @@ const diag = t.prestations.find((p) => p.nom.startsWith('Diagnostic'))!;
       </table>
 
       <p class="note">{t.regleDemiHeure}</p>
-      <p class="vue-note vue-note-part">{tvaReduiteActive
+      <p class="note">{tvaReduiteActive
         ? <>{regleTva.conditions} {regleTva.justificatif} {regleTva.sinon} <a href="#tva">Les conditions en détail</a></>
         : <>Prix TTC avec la TVA à {t.tvaPct}&nbsp;%. <Tbc label={`TVA à ${t.tvaReduitePct} % pour les logements de plus de 2 ans : à confirmer par le comptable`} /></>}</p>
-      <p class="vue-note vue-note-pro">{tvaReduiteActive
-        ? <>{t.horsHorairesPro} Prix HT, TVA en sus. Débouchage, curage, détartrage et bacs à graisse&nbsp;: {t.tvaReduitePct}&nbsp;% dans des locaux d'habitation achevés depuis plus de deux ans (logements, parties communes d'immeubles d'habitation), {t.tvaPct}&nbsp;% dans les autres locaux. Autres prestations&nbsp;: {t.tvaPct}&nbsp;%. <a href="#tva">Les conditions en détail</a></>
-        : <>{t.horsHorairesPro} Prix HT, TVA en sus au taux applicable à vos locaux.</>}</p>
-      </div>
     </div>
   </section>
 
@@ -154,7 +141,7 @@ const diag = t.prestations.find((p) => p.nom.startsWith('Diagnostic'))!;
           <li>
             <b>{moment}</b>
             <strong>{eur(ttc(exemple.a!, tauxParticulier(exemple)))} TTC</strong>
-            <span>Même prix, soit {eur(exemple.a!)} HT, TVA {tauxParticulier(exemple)}&nbsp;% comprise.</span>
+            <span>Même prix, TVA {tauxParticulier(exemple)}&nbsp;% comprise.</span>
           </li>
         ))}
       </ul>
@@ -173,11 +160,11 @@ const diag = t.prestations.find((p) => p.nom.startsWith('Diagnostic'))!;
         </details>
         <details>
           <summary><span class="q-n">Q.02</span>Le déplacement est-il facturé en plus&nbsp;?<span class="tog" aria-hidden="true"></span></summary>
-          <p class="ans">Non. Le déplacement et la première heure d'intervention sont compris dans les forfaits de débouchage. Si l'intervention s'avère impossible, seul le diagnostic est facturé, soit {eur(ttc(diag.a!, tauxParticulier(diag)))} TTC ({eur(diag.a!)} HT) en zone A&nbsp;; 30&nbsp;% de cette somme sont déduits de votre facture si nous intervenons dans les 30&nbsp;jours qui suivent.</p>
+          <p class="ans">Non. Le déplacement et la première heure d'intervention sont compris dans les forfaits de débouchage. Si l'intervention s'avère impossible, seul le diagnostic est facturé, soit {eur(ttc(diag.a!, tauxParticulier(diag)))} TTC en zone A&nbsp;; 30&nbsp;% de cette somme sont déduits de votre facture si nous intervenons dans les 30&nbsp;jours qui suivent.</p>
         </details>
         <details>
           <summary><span class="q-n">Q.03</span>Y a-t-il un supplément la nuit ou le week-end&nbsp;?<span class="tog" aria-hidden="true"></span></summary>
-          <p class="ans">Pas pour les particuliers&nbsp;: le prix de la grille s'applique à toute heure, de jour comme de nuit, en semaine, le week-end et les jours fériés. Seules la prestation, votre zone et, au-delà de la première heure, le temps passé font varier la facture. Pour les professionnels, le tarif en dehors des heures ouvrées est précisé sur devis.</p>
+          <p class="ans">Pas pour les particuliers&nbsp;: le prix de la grille s'applique à toute heure, de jour comme de nuit, en semaine, le week-end et les jours fériés. Seules la prestation, votre zone et, au-delà de la première heure, le temps passé font varier la facture. {t.tarifsPro}</p>
         </details>
         <details>
           <summary><span class="q-n">Q.04</span>Faites-vous des devis&nbsp;?<span class="tog" aria-hidden="true"></span></summary>

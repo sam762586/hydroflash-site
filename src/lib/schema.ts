@@ -1,6 +1,7 @@
 /** Données structurées (schema.org) générées depuis la source unique — uniquement des données confirmées. */
 import { entreprise as e } from '../data/entreprise';
 import { SITE_URL } from './env';
+import { ttc, tauxParticulier } from './prix';
 
 const url = (p = '/') => new URL(p, e.siteUrl || SITE_URL).href;
 
@@ -26,7 +27,7 @@ export function schemaEntreprise(ville?: { nom: string; cp: string; dep: string 
     ...(e.adresse ? { address: { '@type': 'PostalAddress', streetAddress: e.adresse.rue, postalCode: e.adresse.cp, addressLocality: e.adresse.ville, addressCountry: 'FR' } } : {}),
     ...(e.googleBusinessProfile ? { sameAs: [e.googleBusinessProfile] } : {}),
     /* Fourchette de prix : Google l'affiche dans la fiche locale. Calculée depuis la
-       grille réelle, du premier forfait au plus élevé, aucune majoration pour les particuliers (professionnels : hors heures ouvrées, sur devis). */
+       grille réelle, en TTC particuliers (aucun prix pro publié), du premier forfait au plus élevé. */
     priceRange: `${Math.min(...prixGrille())}\u2013${Math.max(...prixGrille())} €`,
     currenciesAccepted: 'EUR',
     slogan: e.slogan,
@@ -48,13 +49,13 @@ export function schemaEntreprise(ville?: { nom: string; cp: string; dep: string 
         .map((p) => ({
           '@type': 'Offer',
           itemOffered: { '@type': 'Service', name: p.nom, description: p.detail },
-          price: String(p.a),
+          price: String(ttc(p.a!, tauxParticulier(p))),
           priceCurrency: 'EUR',
           priceSpecification: {
             '@type': 'PriceSpecification',
-            price: String(p.a),
+            price: String(ttc(p.a!, tauxParticulier(p))),
             priceCurrency: 'EUR',
-            valueAddedTaxIncluded: false,
+            valueAddedTaxIncluded: true,
           },
           availability: 'https://schema.org/InStock',
         })),
@@ -69,8 +70,8 @@ function prixGrille(): number[] {
   const v: number[] = [];
   for (const p of e.tarifs.prestations) {
     if (p.unite !== 'forfait') continue;
-    if (p.a !== null) v.push(p.a);
-    if (p.b !== null) v.push(p.b);
+    if (p.a !== null) v.push(ttc(p.a, tauxParticulier(p)));
+    if (p.b !== null) v.push(ttc(p.b, tauxParticulier(p)));
   }
   return v;
 }
