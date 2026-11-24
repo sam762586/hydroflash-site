@@ -34,7 +34,7 @@ faq:
   - q: "Peut-on faire pomper un ouvrage la nuit ou le week-end ?"
     a: "HYDROFLASH intervient {disponibilite}. Appelez le {telephone} et décrivez l'ouvrage : nous faisons le point avec vous sur l'intervention possible."
   - q: "Entretenez-vous les pompes de relevage ?"
-    a: "Oui. L'entretien d'un poste de relevage comprend le pompage et le nettoyage de la cuve, le retrait des dépôts et des lingettes, et le contrôle du déclenchement des pompes et des flotteurs. Le prix est établi sur devis, selon le type de poste et son accès. Dans un logement achevé depuis plus de deux ans, la TVA est à 10 %."
+    a: "Oui. L'entretien d'un poste de relevage comprend le pompage et le nettoyage de la cuve, le retrait des dépôts et des lingettes, et le contrôle du déclenchement des pompes et des flotteurs. Le prix est établi sur devis, selon le type de poste et son accès. Dans un logement achevé depuis plus de deux ans, la TVA est à 10 %. Tout le détail : <a href=\"/entretien-pompe-de-relevage/\">entretien des pompes de relevage</a>."
   - q: "Pourquoi un regard plein dégage-t-il de mauvaises odeurs ?"
     a: "Les eaux et les dépôts qui stagnent fermentent et dégagent des gaz malodorants. Une fois l'ouvrage pompé et la cause de l'engorgement traitée, les odeurs disparaissent en général. Si elles persistent, un <a href=\"/inspection-camera-canalisation/\">passage caméra</a> permet de rechercher un défaut sur le réseau."
 liees:
@@ -61,7 +61,7 @@ Un regard profond ou un ouvrage enterré est un espace confiné. Les gaz issus d
 
 ### Entretien des pompes de relevage
 
-Quand les eaux usées ne peuvent pas rejoindre le réseau par gravité (sous-sol, maison en contrebas de la rue), un poste de relevage les remonte. Graisses, lingettes et dépôts finissent par encrasser la cuve et bloquer les flotteurs : la pompe tourne dans le vide, ou ne se déclenche plus et le poste déborde. L'entretien consiste à pomper et nettoyer la cuve, retirer ce qui gêne les pompes et vérifier qu'elles se déclenchent normalement. Il est réalisé sur devis.
+Quand les eaux usées ne peuvent pas rejoindre le réseau par gravité (sous-sol, maison en contrebas de la rue), un poste de relevage les remonte. Graisses, lingettes et dépôts finissent par encrasser la cuve et bloquer les flotteurs : la pompe tourne dans le vide, ou ne se déclenche plus et le poste déborde. L'entretien consiste à pomper et nettoyer la cuve, retirer ce qui gêne les pompes et vérifier qu'elles se déclenchent normalement. Il est réalisé sur devis : voir l'[entretien des pompes de relevage](/entretien-pompe-de-relevage/).
 
 ### Ce qui fait varier le prix
 

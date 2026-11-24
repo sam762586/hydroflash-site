@@ -11,7 +11,7 @@ import Tbc from '../../components/Tbc.astro';
 import { FEUILLE_CONTENU } from '../../lib/feuilles';
 import { schemaService } from '../../lib/schema';
 import { PROD } from '../../lib/env';
-import { services } from '../../data/services';
+import { services, nbPrestationsLettres } from '../../data/services';
 import { entreprise as e } from '../../data/entreprise';
 import cssOrdi from '../../styles/pages/prestation-ordinateur.css?url';
 import cssMobile from '../../styles/pages/prestation-mobile.css?url';
@@ -35,6 +35,7 @@ const textesPro: Record<string, string> = {
   '/inspection-camera-canalisation/': `Localiser un désordre et en garder la trace : ${minuscule(livrable)}`,
   '/pompage-vidange/': 'Regards et ouvrages d’assainissement en cours, sous-sols et sites d’activité.',
   '/entretien-reseaux-assainissement/': 'Interventions préventives planifiées sur vos immeubles et vos locaux.',
+  '/entretien-pompe-de-relevage/': 'Postes de relevage des parkings souterrains, caves et locaux en sous-sol : nettoyage et contrôle, sur devis.',
 };
 
 type Info = { k: string; v?: string; lien?: string; tbc?: boolean };
@@ -128,7 +129,7 @@ const faq = [
   <section class="sec sec-sm pr-liees" aria-labelledby="t-presta">
     <div class="wrap">
       <div class="c-head">
-        <div><p class="sec-label">Prestations</p><h2 class="h2" id="t-presta">Six interventions <em>pour vos réseaux</em></h2></div>
+        <div><p class="sec-label">Prestations</p><h2 class="h2" id="t-presta">{nbPrestationsLettres} interventions <em>pour vos réseaux</em></h2></div>
         <p class="lead">Débouchage d’urgence ou entretien programmé&nbsp;: chaque prestation dispose de sa page détaillée.</p>
       </div>
       <ul class="cards cards-3">

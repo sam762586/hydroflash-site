@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 /** Types de problème acceptés : DOIT correspondre aux <option> de src/components/FormulaireDemande.astro
  *  (services.ts : typeFormulaire ?? court, puis « Autre »). Contrôlé par scripts/verifier-production.mjs (g). */
-const HF_TYPES = ['Bouchon', 'Curage', 'Détartrage', 'Passage caméra', 'Pompage', 'Entretien des réseaux', 'Autre'];
+const HF_TYPES = ['Bouchon', 'Curage', 'Détartrage', 'Passage caméra', 'Pompage', 'Entretien des réseaux', 'Pompe de relevage', 'Autre'];
 const HF_MIME_PHOTO = ['image/jpeg', 'image/png', 'image/webp'];
 
 ini_set('display_errors', '0');

@@ -64,6 +64,8 @@
 /* ——— Cartes (liens) ——— */
 .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr)); gap: 16px; }
 .cards-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+/* 7 prestations : la dernière carte, seule sur sa ligne, se place au centre (grille de 3 seulement). */
+.cards-3 > li:last-child:nth-child(3n+1) > .card { grid-column: 2; }
 .card { position: relative; display: flex; flex-direction: column; gap: 12px; padding: 28px; border-radius: 24px; background: var(--mist); color: var(--ink2); text-decoration: none; transition: background .2s, color .2s, transform .2s; }
 .card .num { font-family: var(--f-mono); font-size: 12px; letter-spacing: .08em; color: var(--grey); }
 .card img { width: 48px; height: 48px; }
@@ -122,5 +124,6 @@ a.card:hover .go .ic, a.card:focus-visible .go .ic { background: var(--o); color
   .shero-grid, .c-grid2, .c-grid2.is-rev, .c-head { grid-template-columns: minmax(0, 1fr); }
   .shero-vis { max-width: 560px; }
   .steps-c, .cards-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cards-3 > li:last-child:nth-child(3n+1) > .card { grid-column: auto; }
   .c-sticky { position: static; }
 }

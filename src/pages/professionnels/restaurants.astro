@@ -20,7 +20,6 @@ import cssMobile from '../../styles/pages/prestation-mobile.css?url';
 
 const dispo = e.disponibilite.libelle;
 const t = e.tarifs;
-const bac = t.prestations.find((p) => p.nom.startsWith('Pompage de petit bac'));
 const REGLEMENT = 'https://metropole-rouen-normandie.fr/file-download/download/public/251254';
 const ARTICLE = '/conseils/bac-a-graisse-restaurant-obligations/';
 
@@ -28,7 +27,7 @@ const description = `Restaurants : pompage du bac à graisse, retraitement inclu
 
 type Info = { k: string; v: string; lien?: string };
 const infos: Info[] = [
-  ...(bac ? [{ k: 'Pompage du bac à graisse', v: bac.detail }] : []),
+  { k: 'Pompage du bac à graisse', v: 'Retraitement des déchets inclus' },
   { k: 'Curage du branchement', v: 'Haute pression, quand il est encrassé' },
   { k: 'Tarifs', v: 'Sur devis, y compris en dehors des heures ouvrées' },
   { k: 'Documents remis', v: e.documentsPompage },

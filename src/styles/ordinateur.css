@@ -244,17 +244,18 @@ main { position: relative; }
 .svc--xl .svc-link .ar { background: var(--o); color: var(--ink2); }
 .svc-ill { margin: 10px -40px 0; }
 .svc-ill img { width: 100%; height: auto; }
-/* Ordre du véhicule : Débouchage, Curage, Détartrage, Passage caméra, Pompage (+ Entretien)
-   Grille : 6 (2 rangs) + 6 / 6 · 8 + 4 · 12 — aucune case vide */
+/* Ordre du véhicule : Débouchage, Curage, Détartrage, Passage caméra, Pompage (+ Entretien, Pompes de relevage)
+   Grille : 6 (2 rangs) + 6 / 6 · 8 + 4 · 7 + 5 — aucune case vide */
 .svc--b { grid-column: 7 / 13; }
 .svc--c { grid-column: 7 / 13; background: #fff; box-shadow: inset 0 0 0 1.5px var(--mist2); }
 .svc--f { grid-column: 1 / 9; }
 .svc--d { grid-column: 9 / 13; }
-.svc--e { grid-column: 1 / 13; background: var(--o); min-height: 0; }
+.svc--e { grid-column: 1 / 8; background: var(--o); min-height: 0; }
+.svc--g { grid-column: 8 / 13; background: #fff; box-shadow: inset 0 0 0 1.5px var(--mist2); }
 .svc--e .idx, .svc--e p { color: var(--ink2); }
 .svc--b .svc-row, .svc--c .svc-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: end; margin-top: auto; }
 .svc--b .svc-row h3, .svc--c .svc-row h3 { padding-top: 0; font-size: 40px; font-stretch: var(--cond-x); }
-.svc--e .svc-row { margin-top: 18px; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 32px; align-items: end; }
+.svc--e .svc-row { margin-top: auto; display: grid; grid-template-columns: 1fr; gap: 10px; align-items: end; }
 .svc--e .svc-row h3 { padding-top: 0; font-size: clamp(40px, 4vw, 56px); font-stretch: var(--cond-xx); font-weight: var(--w-black); }
 .svc--e .svc-row p { margin: 0; max-width: 34em; }
 .svc--f { background: var(--ink2); color: #fff; padding: 36px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.42fr); grid-template-rows: auto 1fr auto auto auto auto; column-gap: 36px; }
@@ -489,8 +490,9 @@ main { position: relative; }
 }
 @media (max-width: 1180px) {
   .svc--f { grid-column: 1 / 13; }
-  .svc--d { grid-column: 1 / 7; }
-  .svc--e { grid-column: 7 / 13; }
+  .svc--d { grid-column: 1 / 5; }
+  .svc--e { grid-column: 5 / 9; }
+  .svc--g { grid-column: 9 / 13; }
   .svc--e .svc-row { grid-template-columns: 1fr; gap: 10px; }
   .veh { grid-template-columns: minmax(0, 1fr); }
 }
@@ -539,6 +541,7 @@ main { position: relative; }
   .svc--xl { grid-column: 1 / -1 !important; padding: 30px; }
   .svc-ill { margin: 14px -30px 0; }
   .svc--f { grid-column: 1 / -1 !important; }
+  .svc--g { grid-column: 1 / -1 !important; }
   .svc--b .svc-row, .svc--e .svc-row { grid-template-columns: 1fr; gap: 0; }
   .svc--b .svc-row h3, .svc--e .svc-row h3 { padding-top: 26px; }
   .svc h3 { font-size: 28px; }

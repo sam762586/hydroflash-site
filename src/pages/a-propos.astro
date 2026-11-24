@@ -8,7 +8,7 @@ import ContactCta from '../components/ContactCta.astro';
 import Tbc from '../components/Tbc.astro';
 import { FEUILLE_CONTENU } from '../lib/feuilles';
 import { PROD } from '../lib/env';
-import { services } from '../data/services';
+import { services, nbPrestationsLettres } from '../data/services';
 import { entreprise as e } from '../data/entreprise';
 import { schemaEntreprise } from '../lib/schema';
 import contactOrdi from '../styles/pages/contact-ordinateur.css?url';
@@ -145,7 +145,7 @@ const heures = f.experience.heures.toLocaleString('fr-FR').replace(/\u202f|\u00a
   <section class="sec sec-sm" aria-labelledby="t-presta">
     <div class="wrap">
       <div class="c-head">
-        <div><p class="sec-label">Prestations</p><h2 class="h2" id="t-presta">Six prestations, <em>un interlocuteur</em></h2></div>
+        <div><p class="sec-label">Prestations</p><h2 class="h2" id="t-presta">{nbPrestationsLettres} prestations, <em>un interlocuteur</em></h2></div>
         <p class="lead">Du bouchon d'évier au réseau d'une copropriété&nbsp;: nous identifions l'origine du problème et choisissons la technique adaptée.</p>
       </div>
       <ul class="cards cards-3">

@@ -1,4 +1,4 @@
-/** Prestations — ordre du marquage du véhicule (choix HYDROFLASH), puis entretien. */
+/** Prestations — ordre du marquage du véhicule (choix HYDROFLASH), puis entretien des réseaux et des pompes de relevage. */
 export type Service = {
   slug: string; url: string; titre: string; court: string; picto: string; resume: string; numero: string;
   typeFormulaire?: string; // libellé dans le champ « Type de problème » (par défaut : court)
@@ -13,7 +13,13 @@ export const services: Service[] = [
   { numero: '04', slug: 'passage-camera', url: '/inspection-camera-canalisation/', titre: 'Passage caméra', court: 'Passage caméra', picto: 'inspection-camera',
     resume: 'Inspection vidéo de la canalisation pour localiser le bouchon ou le défaut et contrôler le résultat. Rapport PDF transmis par e\u2011mail.' },
   { numero: '05', slug: 'pompage', url: '/pompage-vidange/', titre: 'Pompage', court: 'Pompage', picto: 'pompage',
-    resume: 'Pompage et vidange de regards, bacs et ouvrages d\'assainissement, entretien des pompes de relevage.' },
+    resume: 'Pompage et vidange de regards, bacs et ouvrages d\'assainissement.' },
   { numero: '06', slug: 'entretien', url: '/entretien-reseaux-assainissement/', titre: 'Entretien des réseaux', court: 'Entretien des réseaux', picto: 'entretien',
     resume: 'Interventions préventives planifiées pour limiter les bouchons et préserver vos installations.' },
+  { numero: '07', slug: 'pompes-relevage', url: '/entretien-pompe-de-relevage/', titre: 'Entretien de pompes de relevage', court: 'Pompes de relevage', picto: 'pompe-relevage', typeFormulaire: 'Pompe de relevage',
+    resume: 'Nettoyage du poste, contrôle des flotteurs et du clapet anti-retour, essai de fonctionnement\u00a0: sur devis.' },
 ];
+
+/** Nombre de prestations en toutes lettres, avec majuscule (« Sept ») : titres de section. */
+const EN_LETTRES = ['Zéro', 'Une', 'Deux', 'Trois', 'Quatre', 'Cinq', 'Six', 'Sept', 'Huit', 'Neuf', 'Dix'];
+export const nbPrestationsLettres = EN_LETTRES[services.length] ?? String(services.length);
