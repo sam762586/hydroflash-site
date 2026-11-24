@@ -14,9 +14,10 @@ export const entreprise = {
   telephone: { affiche: '07 62 88 28 39', lien: 'tel:+33762882839', international: '+33762882839' },
   email: 'contact@hydroflash.fr',
   disponibilite: { libelle: '24\u00a0h/24, 7\u00a0j/7', court: '24\u00a0h/24 · 7\u00a0j/7' }, // espaces insécables
-  sansMajoration: false, // majorations soir, samedi, dimanche et jours fériés : voir `tarifs`
+  sansMajoration: true, // décision du 24/11/2026 : aucune majoration la nuit, le week-end ni les jours fériés
 
-  /** Grille tarifaire HYDROFLASH (confirmée le 19/11/2026). Prix HT, hors majoration. */
+  /** Grille tarifaire HYDROFLASH (confirmée le 19/11/2026). Prix HT, valables à toute heure : depuis la décision
+      du 24/11/2026, aucune majoration de nuit, de week-end ni de jour férié (les créneaux majorés ont été retirés). */
   tarifs: {
     tvaPct: 20,
     /** TVA à 10 % (CGI, art. 279-0 bis) : débouchage, détartrage et curage de canalisations, curage de réseaux
@@ -33,14 +34,6 @@ export const entreprise = {
     zones: [
       { code: 'A', libelle: 'Rouen et 20\u00a0km autour' },
       { code: 'B', libelle: 'Au-delà de 20\u00a0km de Rouen' },
-    ],
-    creneaux: [
-      { code: 'semaine',     libelle: 'Semaine, 8\u00a0h\u201318\u00a0h',        maj: 0 },
-      { code: 'samedi',      libelle: 'Samedi, 8\u00a0h\u201318\u00a0h',         maj: 30 },
-      { code: 'nuit',        libelle: 'Nuit en semaine, 18\u00a0h\u20138\u00a0h', maj: 50 },
-      { code: 'samedi_nuit', libelle: 'Samedi nuit, 18\u00a0h\u20138\u00a0h',     maj: 75 },
-      { code: 'dim',         libelle: 'Dimanche et jours fériés, journée',           maj: 100 },
-      { code: 'dim_nuit',    libelle: 'Dimanche et jours fériés, nuit',              maj: 150 },
     ],
     /** a = prix HT zone A, b = prix HT zone B, null = sur devis.
         tvaReduite = prestation listée au taux de 10 % par le BOFiP (voir tvaReduiteConfirmee). */

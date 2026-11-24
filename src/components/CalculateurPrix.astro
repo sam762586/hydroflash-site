@@ -1,6 +1,6 @@
 ---
-/** Calculateur « Votre prix exact » : prestation, code postal (zone A/B), moment (créneau détecté
- *  automatiquement, jours fériés compris), particulier ou professionnel.
+/** Calculateur « Votre prix exact » : prestation, code postal (zone A/B), particulier ou professionnel.
+ *  Même prix à toute heure : aucune majoration de nuit, de week-end ni de jour férié (décision du 24/11/2026).
  *  Données : entreprise.tarifs (source unique) et communes.ts (zone par commune), passées en attribut
  *  data-calc (aucun script en ligne : la politique de sécurité du site les interdit).
  *  Comportement : public/js/calculateur.js. Sans JavaScript : lien vers la grille complète.
@@ -61,7 +61,6 @@ for (const c of communes) {
 
 const data = {
   opts,
-  creneaux: t.creneaux,
   zones: t.zones,
   tva: { normal: t.tvaPct, reduit: t.tvaReduitePct, actif: tvaReduiteActive },
   cp: zonesCp,
@@ -78,7 +77,7 @@ const tel = e.telephone.affiche.replace(/ /g, ' ');
         <p class="sec-label">{numero && <span class="sl-n">{numero} — </span>}Votre prix</p>
         <h2 class="h2" id={`${id}-t`}>{titre} <em>{titreFin}</em></h2>
       </div>
-      <p class="lead">Choisissez l'intervention, votre code postal et le moment&nbsp;: le prix final s'affiche, majoration comprise. C'est celui que nous vous annoncerons au téléphone.</p>
+      <p class="lead">Choisissez l'intervention et votre code postal&nbsp;: le prix s'affiche, le même de jour comme de nuit, le week-end et les jours fériés. C'est celui que nous vous annoncerons au téléphone.</p>
     </div>
 
     <div class="calc" data-calc={JSON.stringify(data)} data-id={id}>
@@ -91,17 +90,9 @@ const tel = e.telephone.affiche.replace(/ /g, ' ');
         <label class="fld calc-ml" hidden><span>Longueur à curer <i>(estimation, en mètres)</i></span>
           <input id={`${id}-ml`} name="ml" type="number" min="1" max="999" step="1" value="20" inputmode="numeric">
         </label>
-        <div class="row2">
-          <label class="fld"><span>Code postal</span>
-            <input id={`${id}-cp`} name="cp" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="5" placeholder="Ex. 76000">
-          </label>
-          <label class="fld"><span>Moment</span>
-            <select id={`${id}-q`} name="q">
-              <option value="auto">Maintenant</option>
-              {t.creneaux.map((c) => <option value={c.code}>{c.libelle}</option>)}
-            </select>
-          </label>
-        </div>
+        <label class="fld"><span>Code postal</span>
+          <input id={`${id}-cp`} name="cp" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="5" placeholder="Ex. 76000">
+        </label>
         <fieldset class="calc-choix">
           <legend>Zone</legend>
           {t.zones.map((z, i) => <label><input type="radio" name="z" value={z.code} checked={i === 0}><span>{z.libelle}</span></label>)}
@@ -128,12 +119,12 @@ const tel = e.telephone.affiche.replace(/ /g, ' ');
           <p class="calc-px2" data-out="px2"></p>
         </div>
         <dl class="calc-det">
-          <div><dt>Moment</dt><dd data-out="creneau"></dd></div>
+          <div><dt>Horaires</dt><dd>Même prix jour et nuit, week-end et jours fériés</dd></div>
           <div><dt>Zone</dt><dd data-out="zone"></dd></div>
           <div><dt>Délai</dt><dd data-out="delai"></dd></div>
           <div><dt>Compris</dt><dd data-out="detail"></dd></div>
         </dl>
-        <p class="calc-regle">{t.regleDemiHeure} C'est l'heure d'arrivée sur place qui fixe la majoration.</p>
+        <p class="calc-regle">{t.regleDemiHeure}</p>
         <p class="calc-note">Le prix annoncé est celui que vous payez si la situation correspond à votre description. Sinon, nous vous le disons avant de continuer, avec le nouveau prix&nbsp;: rien ne démarre sans votre accord.</p>
         {!tvaReduiteActive && !PROD && <p class="calc-note"><Tbc label="TVA à 10 % (logement de plus de 2 ans) : à confirmer par le comptable — prix calculés à 20 %" /></p>}
         <div class="calc-ctas">

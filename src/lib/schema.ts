@@ -26,7 +26,7 @@ export function schemaEntreprise(ville?: { nom: string; cp: string; dep: string 
     ...(e.adresse ? { address: { '@type': 'PostalAddress', streetAddress: e.adresse.rue, postalCode: e.adresse.cp, addressLocality: e.adresse.ville, addressCountry: 'FR' } } : {}),
     ...(e.googleBusinessProfile ? { sameAs: [e.googleBusinessProfile] } : {}),
     /* Fourchette de prix : Google l'affiche dans la fiche locale. Calculée depuis la
-       grille réelle, du premier forfait au plus élevé, majorations exclues. */
+       grille réelle, du premier forfait au plus élevé, aucune majoration n'est appliquée. */
     priceRange: `${Math.min(...prixGrille())}\u2013${Math.max(...prixGrille())} €`,
     currenciesAccepted: 'EUR',
     slogan: e.slogan,

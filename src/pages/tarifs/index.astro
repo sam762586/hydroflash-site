@@ -1,5 +1,5 @@
 ---
-/* Page Tarifs : grille publique HYDROFLASH (zones, majorations, prestations).
+/* Page Tarifs : grille publique HYDROFLASH (zones, prestations ; même prix à toute heure, aucune majoration).
    Source unique : entreprise.tarifs. Aucun prix écrit en dur ici. */
 import Base from '../../layouts/Base.astro';
 import SousHero from '../../components/SousHero.astro';
@@ -31,18 +31,14 @@ for (const p of t.prestations) {
   else categories.push({ nom: p.cat, lignes: [p] });
 }
 
-const majorees = t.creneaux.filter((c) => c.maj > 0);
-const majMax = Math.max(...majorees.map((c) => c.maj));
 
 /* Exemple chiffré : débouchage à l'hydrocureur, zone A */
 const exemple = t.prestations.find((p) => p.nom.includes('hydrocureur'))!;
-const exSamedi = t.creneaux.find((c) => c.code === 'samedi')!;
-const exDim = t.creneaux.find((c) => c.code === 'dim')!;
 const diag = t.prestations.find((p) => p.nom.startsWith('Diagnostic'))!;
 ---
 <Base
   titre="Tarifs débouchage, curage et pompage | HYDROFLASH"
-  description={`Grille tarifaire HYDROFLASH : débouchage à partir de ${eur(ttc(premier.a!, tauxParticulier(premier)))} TTC, curage, caméra et pompage en Seine-Maritime et dans l'Eure. Zones et majorations publiées.`}
+  description={`Grille tarifaire HYDROFLASH : débouchage à partir de ${eur(ttc(premier.a!, tauxParticulier(premier)))} TTC, curage, caméra et pompage en Seine-Maritime et dans l'Eure. Même prix jour et nuit, week-end et jours fériés.`}
   feuilles={[FEUILLE_CONTENU, FEUILLE_TARIFS, FEUILLE_BLOCS]}
   jsonld={schemaEntreprise()}
 >
@@ -50,8 +46,8 @@ const diag = t.prestations.find((p) => p.nom.startsWith('Diagnostic'))!;
     ariane={[{ label: 'Tarifs' }]}
     surtitre={`Tarifs · ${t.prestations.length} prestations`}
     titre="Des prix affichés,"
-    titreFin="clairs et transparents, majoration comprise."
-    intro="Vous connaissez le prix avant notre départ. Chaque prestation a son tarif, qui varie selon deux critères seulement&nbsp;: la distance depuis Rouen et le moment de l'intervention. Aucune mauvaise surprise à l'arrivée."
+    titreFin="les mêmes jour et nuit."
+    intro="Vous connaissez le prix avant notre départ. Chaque prestation a son tarif, qui ne dépend que de la distance depuis Rouen&nbsp;: pas de majoration la nuit, le week-end ni les jours fériés. Aucune mauvaise surprise à l'arrivée."
     picto="devis"
   />
 
@@ -75,7 +71,7 @@ const diag = t.prestations.find((p) => p.nom.startsWith('Diagnostic'))!;
     <div class="wrap">
       <div class="c-head">
         <div><p class="sec-label">Grille</p><h2 class="h2" id="t-grille">Le prix de <em>chaque prestation</em></h2></div>
-        <p class="lead">Prix pour une intervention en semaine entre 8&nbsp;h et 18&nbsp;h. En dehors de ce créneau, la majoration ci-dessous s'applique. Particulier ou professionnel&nbsp;: choisissez l'affichage qui vous concerne.</p>
+        <p class="lead">Ces prix s'appliquent à toute heure&nbsp;: de jour comme de nuit, en semaine, le week-end et les jours fériés. Particulier ou professionnel&nbsp;: choisissez l'affichage qui vous concerne.</p>
       </div>
 
       <div class="vue">
@@ -130,16 +126,16 @@ const diag = t.prestations.find((p) => p.nom.startsWith('Diagnostic'))!;
   <section class="sec sec-sm on-dark" aria-labelledby="t-maj">
     <div class="wrap c-grid2">
       <div>
-        <p class="sec-label">Majorations</p>
-        <h2 class="h2" id="t-maj">Le soir, la nuit, le week-end <em>et les jours fériés</em></h2>
-        <p class="lead">Nous intervenons à toute heure, y compris à 2&nbsp;h du matin un dimanche. Une majoration s'applique alors au prix de votre zone, pour couvrir la mobilisation d'une équipe et d'un camion hors horaires habituels. Elle vous est toujours confirmée par téléphone, avant notre départ.</p>
+        <p class="sec-label">Nuit, week-end, jours fériés</p>
+        <h2 class="h2" id="t-maj">Le même prix, <em>à toute heure</em></h2>
+        <p class="lead">Nous intervenons à toute heure, y compris à 2&nbsp;h du matin un dimanche, et toujours au prix de la grille. Pas de majoration la nuit, le week-end ni les jours fériés&nbsp;: seule votre zone fait varier le tarif.</p>
       </div>
       <div>
         <table class="tf-maj">
-          <caption class="sr">Majorations par créneau horaire</caption>
+          <caption class="sr">Tarif selon le moment de l'intervention</caption>
           <tbody>
-            {t.creneaux.map((c) => (
-              <tr><th scope="row">{c.libelle}</th><td>{c.maj === 0 ? 'Tarif de base' : `+ ${c.maj} %`}</td></tr>
+            {['En semaine, en journée', 'En soirée et la nuit', 'Le samedi', 'Le dimanche', 'Les jours fériés'].map((m) => (
+              <tr><th scope="row">{m}</th><td>Prix de la grille</td></tr>
             ))}
           </tbody>
         </table>
@@ -150,20 +146,17 @@ const diag = t.prestations.find((p) => p.nom.startsWith('Diagnostic'))!;
   <section class="sec sec-sm" aria-labelledby="t-ex">
     <div class="wrap">
       <div class="c-head">
-        <div><p class="sec-label">Exemple</p><h2 class="h2" id="t-ex">Un cas concret, <em>du début à la fin</em></h2></div>
+        <div><p class="sec-label">Exemple</p><h2 class="h2" id="t-ex">Un cas concret, <em>à trois moments</em></h2></div>
         <p class="lead">{exemple.nom}, en zone A ({t.zones[0].libelle}), déplacement et première heure inclus{tauxParticulier(exemple) === t.tvaReduitePct ? ', chez un particulier dont le logement a plus de deux ans' : ''}.</p>
       </div>
       <ul class="tf-ex">
-        {[{ b: 'Mardi 14 h', maj: 0 }, { b: exSamedi.libelle, maj: exSamedi.maj }, { b: exDim.libelle, maj: exDim.maj }].map((x) => {
-          const ht = Math.round(exemple.a! * (1 + x.maj / 100) * 100) / 100;
-          return (
-            <li>
-              <b>{x.b}</b>
-              <strong>{eur(ttc(ht, tauxParticulier(exemple)))} TTC</strong>
-              <span>{x.maj ? `Majoration de ${x.maj} %` : 'Tarif de base'}, soit {eur(ht)} HT, TVA {tauxParticulier(exemple)}&nbsp;% comprise.</span>
-            </li>
-          );
-        })}
+        {['Mardi 14\u00a0h', 'Samedi 23\u00a0h', 'Dimanche 3\u00a0h du matin'].map((moment) => (
+          <li>
+            <b>{moment}</b>
+            <strong>{eur(ttc(exemple.a!, tauxParticulier(exemple)))} TTC</strong>
+            <span>Même prix, soit {eur(exemple.a!)} HT, TVA {tauxParticulier(exemple)}&nbsp;% comprise.</span>
+          </li>
+        ))}
       </ul>
     </div>
   </section>
@@ -183,8 +176,8 @@ const diag = t.prestations.find((p) => p.nom.startsWith('Diagnostic'))!;
           <p class="ans">Non. Le déplacement et la première heure d'intervention sont compris dans les forfaits de débouchage. Si l'intervention s'avère impossible, seul le diagnostic est facturé, soit {eur(ttc(diag.a!, tauxParticulier(diag)))} TTC ({eur(diag.a!)} HT) en zone A&nbsp;; 30&nbsp;% de cette somme sont déduits de votre facture si nous intervenons dans les 30&nbsp;jours qui suivent.</p>
         </details>
         <details>
-          <summary><span class="q-n">Q.03</span>Pourquoi un supplément la nuit et le week-end&nbsp;?<span class="tog" aria-hidden="true"></span></summary>
-          <p class="ans">Parce qu'intervenir en dehors des heures ouvrées mobilise une équipe d'astreinte. La majoration est connue d'avance, affichée ci-dessus, et va de {majorees[0].maj}&nbsp;% à {majMax}&nbsp;% selon le créneau. Elle ne s'applique jamais rétroactivement&nbsp;: c'est l'heure de notre arrivée sur place qui fait foi.</p>
+          <summary><span class="q-n">Q.03</span>Y a-t-il un supplément la nuit ou le week-end&nbsp;?<span class="tog" aria-hidden="true"></span></summary>
+          <p class="ans">Non. Le prix de la grille s'applique à toute heure&nbsp;: de jour comme de nuit, en semaine, le week-end et les jours fériés. Seules la prestation, votre zone et, au-delà de la première heure, le temps passé font varier la facture.</p>
         </details>
         <details>
           <summary><span class="q-n">Q.04</span>Faites-vous des devis&nbsp;?<span class="tog" aria-hidden="true"></span></summary>

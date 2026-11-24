@@ -94,7 +94,7 @@ const visuel = visuels[d.slug];
 type Info = { k: string; v?: string; tbc?: boolean };
 const infos: Info[] = [
   { k: 'Disponibilité', v: `Intervention ${e.disponibilite.court}` },
-  { k: 'Majoration', v: 'Soir, samedi, dimanche et jours fériés' },
+  { k: 'Nuit et week-end', v: 'Même prix, sans majoration' },
   { k: 'Zone', v: e.zone.libelle },
   ...(d.slug === 'inspection-camera-canalisation' ? [{ k: 'Livrable', v: e.passageCamera.livrable }, { k: 'Rapport écrit, vidéo', tbc: true }] : []),
   ...(d.slug === 'pompage-vidange' ? [e.typesOuvragesPompage ? { k: 'Ouvrages', v: e.typesOuvragesPompage } : { k: 'Types d\'ouvrages', tbc: true },

@@ -66,7 +66,7 @@ const heures = f.experience.heures.toLocaleString('fr-FR').replace(/\u202f|\u00a
         <dt>Métier</dt><dd>Assainissement&nbsp;: débouchage, curage, détartrage, passage caméra, pompage, entretien des réseaux</dd>
         <dt>Zone</dt><dd>{e.zone.libelle}</dd>
         <dt>Disponibilité</dt><dd>Intervention {dispo}</dd>
-        <dt>Nuit, week-end et jours fériés</dt><dd>Majoration appliquée et publiée (<a href="/tarifs/">voir les tarifs</a>)</dd>
+        <dt>Nuit, week-end et jours fériés</dt><dd>Même prix qu'en journée, sans majoration (<a href="/tarifs/">voir les tarifs</a>)</dd>
         <dt>Téléphone</dt><dd><a class="tel" href={e.telephone.lien}>{e.telephone.affiche}</a></dd>
         <dt>E-mail</dt><dd><a href={`mailto:${e.email}`}>{e.email}</a></dd>
       </dl>
@@ -114,7 +114,7 @@ const heures = f.experience.heures.toLocaleString('fr-FR').replace(/\u202f|\u00a
           </tr>
           <tr>
             <td class="vs-a">Une majoration de nuit découverte sur la facture.</td>
-            <td class="vs-b"><strong>Les majorations sont affichées</strong>, au pourcentage près&nbsp;: soir, week-end et jours fériés.</td>
+            <td class="vs-b"><strong>Aucune majoration</strong>&nbsp;: le même prix la nuit, le week-end et les jours fériés.</td>
           </tr>
         </tbody>
       </table>
@@ -195,7 +195,7 @@ const heures = f.experience.heures.toLocaleString('fr-FR').replace(/\u202f|\u00a
         <p class="lead ap-lead">Cinq engagements que vous pouvez vérifier avant même de nous appeler. Le délai d'intervention, lui, vous est donné au téléphone, selon votre adresse.</p>
       </div>
       <ul class="checks">
-        <li><strong>Nos prix sont publics.</strong> La <a href="/tarifs/">grille complète</a> est en ligne, majorations comprises. Vous savez ce que vous payez avant de décrocher.</li>
+        <li><strong>Nos prix sont publics.</strong> La <a href="/tarifs/">grille complète</a> est en ligne, et elle vaut de jour comme de nuit, sans majoration. Vous savez ce que vous payez avant de décrocher.</li>
         <li><strong>Devis gratuit et tarif transparent</strong>&nbsp;: le prix vous est donné avant que nous partions, et il ne bouge pas en arrivant.</li>
         <li><strong>Intervention {dispo}</strong>, la nuit comme le week-end, avec un seul numéro&nbsp;: <a class="tel" href={e.telephone.lien}>{e.telephone.affiche}</a>.</li>
         <li><strong>Rappel immédiat</strong> après une demande envoyée depuis le site.</li>

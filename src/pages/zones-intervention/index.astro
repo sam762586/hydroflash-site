@@ -25,7 +25,7 @@ const faq = [
   { q: 'Intervenez-vous en dehors de la Seine-Maritime et de l\'Eure ?',
     a: `Notre zone d'intervention est la Seine-Maritime (76) et l'Eure (27). Si votre adresse se trouve dans un département voisin, appelez-nous pour en parler.` },
   { q: 'Y a-t-il un surcoût la nuit ou le week-end ?',
-    a: `Une majoration s'applique en soirée, la nuit, le week-end et les jours fériés : elle correspond à la mobilisation d'une équipe hors horaires habituels. Elle est <a href="/tarifs/">publiée dans notre grille tarifaire</a>, et vous connaissez le prix exact avant toute intervention. Nous intervenons ${dispo} en Seine-Maritime et dans l'Eure.` },
+    a: `Non. Le prix de notre <a href="/tarifs/">grille tarifaire</a> est le même de jour comme de nuit, le week-end et les jours fériés, et vous connaissez le prix exact avant toute intervention. Nous intervenons ${dispo} en Seine-Maritime et dans l'Eure.` },
   { q: 'Dans quel délai pouvez-vous intervenir ?',
     a: `Cela dépend de votre adresse et des interventions en cours&nbsp;: une estimation vous est donnée au téléphone, au ${tel}.${tbc('délai d\'intervention : à confirmer')}` },
 ];
@@ -100,7 +100,7 @@ const deps = [
       <div>
         <ul class="checks">
           <li>Intervention {dispo}, la nuit comme le week-end.</li>
-          <li>Tarif transparent&nbsp;: le prix est donné avant notre départ, majoration comprise.</li>
+          <li>Même prix jour et nuit&nbsp;: le prix est donné avant notre départ, sans majoration.</li>
           <li>Un seul numéro&nbsp;: <a class="tel" href={e.telephone.lien}>{e.telephone.affiche}</a>.</li>
           <li>Rappel immédiat après une demande envoyée depuis le site.</li>
           <li>Passage caméra&nbsp;: le rapport de l'inspection vous est transmis par e&#8209;mail, photos comprises.</li>

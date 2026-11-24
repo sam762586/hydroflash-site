@@ -94,7 +94,7 @@ const description = `WC qui déborde, canalisation bouchée ? Intervention ${e.d
     <p class="stamp u-stamp m-only">Véhicule HYDROFLASH — visuel du marquage à venir · Fond&nbsp;: photo libre de droits</p>
   </section>
 
-  <!-- 2. VOTRE PRIX MAINTENANT : calculateur (créneau détecté automatiquement) -->
+  <!-- 2. VOTRE PRIX MAINTENANT : calculateur (même prix à toute heure) -->
   <CalculateurPrix id="calc-urg" numero="02" titre="Votre prix," titreFin="maintenant." rappelHref="#rappel" rappelData fond="clair" />
 
   <!-- 3. EN ATTENDANT LE TECHNICIEN -->
@@ -127,7 +127,7 @@ const description = `WC qui déborde, canalisation bouchée ? Intervention ${e.d
       <ol class="u-steps">
         <li class="u-step"><span class="u-node" aria-hidden="true" data-n="1">01</span><h3>Vous décrivez la situation</h3><p>Quels points d'eau, depuis quand, accès au logement ou au regard.</p></li>
         <li class="u-step"><span class="u-node" aria-hidden="true" data-n="2">02</span><h3>Nous vous indiquons les conditions d'intervention</h3>
-          <p>Le devis est gratuit et le tarif transparent&nbsp;: vous connaissez le prix, majoration de soirée, de week-end ou de jour férié comprise, avant que nous partions.{factu === 'ok' && <> Règlement par carte bancaire ou en espèces, par virement pour les professionnels.</>}{factu === 'tbc' && <> Principe de facturation <Tbc /></>}</p>
+          <p>Le devis est gratuit et le tarif transparent&nbsp;: vous connaissez le prix avant que nous partions, et c'est le même de jour comme de nuit, le week-end et les jours fériés.{factu === 'ok' && <> Règlement par carte bancaire ou en espèces, par virement pour les professionnels.</>}{factu === 'tbc' && <> Principe de facturation <Tbc /></>}</p>
         </li>
         <li class="u-step"><span class="u-node" aria-hidden="true" data-n="3">03</span><h3>Sur place, le technicien localise le bouchon</h3>
           <p>Passage caméra si nécessaire{devis ? <>, devis présenté avant d'agir{devis === 'tbc' && <> <Tbc /></>}</> : null}.</p>
@@ -191,7 +191,7 @@ const description = `WC qui déborde, canalisation bouchée ? Intervention ${e.d
           <ul class="u-ticket">
             {devis && <li><svg class="ic" aria-hidden="true"><use href="#i-doc"/></svg><span>Devis présenté avant intervention</span>{devis === 'tbc' && <Tbc />}</li>}
             {factu && <li><svg class="ic" aria-hidden="true"><use href="#i-doc"/></svg><span>Règlement{factu === 'ok' && <>&nbsp;: {e.principeFacturation}</>}</span>{factu === 'tbc' && <Tbc />}</li>}
-            <li class="u-tk-ok"><svg class="ic" aria-hidden="true"><use href="#i-moon"/></svg><span>Majoration&nbsp;:</span><span class="u-ok">annoncée d'avance</span></li>
+            <li class="u-tk-ok"><svg class="ic" aria-hidden="true"><use href="#i-moon"/></svg><span>Nuit et week-end&nbsp;:</span><span class="u-ok">sans majoration</span></li>
           </ul>
           <p class="u-rule"><span><a href="#prix">Calculez votre prix exact</a> ou consultez la <a href="/tarifs/">grille tarifaire complète</a>.</span></p>
         </div>
@@ -233,7 +233,7 @@ const description = `WC qui déborde, canalisation bouchée ? Intervention ${e.d
       <div class="faq" data-faq-fold>
         <details open><summary><span class="q-n">Q.01</span>Pouvez-vous intervenir la nuit&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Oui, HYDROFLASH est joignable et intervient {nb(e.disponibilite.libelle)}.</p></details>
         <details><summary><span class="q-n">Q.02</span>Dans combien de temps arrivez-vous&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Cela dépend de votre adresse et des interventions en cours&nbsp;; une estimation vous est donnée au téléphone{!PROD && <> <Tbc /></>}.</p></details>
-        <details><summary><span class="q-n">Q.03</span>Y a-t-il un supplément la nuit ou le week-end&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Oui. Une majoration s'applique le samedi, en soirée, la nuit, le dimanche et les jours fériés. Elle est calculée sur le tarif de base et vous est annoncée au téléphone, avant tout déplacement&nbsp;: <a href="/tarifs/">voir le détail des majorations</a>.</p></details>
+        <details><summary><span class="q-n">Q.03</span>Y a-t-il un supplément la nuit ou le week-end&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Non. Le prix est le même de jour comme de nuit, en semaine, le week-end et les jours fériés&nbsp;: <a href="/tarifs/">voir la grille tarifaire</a>. Il vous est annoncé au téléphone, avant tout déplacement.</p></details>
         <details><summary><span class="q-n">Q.04</span>Que faire si l'eau continue de monter&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Coupez si possible l'arrivée d'eau générale, n'utilisez plus aucun point d'eau et appelez-nous au <a href={e.telephone.lien}>{tel}</a>.</p></details>
       </div>
     </div>

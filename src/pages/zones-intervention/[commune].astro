@@ -116,9 +116,9 @@ const proches = (voisines(c).length ? voisines(c) : memeDepartement(c)).slice(0,
 
 const faq = [
   { q: `Combien coûte un débouchage ${aNom} ?`,
-    a: `Un débouchage manuel est à ${eurTtc(ttcManuel)} TTC (${eur(prixManuel)} HT), un débouchage à l'hydrocureur à ${eurTtc(ttcHydro)} TTC (${eur(prixHydro)} HT), déplacement et première heure compris${tvaReduiteActive ? `, ${regleTva.court}` : ''}. ${c.nom} est ${libZone}.${c.zone === 'AB' ? ' Selon l\'adresse exacte, le tarif retenu est celui de la zone A ou de la zone B : nous vous le confirmons au téléphone, avant tout déplacement.' : ''} Le détail complet est sur notre <a href="/tarifs/">grille tarifaire</a>, majorations comprises. Le devis est gratuit.` },
+    a: `Un débouchage manuel est à ${eurTtc(ttcManuel)} TTC (${eur(prixManuel)} HT), un débouchage à l'hydrocureur à ${eurTtc(ttcHydro)} TTC (${eur(prixHydro)} HT), déplacement et première heure compris${tvaReduiteActive ? `, ${regleTva.court}` : ''}. ${c.nom} est ${libZone}.${c.zone === 'AB' ? ' Selon l\'adresse exacte, le tarif retenu est celui de la zone A ou de la zone B : nous vous le confirmons au téléphone, avant tout déplacement.' : ''} Le détail complet est sur notre <a href="/tarifs/">grille tarifaire</a>, et ces prix valent de jour comme de nuit, sans majoration. Le devis est gratuit.` },
   { q: `Intervenez-vous la nuit et le week-end ${aNom} ?`,
-    a: `Oui, ${dispo}. Une majoration s'applique le samedi, en soirée, la nuit, le dimanche et les jours fériés : elle est <a href="/tarifs/">affichée au pourcentage près</a> et vous est annoncée au téléphone avant que nous partions. Aucun supplément n'apparaît sur la facture sans avoir été annoncé.` },
+    a: `Oui, ${dispo}, au même prix qu'en journée : aucune majoration la nuit, le week-end ni les jours fériés (<a href="/tarifs/">voir la grille</a>). Le prix vous est annoncé au téléphone avant que nous partions.` },
   { q: `Quel est le délai d'intervention ${aNom} ?`,
     a: c.zone === 'A'
       ? `${c.nom} est en zone A, à moins de 20 km de notre base : nous y sommes généralement <strong>en ${e.delaiZoneA}</strong>. Ce délai reste indicatif, il dépend de l'heure et de la position de nos équipes au moment de votre appel : nous vous le confirmons au téléphone, au ${tel}.`
@@ -184,7 +184,7 @@ const descPage = descLong.length <= 170 ? descLong : `Débouchage, curage et pom
         <li><strong>Devis gratuit et sans engagement</strong>, par téléphone ou depuis le <a href="/contact/">formulaire</a>.</li>
         <li><strong>Le prix annoncé est le prix payé</strong>, dès lors que l'intervention correspond à ce que vous nous avez décrit.</li>
         <li><strong>Aucun frais caché.</strong> Déplacement et première heure sont compris dans le forfait.</li>
-        <li><strong>Les majorations sont publiées</strong>, au pourcentage près&nbsp;: <a href="/tarifs/">voir la grille</a>.</li>
+        <li><strong>Aucune majoration</strong> la nuit, le week-end ni les jours fériés&nbsp;: <a href="/tarifs/">voir la grille</a>.</li>
         <li><strong>Si nous découvrons autre chose sur place</strong>, nous vous le disons et vous donnons le nouveau prix. Rien ne démarre sans votre accord.</li>
       </ul>
     </div>
