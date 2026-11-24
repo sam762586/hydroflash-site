@@ -46,6 +46,7 @@ const opts = [
     : null,
   opt('pompage-eu', parNom('Pompage eaux usées')),
   opt('pompage-ep', parNom('Pompage eaux pluviales')),
+  opt('relevage', parNom('Entretien de pompe de relevage')),
   opt('camera-rapport', parNom('Inspection caméra avec')),
   opt('detartrage', parNom('Détartrage')),
 ].filter((o): o is Opt => o !== null);

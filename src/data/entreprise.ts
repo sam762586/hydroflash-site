@@ -20,7 +20,9 @@ export const entreprise = {
       préciser « pour les particuliers » (pratique trompeuse, y compris envers un pro). */
   sansMajorationParticuliers: true,
 
-  /** Grille tarifaire HYDROFLASH (confirmée le 19/11/2026). Prix HT, base de calcul des prix TTC PARTICULIERS affichés
+  /** Grille tarifaire HYDROFLASH (confirmée le 19/11/2026, mise à jour le 24/11/2026 : débouchage manuel 110/135 € HT,
+      hydrocureur 227,27/257,27 € HT soit 250 € TTC à 10 % en zone A, caméra sans rapport et bac à graisse retirés,
+      entretien de pompe de relevage ajouté sur devis). Prix HT, base de calcul des prix TTC PARTICULIERS affichés
       sur le site (valables à toute heure). Les montants HT ne sont jamais affichés : pas de prix pros sur le site. */
   tarifs: {
     /** Phrase affichée là où un professionnel cherche un prix (tarifs, calculateur, pages pros). */
@@ -54,7 +56,7 @@ export const entreprise = {
       { cat: 'Pompage',           nom: 'Pompage eaux usées (EU)',               unite: 'forfait', a: 330,  b: 380,  detail: '1\u00a0m³ pompé, retraitement des déchets inclus. Au-delà d\u20191\u00a0m³\u00a0: coût du centre de retraitement et forfait transport.' },
       { cat: 'Pompage',           nom: 'Pompage eaux pluviales (EP)',           unite: 'forfait', a: 215,  b: 245,  detail: 'Quantité illimitée, sans retraitement.' },
       { cat: 'Inspection caméra', nom: 'Inspection caméra avec rapport',        unite: 'forfait', a: 250,  b: 290,  detail: 'Jusqu\u2019à 30\u00a0ml. Rapport PDF\u00a0: photos, localisation et description des défauts.' },
-      { cat: 'Pompe de relevage', nom: 'Entretien de pompe de relevage',        unite: '—',       a: null, b: null, detail: 'Sur devis, selon le poste\u00a0: nombre de pompes, volume de la cuve, accès.' },
+      { cat: 'Pompe de relevage', nom: 'Entretien de pompe de relevage',        unite: '—',       a: null, b: null, tvaReduite: true, detail: 'Sur devis, selon le poste\u00a0: nombre de pompes, volume de la cuve, accès.' },
       { cat: 'Divers',            nom: 'Diagnostic ou déplacement seul',        unite: 'forfait', a: 125,  b: 145,  detail: 'Lorsque l\u2019intervention s\u2019avère impossible\u00a0: 1\u00a0h et trajet inclus. 30\u00a0% déduits de la facture si une intervention est réalisée dans les 30\u00a0jours.' },
     ],
     regleDemiHeure: 'Au-delà de la première heure incluse, toute demi-heure entamée est facturée 50\u00a0% du prix de la prestation.',

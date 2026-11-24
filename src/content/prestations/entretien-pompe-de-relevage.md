@@ -34,7 +34,7 @@ faq:
   - q: "Que comprend l'entretien ?"
     a: "Le nettoyage de la cuve, le contrôle des flotteurs, du clapet anti-retour et de l'alarme, puis un essai de fonctionnement de la pompe. Si une pièce est usée, nous vous l'indiquons avant toute réparation."
   - q: "Combien coûte l'entretien d'une pompe de relevage ?"
-    a: "Le prix dépend du poste : nombre de pompes, volume de la cuve, accès et quantité de dépôts à évacuer. Il est établi sur devis, avant toute intervention."
+    a: "Le prix dépend du poste : nombre de pompes, volume de la cuve, accès et quantité de dépôts à évacuer. Il est établi sur devis, avant toute intervention. Dans un logement achevé depuis plus de deux ans, la TVA est à 10 %."
   - q: "Que ne faut-il pas jeter dans un poste de relevage ?"
     a: "Ni lingettes, même dites biodégradables, ni graisses de cuisson, ni cotons, ni protections hygiéniques : ils s'enroulent autour de la roue de la pompe ou bloquent les flotteurs. Ce sont les premières causes de panne."
 liees:
