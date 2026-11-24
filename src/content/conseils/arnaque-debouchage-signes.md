@@ -64,7 +64,7 @@ N'acceptez pas une intervention sur la promesse que votre assureur la rembourser
 
 ## Ce que nous faisons à la place
 
-Nos prix sont publiés sur notre [grille tarifaire](/tarifs/), zone par zone, et ce sont les mêmes à toute heure : pas de majoration la nuit, le week-end ni les jours fériés. Vous pouvez même [calculer le vôtre](/tarifs/#prix) avant de nous appeler.
+Nos prix sont publiés sur notre [grille tarifaire](/tarifs/), zone par zone, et pour les particuliers ce sont les mêmes à toute heure : pas de majoration la nuit, le week-end ni les jours fériés. Vous pouvez même [calculer le vôtre](/tarifs/#prix) avant de nous appeler.
 
 Le déplacement et la première heure sont compris dans nos forfaits de débouchage, et un devis vous est présenté avant toute intervention : rien ne démarre sans votre accord.
 

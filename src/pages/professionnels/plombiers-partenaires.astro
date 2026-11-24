@@ -40,7 +40,7 @@ const lignes: Ligne[] = [
 
 const faq = [
   { q: 'Intervenez-vous le soir et le week-end ?',
-    a: `Oui, HYDROFLASH intervient ${dispo}, au prix de notre <a href="/tarifs/">grille tarifaire</a> : aucune majoration la nuit, le week-end ni les jours fériés.` },
+    a: `Oui, HYDROFLASH intervient ${dispo}. ${e.tarifs.horsHorairesPro}` },
   { q: 'Dans quel délai pouvez-vous être sur place ?',
     a: e.delaiIntervention },
   { q: 'Que recevez-vous après un passage caméra ?',
@@ -66,7 +66,7 @@ const faq = [
     <div class="wrap">
       <div class="c-head">
         <div><p class="sec-label">Ce que nous prenons en charge</p><h2 class="h2" id="t-relais">Le réseau, <em>avec le bon matériel.</em></h2></div>
-        <p class="lead">Les interventions qui demandent un camion hydrocureur, du pompage ou un passage caméra. Prix publiés en zone A (Rouen et 20&nbsp;km autour), les mêmes de jour comme de nuit&nbsp;: <a href="/tarifs/">grille complète</a>.</p>
+        <p class="lead">Les interventions qui demandent un camion hydrocureur, du pompage ou un passage caméra. Prix HT publiés en zone A (Rouen et 20&nbsp;km autour), en semaine de 8&nbsp;h à 18&nbsp;h&nbsp;: <a href="/tarifs/">grille complète</a>.</p>
       </div>
       <ul class="pv-grid reveal">
         {lignes.map((l) => (

@@ -1,7 +1,8 @@
 /* HYDROFLASH — calculateur de prix (composant CalculateurPrix.astro).
    Données : attribut data-calc (grille tarifaire, zones, TVA), produit à la construction depuis
    src/data/entreprise.ts. Aucun montant n'est écrit ici.
-   Même prix à toute heure : aucune majoration de nuit, de week-end ni de jour férié (décision du 24/11/2026). */
+   Particuliers : même prix à toute heure. Professionnels : prix valables en semaine de 8 h à 18 h, sinon sur devis
+   (texte fourni par data-calc.horaires). Décision du 24/11/2026. */
 (function () {
   'use strict';
   if (window.HF_CALC) return;
@@ -58,6 +59,7 @@
       /* Case « logement de plus de 2 ans » : utile seulement pour un particulier et une prestation éligible. */
       var tvaBox = box.querySelector('[data-tva]');
       if (tvaBox) tvaBox.hidden = !(client === 'part' && o.r);
+      if (data.horaires) out('horaires').textContent = client === 'pro' ? data.horaires.pro : data.horaires.part;
       out('zone').textContent = 'Zone ' + zone + ' : ' + zoneLib[zone];
       out('delai').textContent = zone === 'A'
         ? 'Sur place en ' + data.delaiA + ' environ'

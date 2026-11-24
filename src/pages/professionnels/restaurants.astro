@@ -33,7 +33,7 @@ type Info = { k: string; v: string; lien?: string };
 const infos: Info[] = [
   ...(bac && bac.a !== null && bac.b !== null ? [{ k: 'Pompage de petit bac à graisse', v: `${eur(bac.a)} HT en zone A · ${eur(bac.b)} HT en zone B` }, { k: 'Compris', v: bac.detail }] : []),
   ...(curageH && curageMl && curageH.a !== null && curageMl.a !== null ? [{ k: 'Curage du branchement', v: `${eur(curageH.a)} HT la première heure, puis ${eur(curageMl.a)} HT le mètre (zone A)` }] : []),
-  { k: 'Hors horaires', v: 'Même prix la nuit, le week-end et les jours fériés' },
+  { k: 'Hors horaires', v: 'Intervention possible, tarif précisé sur devis' },
   { k: 'Documents remis', v: e.documentsPompage },
   { k: 'Contrat d’entretien', v: e.contratEntretien },
   { k: 'Téléphone', v: e.telephone.affiche, lien: e.telephone.lien },
@@ -47,7 +47,7 @@ const faq = [
   { q: 'Les bio-additifs remplacent-ils la vidange ?',
     a: 'Non. Ils peuvent limiter les odeurs, mais ne font pas disparaître les graisses&nbsp;: ils les émulsionnent, et celles-ci repartent plus loin dans le réseau où elles se redéposent.' },
   { q: 'Pouvez-vous intervenir en dehors du service ?',
-    a: `HYDROFLASH intervient ${dispo}, au prix de notre <a href="/tarifs/">grille tarifaire</a>, sans majoration la nuit ni le week-end. Indiquez vos contraintes d’horaires lors de votre demande afin d’organiser l’intervention au moment le plus adapté.` },
+    a: `HYDROFLASH intervient ${dispo}. ${e.tarifs.horsHorairesPro} Indiquez vos contraintes d’horaires lors de votre demande afin d’organiser l’intervention au moment le plus adapté.` },
 ];
 ---
 <Base
@@ -101,7 +101,7 @@ const faq = [
         <p class="lead">Une intervention organisée autour de votre service, pas l’inverse.</p>
       </div>
       <ol class="steps-c reveal">
-        <li><h3>Le créneau</h3><p>Vous indiquez vos contraintes d’horaires&nbsp;: nous intervenons au moment le plus adapté, au même prix en dehors des heures ouvrées.</p></li>
+        <li><h3>Le créneau</h3><p>Vous indiquez vos contraintes d’horaires&nbsp;: nous intervenons au moment le plus adapté. En dehors des heures ouvrées, le tarif vous est précisé sur devis, avant l’intervention.</p></li>
         <li><h3>Le pompage</h3><p>Vidange du bac, retraitement des déchets inclus.</p></li>
         <li><h3>Le branchement</h3><p>S’il est encrassé, nous vous le disons et vous donnons le prix du curage avant de commencer&nbsp;: rien ne démarre sans votre accord.</p></li>
         <li><h3>Les documents</h3><p>Les documents de suivi des déchets vous sont remis, à conserver dans votre registre.</p></li>
@@ -109,7 +109,7 @@ const faq = [
     </div>
   </section>
 
-  <Preuves />
+  <Preuves pros />
 
   <Faq items={faq} intro={'Restaurateurs : les réponses aux questions que vous vous posez sur le bac à graisse.'} />
 
