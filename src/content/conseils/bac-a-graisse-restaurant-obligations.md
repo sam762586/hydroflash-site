@@ -68,6 +68,6 @@ Un bac impeccable sans traçabilité vaut, pour un contrôleur, un bac jamais vi
 
 ## Ce que nous faisons
 
-HYDROFLASH assure le pompage des bacs à graisse, avec retraitement des déchets inclus, et le curage du branchement quand il est déjà encrassé. Le tarif figure sur notre [grille tarifaire](/tarifs/), et nous vous remettons les documents de traçabilité à conserver dans votre registre.
+HYDROFLASH assure le pompage de soulagement des bacs à graisse, jusqu'à 1 m³, et le curage du branchement quand il est déjà encrassé. Le prix est établi sur devis, et nous vous remettons les documents de traçabilité à conserver dans votre registre.
 
 Pour les établissements qui préfèrent ne plus y penser, nous mettons en place un passage à fréquence définie, calée sur votre activité réelle plutôt que sur un calendrier théorique.
