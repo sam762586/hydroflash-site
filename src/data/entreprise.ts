@@ -14,11 +14,17 @@ export const entreprise = {
   telephone: { affiche: '07 62 88 28 39', lien: 'tel:+33762882839', international: '+33762882839' },
   email: 'contact@hydroflash.fr',
   disponibilite: { libelle: '24\u00a0h/24, 7\u00a0j/7', court: '24\u00a0h/24 · 7\u00a0j/7' }, // espaces insécables
-  sansMajoration: true, // décision du 24/11/2026 : aucune majoration la nuit, le week-end ni les jours fériés
+  /** Décision du 24/11/2026 : PARTICULIERS = même prix à toute heure (aucune majoration la nuit, le week-end ni
+      les jours fériés). Professionnels (syndics, cabinets immobiliers, entreprises) : majorations maintenues hors heures
+      ouvrées, NON affichées sur le site, précisées sur devis et dans les conditions de vente pros. Ne jamais écrire
+      « sans majoration » sans préciser « pour les particuliers » (pratique trompeuse, y compris envers un pro). */
+  sansMajorationParticuliers: true,
 
-  /** Grille tarifaire HYDROFLASH (confirmée le 19/11/2026). Prix HT, valables à toute heure : depuis la décision
-      du 24/11/2026, aucune majoration de nuit, de week-end ni de jour férié (les créneaux majorés ont été retirés). */
+  /** Grille tarifaire HYDROFLASH (confirmée le 19/11/2026). Prix HT. Particuliers : valables à toute heure.
+      Professionnels : valables en semaine, de 8 h à 18 h (voir horsHorairesPro). */
   tarifs: {
+    /** Phrase affichée partout où un professionnel lit des prix (tarifs, calculateur, pages pros). */
+    horsHorairesPro: 'Prix professionnels valables en semaine, de 8\u00a0h à 18\u00a0h\u00a0; en dehors de ces horaires, tarif précisé sur devis.',
     tvaPct: 20,
     /** TVA à 10 % (CGI, art. 279-0 bis) : débouchage, détartrage et curage de canalisations, curage de réseaux
         privés, nettoyage de bacs à graisse (BOFiP BOI-ANNX-000210 du 31/07/2024), dans des LOCAUX D'HABITATION

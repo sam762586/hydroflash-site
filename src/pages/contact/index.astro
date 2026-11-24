@@ -31,7 +31,7 @@ const indexPrestation = Object.fromEntries(services.map((s, i) => [s.slug, i]));
     surtitre={`Contact · ${dispoC}`}
     titre="Contact et devis"
     titreFin="Appelez, ou décrivez-nous votre problème."
-    intro={`Le plus rapide&nbsp;: un appel, <strong>${dispo}</strong>. <strong>Devis gratuit, même prix jour et nuit</strong>&nbsp;: vous connaissez le prix avant que nous partions. Vous préférez écrire&nbsp;? Envoyez votre demande&nbsp;: nous vous rappelons immédiatement.`}
+    intro={`Le plus rapide&nbsp;: un appel, <strong>${dispo}</strong>. <strong>Devis gratuit</strong>, et pour les particuliers <strong>le même prix jour et nuit</strong>&nbsp;: vous connaissez le prix avant que nous partions. Vous préférez écrire&nbsp;? Envoyez votre demande&nbsp;: nous vous rappelons immédiatement.`}
     actions={false}
     compact
   />
@@ -54,7 +54,7 @@ const indexPrestation = Object.fromEntries(services.map((s, i) => [s.slug, i]));
         <dl class="kv">
           <dt>Téléphone</dt><dd><a class="ct-a tel" href={e.telephone.lien}>{e.telephone.affiche}</a></dd>
           <dt>E-mail</dt><dd><a class="ct-a" href={`mailto:${e.email}`}>{e.email}</a></dd>
-          <dt>Disponibilité</dt><dd>Intervention {dispo}, au même prix la nuit, le week-end et les jours fériés (<a href="/tarifs/">voir les tarifs</a>)</dd>
+          <dt>Disponibilité</dt><dd>Intervention {dispo}&nbsp;; pour les particuliers, même prix la nuit, le week-end et les jours fériés (<a href="/tarifs/">voir les tarifs</a>)</dd>
           <dt>Zone</dt><dd>{e.zone.libelle} — <a class="ct-a" href="/zones-intervention/">vérifier mon code postal</a></dd>
           {!PROD && !e.adresse && <><dt>Adresse</dt><dd><Tbc label="adresse de la base à confirmer" /></dd></>}
         </dl>
@@ -71,7 +71,7 @@ const indexPrestation = Object.fromEntries(services.map((s, i) => [s.slug, i]));
         <ol class="ct-steps">
           <li><h3>Vous appelez ou envoyez votre demande</h3><p>Par téléphone, {dispo}, ou avec le formulaire de cette page.</p></li>
           <li><h3>Nous vous rappelons immédiatement</h3><p>Après une demande écrite, nous vous rappelons immédiatement pour faire le point sur le problème.</p></li>
-          <li><h3>Nous organisons l'intervention</h3><p>Le devis est gratuit et sans engagement, et le prix est le même de jour comme de nuit, le week-end et les jours fériés&nbsp;: vous le connaissez avant que nous partions. Rien n'apparaît sur la facture sans avoir été dit. Sur Rouen et 20&nbsp;km autour, nous sommes généralement sur place en {e.delaiZoneA}&nbsp;; au-delà, une estimation vous est donnée au téléphone.</p></li>
+          <li><h3>Nous organisons l'intervention</h3><p>Le devis est gratuit et sans engagement, et, pour un particulier, le prix est le même de jour comme de nuit, le week-end et les jours fériés&nbsp;: vous le connaissez avant que nous partions. Rien n'apparaît sur la facture sans avoir été dit. Sur Rouen et 20&nbsp;km autour, nous sommes généralement sur place en {e.delaiZoneA}&nbsp;; au-delà, une estimation vous est donnée au téléphone.</p></li>
         </ol>
       </aside>
     </div>

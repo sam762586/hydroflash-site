@@ -104,7 +104,7 @@ const altVehicule = `Véhicule d'intervention HYDROFLASH : pick-up orange à cab
         <ul>
           {devis && <li><svg class="ic" aria-hidden="true"><use href="#i-doc"/></svg><span>Devis présenté avant intervention{devis === 'tbc' && <> <Tbc /></>}</span></li>}
           {factu && <li><svg class="ic" aria-hidden="true"><use href="#i-doc"/></svg><span>{factu === 'ok' ? e.principeFacturation : <>Principe de facturation <Tbc /></>}</span></li>}
-          <li class="pn-ok"><svg class="ic" aria-hidden="true"><use href="#i-moon"/></svg><span><b>Même prix jour et nuit</b>, week-end et jours fériés compris</span></li>
+          <li class="pn-ok"><svg class="ic" aria-hidden="true"><use href="#i-moon"/></svg><span><b>Particuliers&nbsp;: même prix jour et nuit</b>, week-end et jours fériés compris</span></li>
           <li class="pn-ok"><svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg><span><b>Sur place en {e.delaiZoneA}</b> en général, sur Rouen et 20&nbsp;km autour</span></li>
         </ul>
         <a class="pn-link" href="#prix">Calculer mon prix exact <svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></a>
@@ -113,7 +113,7 @@ const altVehicule = `Véhicule d'intervention HYDROFLASH : pick-up orange à cab
     </div>
   </section>
 
-  <!-- VOTRE PRIX : calculateur (grille tarifaire, zone ; même prix à toute heure) -->
+  <!-- VOTRE PRIX : calculateur (grille tarifaire, zone ; particuliers : même prix à toute heure) -->
   <CalculateurPrix id="calc-acc" numero={num('prix')} />
 
   <!-- PRESTATIONS -->
@@ -337,7 +337,7 @@ const altVehicule = `Véhicule d'intervention HYDROFLASH : pick-up orange à cab
         <details open><summary><span class="q-n">Q.01</span>Comment savoir si ma canalisation est bouchée&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Écoulement lent, remontées d'eau, gargouillements ou mauvaises odeurs sont les signes les plus courants. Si plusieurs évacuations sont touchées en même temps, le bouchon se situe probablement plus loin, sur la canalisation principale.</p></details>
         <details><summary><span class="q-n">Q.02</span>Quelle différence entre débouchage et curage&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Le débouchage supprime un bouchon pour rétablir l'écoulement. Le curage nettoie toute la paroi de la canalisation à haute pression, pour retirer les dépôts accumulés et limiter les récidives.</p></details>
         <details><summary><span class="q-n">Q.03</span>Combien coûte une intervention&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Le prix dépend de l'intervention, de la zone et du moment. Calculez-le avec le <a href="#prix">calculateur</a> plus haut, ou consultez la <a href="/tarifs/">grille tarifaire complète</a>.{devis && <> HYDROFLASH vous présente un devis avant intervention.</>}</p></details>
-        <details><summary><span class="q-n">Q.04</span>Intervenez-vous en urgence&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Oui, HYDROFLASH est joignable et intervient {nb(e.disponibilite.libelle)}, en Seine-Maritime et dans l'Eure. Le devis est gratuit et le prix est le même de jour comme de nuit, le week-end et les jours fériés&nbsp;: vous le connaissez avant que nous partions. Aucun frais n'apparaît sur la facture sans avoir été annoncé.</p></details>
+        <details><summary><span class="q-n">Q.04</span>Intervenez-vous en urgence&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Oui, HYDROFLASH est joignable et intervient {nb(e.disponibilite.libelle)}, en Seine-Maritime et dans l'Eure. Le devis est gratuit et, pour un particulier, le prix est le même de jour comme de nuit, le week-end et les jours fériés&nbsp;: vous le connaissez avant que nous partions. Aucun frais n'apparaît sur la facture sans avoir été annoncé.</p></details>
         <details><summary><span class="q-n">Q.05</span>À quoi sert le passage caméra&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Il permet de voir l'intérieur de la canalisation sans rien casser&nbsp;: localiser un bouchon, des racines, un affaissement ou une contre-pente, et vérifier le résultat après un curage. {e.passageCamera.livrable}</p></details>
         <details><summary><span class="q-n">Q.06</span>Les produits déboucheurs chimiques sont-ils une bonne solution&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Ils peuvent abîmer certaines canalisations et restent souvent inefficaces sur les bouchons profonds. En cas de bouchon persistant, mieux vaut faire appel à un professionnel.</p></details>
         <details><summary><span class="q-n">Q.07</span>À quelle fréquence entretenir ses canalisations&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Cela dépend de l'usage&nbsp;: une maison, une copropriété et un restaurant n'ont pas les mêmes besoins. Une fréquence adaptée vous est conseillée après diagnostic.</p></details>

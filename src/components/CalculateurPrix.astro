@@ -1,6 +1,7 @@
 ---
 /** Calculateur « Votre prix exact » : prestation, code postal (zone A/B), particulier ou professionnel.
- *  Même prix à toute heure : aucune majoration de nuit, de week-end ni de jour férié (décision du 24/11/2026).
+ *  Particuliers : même prix à toute heure (aucune majoration). Professionnels : prix valables en semaine de 8 h à 18 h,
+ *  hors de ces horaires tarif sur devis (entreprise.tarifs.horsHorairesPro) — décision du 24/11/2026.
  *  Données : entreprise.tarifs (source unique) et communes.ts (zone par commune), passées en attribut
  *  data-calc (aucun script en ligne : la politique de sécurité du site les interdit).
  *  Comportement : public/js/calculateur.js. Sans JavaScript : lien vers la grille complète.
@@ -67,6 +68,7 @@ const data = {
   noms: nomsCp,
   deps: e.zone.departements.map((d) => d.code),
   delaiA: e.delaiZoneA,
+  horaires: { part: 'Même prix jour et nuit, week-end et jours fériés', pro: t.horsHorairesPro },
 };
 const tel = e.telephone.affiche.replace(/ /g, ' ');
 ---
@@ -77,7 +79,7 @@ const tel = e.telephone.affiche.replace(/ /g, ' ');
         <p class="sec-label">{numero && <span class="sl-n">{numero} — </span>}Votre prix</p>
         <h2 class="h2" id={`${id}-t`}>{titre} <em>{titreFin}</em></h2>
       </div>
-      <p class="lead">Choisissez l'intervention et votre code postal&nbsp;: le prix s'affiche, le même de jour comme de nuit, le week-end et les jours fériés. C'est celui que nous vous annoncerons au téléphone.</p>
+      <p class="lead">Choisissez l'intervention et votre code postal&nbsp;: le prix s'affiche. Pour un particulier, c'est le même de jour comme de nuit, le week-end et les jours fériés&nbsp;; c'est celui que nous vous annoncerons au téléphone.</p>
     </div>
 
     <div class="calc" data-calc={JSON.stringify(data)} data-id={id}>
@@ -119,7 +121,7 @@ const tel = e.telephone.affiche.replace(/ /g, ' ');
           <p class="calc-px2" data-out="px2"></p>
         </div>
         <dl class="calc-det">
-          <div><dt>Horaires</dt><dd>Même prix jour et nuit, week-end et jours fériés</dd></div>
+          <div><dt>Horaires</dt><dd data-out="horaires">Même prix jour et nuit, week-end et jours fériés</dd></div>
           <div><dt>Zone</dt><dd data-out="zone"></dd></div>
           <div><dt>Délai</dt><dd data-out="delai"></dd></div>
           <div><dt>Compris</dt><dd data-out="detail"></dd></div>

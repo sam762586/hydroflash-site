@@ -1,5 +1,5 @@
 ---
-/* Page Tarifs : grille publique HYDROFLASH (zones, prestations ; même prix à toute heure, aucune majoration).
+/* Page Tarifs : grille publique HYDROFLASH (zones, prestations ; particuliers : même prix à toute heure ; professionnels : prix en semaine 8 h–18 h, sinon sur devis).
    Source unique : entreprise.tarifs. Aucun prix écrit en dur ici. */
 import Base from '../../layouts/Base.astro';
 import SousHero from '../../components/SousHero.astro';
@@ -38,7 +38,7 @@ const diag = t.prestations.find((p) => p.nom.startsWith('Diagnostic'))!;
 ---
 <Base
   titre="Tarifs débouchage, curage et pompage | HYDROFLASH"
-  description={`Grille tarifaire HYDROFLASH : débouchage à partir de ${eur(ttc(premier.a!, tauxParticulier(premier)))} TTC, curage, caméra et pompage en Seine-Maritime et dans l'Eure. Même prix jour et nuit, week-end et jours fériés.`}
+  description={`Grille tarifaire HYDROFLASH : débouchage à partir de ${eur(ttc(premier.a!, tauxParticulier(premier)))} TTC, curage, caméra et pompage en Seine-Maritime et dans l'Eure. Particuliers : même prix jour et nuit, week-end et jours fériés.`}
   feuilles={[FEUILLE_CONTENU, FEUILLE_TARIFS, FEUILLE_BLOCS]}
   jsonld={schemaEntreprise()}
 >
@@ -46,8 +46,8 @@ const diag = t.prestations.find((p) => p.nom.startsWith('Diagnostic'))!;
     ariane={[{ label: 'Tarifs' }]}
     surtitre={`Tarifs · ${t.prestations.length} prestations`}
     titre="Des prix affichés,"
-    titreFin="les mêmes jour et nuit."
-    intro="Vous connaissez le prix avant notre départ. Chaque prestation a son tarif, qui ne dépend que de la distance depuis Rouen&nbsp;: pas de majoration la nuit, le week-end ni les jours fériés. Aucune mauvaise surprise à l'arrivée."
+    titreFin="clairs et transparents."
+    intro="Vous connaissez le prix avant notre départ. Pour les particuliers, chaque prestation a son tarif, qui ne dépend que de la distance depuis Rouen&nbsp;: pas de majoration la nuit, le week-end ni les jours fériés. Aucune mauvaise surprise à l'arrivée."
     picto="devis"
   />
 
@@ -71,7 +71,7 @@ const diag = t.prestations.find((p) => p.nom.startsWith('Diagnostic'))!;
     <div class="wrap">
       <div class="c-head">
         <div><p class="sec-label">Grille</p><h2 class="h2" id="t-grille">Le prix de <em>chaque prestation</em></h2></div>
-        <p class="lead">Ces prix s'appliquent à toute heure&nbsp;: de jour comme de nuit, en semaine, le week-end et les jours fériés. Particulier ou professionnel&nbsp;: choisissez l'affichage qui vous concerne.</p>
+        <p class="lead">Pour les particuliers, ces prix s'appliquent à toute heure&nbsp;: de jour comme de nuit, en semaine, le week-end et les jours fériés. Particulier ou professionnel&nbsp;: choisissez l'affichage qui vous concerne.</p>
       </div>
 
       <div class="vue">
@@ -80,7 +80,7 @@ const diag = t.prestations.find((p) => p.nom.startsWith('Diagnostic'))!;
         <label><input type="radio" name="vue" id="vue-pro" value="pro"><span>Professionnel · HT</span></label>
       </div>
       <table class="tf-tab">
-        <caption><span class="px-part">Grille tarifaire HYDROFLASH — prix TTC pour les particuliers (HT entre parenthèses)</span><span class="px-pro">Grille tarifaire HYDROFLASH — prix HT pour les professionnels (TTC à {t.tvaPct}&nbsp;% entre parenthèses)</span></caption>
+        <caption><span class="px-part">Grille tarifaire HYDROFLASH — prix TTC pour les particuliers (HT entre parenthèses)</span><span class="px-pro">Grille tarifaire HYDROFLASH — prix HT pour les professionnels, en semaine de 8&nbsp;h à 18&nbsp;h (TTC à {t.tvaPct}&nbsp;% entre parenthèses)</span></caption>
         <thead>
           <tr>
             <th scope="col">Prestation</th>
@@ -117,8 +117,8 @@ const diag = t.prestations.find((p) => p.nom.startsWith('Diagnostic'))!;
         ? <>{regleTva.conditions} {regleTva.justificatif} {regleTva.sinon} <a href="#tva">Les conditions en détail</a></>
         : <>Prix TTC avec la TVA à {t.tvaPct}&nbsp;%. <Tbc label={`TVA à ${t.tvaReduitePct} % pour les logements de plus de 2 ans : à confirmer par le comptable`} /></>}</p>
       <p class="vue-note vue-note-pro">{tvaReduiteActive
-        ? <>Prix HT, TVA en sus. Débouchage, curage, détartrage et bacs à graisse&nbsp;: {t.tvaReduitePct}&nbsp;% dans des locaux d'habitation achevés depuis plus de deux ans (logements, parties communes d'immeubles d'habitation), {t.tvaPct}&nbsp;% dans les autres locaux. Autres prestations&nbsp;: {t.tvaPct}&nbsp;%. <a href="#tva">Les conditions en détail</a></>
-        : <>Prix HT, TVA en sus au taux applicable à vos locaux.</>}</p>
+        ? <>{t.horsHorairesPro} Prix HT, TVA en sus. Débouchage, curage, détartrage et bacs à graisse&nbsp;: {t.tvaReduitePct}&nbsp;% dans des locaux d'habitation achevés depuis plus de deux ans (logements, parties communes d'immeubles d'habitation), {t.tvaPct}&nbsp;% dans les autres locaux. Autres prestations&nbsp;: {t.tvaPct}&nbsp;%. <a href="#tva">Les conditions en détail</a></>
+        : <>{t.horsHorairesPro} Prix HT, TVA en sus au taux applicable à vos locaux.</>}</p>
       </div>
     </div>
   </section>
@@ -126,13 +126,13 @@ const diag = t.prestations.find((p) => p.nom.startsWith('Diagnostic'))!;
   <section class="sec sec-sm on-dark" aria-labelledby="t-maj">
     <div class="wrap c-grid2">
       <div>
-        <p class="sec-label">Nuit, week-end, jours fériés</p>
+        <p class="sec-label">Particuliers · nuit, week-end, jours fériés</p>
         <h2 class="h2" id="t-maj">Le même prix, <em>à toute heure</em></h2>
-        <p class="lead">Nous intervenons à toute heure, y compris à 2&nbsp;h du matin un dimanche, et toujours au prix de la grille. Pas de majoration la nuit, le week-end ni les jours fériés&nbsp;: seule votre zone fait varier le tarif.</p>
+        <p class="lead">Chez les particuliers, nous intervenons à toute heure, y compris à 2&nbsp;h du matin un dimanche, et toujours au prix de la grille. Pas de majoration la nuit, le week-end ni les jours fériés&nbsp;: seule votre zone fait varier le tarif.</p>
       </div>
       <div>
         <table class="tf-maj">
-          <caption class="sr">Tarif selon le moment de l'intervention</caption>
+          <caption class="sr">Tarif d'un particulier selon le moment de l'intervention</caption>
           <tbody>
             {['En semaine, en journée', 'En soirée et la nuit', 'Le samedi', 'Le dimanche', 'Les jours fériés'].map((m) => (
               <tr><th scope="row">{m}</th><td>Prix de la grille</td></tr>
@@ -177,7 +177,7 @@ const diag = t.prestations.find((p) => p.nom.startsWith('Diagnostic'))!;
         </details>
         <details>
           <summary><span class="q-n">Q.03</span>Y a-t-il un supplément la nuit ou le week-end&nbsp;?<span class="tog" aria-hidden="true"></span></summary>
-          <p class="ans">Non. Le prix de la grille s'applique à toute heure&nbsp;: de jour comme de nuit, en semaine, le week-end et les jours fériés. Seules la prestation, votre zone et, au-delà de la première heure, le temps passé font varier la facture.</p>
+          <p class="ans">Pas pour les particuliers&nbsp;: le prix de la grille s'applique à toute heure, de jour comme de nuit, en semaine, le week-end et les jours fériés. Seules la prestation, votre zone et, au-delà de la première heure, le temps passé font varier la facture. Pour les professionnels, le tarif en dehors des heures ouvrées est précisé sur devis.</p>
         </details>
         <details>
           <summary><span class="q-n">Q.04</span>Faites-vous des devis&nbsp;?<span class="tog" aria-hidden="true"></span></summary>
