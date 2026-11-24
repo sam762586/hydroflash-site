@@ -19,14 +19,17 @@ export const entreprise = {
   /** Grille tarifaire HYDROFLASH (confirmée le 19/11/2026). Prix HT, hors majoration. */
   tarifs: {
     tvaPct: 20,
-    /** TVA à taux réduit pour les particuliers et les copropriétés : 10 % pour le débouchage, le détartrage,
-        le curage des canalisations et des réseaux privés et le nettoyage des bacs à graisse, dans des locaux
-        d'habitation achevés depuis plus de deux ans (BOFiP, BOI-ANNX-000210, version du 31/07/2024).
-        null = NON CONFIRMÉ par le comptable : tous les prix restent calculés à 20 %, et le site l'indique
-        en préproduction. Passer à true seulement après validation (conditions et justificatif client).
-        Les prestations concernées portent `tvaReduite: true` dans la liste ci-dessous. */
+    /** TVA à 10 % (CGI, art. 279-0 bis) : débouchage, détartrage et curage de canalisations, curage de réseaux
+        privés, nettoyage de bacs à graisse (BOFiP BOI-ANNX-000210 du 31/07/2024), dans des LOCAUX D'HABITATION
+        ACHEVÉS DEPUIS PLUS DE DEUX ANS. C'est le local qui compte, pas le client : propriétaire, locataire,
+        bailleur ou syndic de copropriété y ont droit. Justificatif : depuis le 16/02/2025 (loi de finances
+        pour 2025), le client certifie les conditions par une mention sur le devis ou la facture (plus de
+        formulaire 1300-SD / 1301-SD) ; l'entreprise garde une copie en comptabilité.
+        Restent à 20 % : inspection caméra et diagnostic facturés seuls (prestations d'études), pompage
+        (à revoir avec le comptable : vidange de fosse septique et nettoyage de puisard sont à 10 % au BOFiP).
+        Validée par HYDROFLASH le 24/11/2026. Les prestations concernées portent `tvaReduite: true` ci-dessous. */
     tvaReduitePct: 10,
-    tvaReduiteConfirmee: null as boolean | null,
+    tvaReduiteConfirmee: true as boolean | null,
     zones: [
       { code: 'A', libelle: 'Rouen et 20\u00a0km autour' },
       { code: 'B', libelle: 'Au-delà de 20\u00a0km de Rouen' },
