@@ -44,16 +44,17 @@ export const entreprise = {
     /** a = prix HT zone A, b = prix HT zone B, null = sur devis.
         tvaReduite = prestation listée au taux de 10 % par le BOFiP (voir tvaReduiteConfirmee). */
     prestations: [
-      { cat: 'Débouchage',        nom: 'Débouchage manuel',                     unite: 'forfait', a: 160,  b: 185,  tvaReduite: true, detail: 'Pompette, furet manuel ou furet électrique. Déplacement et 1\u00a0h d\u2019intervention inclus.' },
-      { cat: 'Débouchage',        nom: 'Débouchage à l\u2019hydrocureur',          unite: 'forfait', a: 210,  b: 240,  tvaReduite: true, detail: 'Camion hydrocureur haute pression. Déplacement et 1\u00a0h d\u2019intervention inclus.' },
+      /* Tarifs du 24/11/2026. Débouchage manuel : 110 € HT en zone A (121 € TTC à 10 %).
+         Hydrocureur : 250 € TTC à 10 % en zone A, soit 227,27 € HT. Zone B : même écart qu'avant (+25 et +30 € HT). */
+      { cat: 'Débouchage',        nom: 'Débouchage manuel',                     unite: 'forfait', a: 110,  b: 135,  tvaReduite: true, detail: 'Sans hydrocureur\u00a0: pompette, furet manuel ou furet électrique. Déplacement et 1\u00a0h d\u2019intervention inclus.' },
+      { cat: 'Débouchage',        nom: 'Débouchage à l\u2019hydrocureur',          unite: 'forfait', a: 227.27, b: 257.27,  tvaReduite: true, detail: 'Camion hydrocureur haute pression. Déplacement et 1\u00a0h d\u2019intervention inclus.' },
       { cat: 'Curage',            nom: 'Curage \u2013 heure de main-d\u2019œuvre',   unite: 'heure',   a: 210,  b: 240,  tvaReduite: true, detail: '1\u00a0h sur place avec le camion, nettoyage du réseau haute pression inclus. S\u2019ajoute au prix au mètre.' },
       { cat: 'Curage',            nom: 'Curage \u2013 par mètre linéaire',         unite: 'ml',      a: 9,    b: 9,    tvaReduite: true, detail: 'Même prix dans les deux zones.' },
       { cat: 'Détartrage',        nom: 'Détartrage haute pression',             unite: '—',       a: null, b: null, tvaReduite: true, detail: 'Sur devis, selon le nombre d\u2019étages et l\u2019état du réseau, après passage caméra. Pas de détartrage la nuit, le dimanche ni les jours fériés.' },
       { cat: 'Pompage',           nom: 'Pompage eaux usées (EU)',               unite: 'forfait', a: 330,  b: 380,  detail: '1\u00a0m³ pompé, retraitement des déchets inclus. Au-delà d\u20191\u00a0m³\u00a0: coût du centre de retraitement et forfait transport.' },
       { cat: 'Pompage',           nom: 'Pompage eaux pluviales (EP)',           unite: 'forfait', a: 215,  b: 245,  detail: 'Quantité illimitée, sans retraitement.' },
-      { cat: 'Pompage',           nom: 'Pompage de petit bac à graisse',        unite: 'forfait', a: 430,  b: 495,  tvaReduite: true, detail: 'Jusqu\u2019à 1\u00a0m³, retraitement des déchets inclus.' },
-      { cat: 'Inspection caméra', nom: 'Inspection caméra sans rapport',        unite: 'forfait', a: 110,  b: 125,  detail: 'Jusqu\u2019à 30\u00a0ml, visionnage sur place. Au-delà de 30\u00a0ml\u00a0: sur devis.' },
       { cat: 'Inspection caméra', nom: 'Inspection caméra avec rapport',        unite: 'forfait', a: 250,  b: 290,  detail: 'Jusqu\u2019à 30\u00a0ml. Rapport PDF\u00a0: photos, localisation et description des défauts.' },
+      { cat: 'Pompe de relevage', nom: 'Entretien de pompe de relevage',        unite: '—',       a: null, b: null, detail: 'Sur devis, selon le poste\u00a0: nombre de pompes, volume de la cuve, accès.' },
       { cat: 'Divers',            nom: 'Diagnostic ou déplacement seul',        unite: 'forfait', a: 125,  b: 145,  detail: 'Lorsque l\u2019intervention s\u2019avère impossible\u00a0: 1\u00a0h et trajet inclus. 30\u00a0% déduits de la facture si une intervention est réalisée dans les 30\u00a0jours.' },
     ],
     regleDemiHeure: 'Au-delà de la première heure incluse, toute demi-heure entamée est facturée 50\u00a0% du prix de la prestation.',

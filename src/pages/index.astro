@@ -12,7 +12,7 @@ import Trouvailles from '../components/Trouvailles.astro';
 import { FEUILLE_BLOCS } from '../lib/feuilles';
 import { trouvailles, TROUVAILLES_MIN } from '../data/trouvailles';
 import { entreprise as e } from '../data/entreprise';
-import { services } from '../data/services';
+import { services, nbPrestationsLettres } from '../data/services';
 import { schemaEntreprise } from '../lib/schema';
 import { PROD } from '../lib/env';
 import tunnelLumiere from '../assets/photos/tunnel-lumiere.webp';
@@ -122,11 +122,11 @@ const altVehicule = `Véhicule d'intervention HYDROFLASH : pick-up orange à cab
       <div class="sec-head reveal">
         <div>
           <p class="sec-label"><span class="sl-n">{num('services')} — </span>Prestations</p>
-          <h2 class="h2" id="t-services">Six interventions, <em>un seul objectif&nbsp;:</em> que ça s'écoule.</h2>
+          <h2 class="h2" id="t-services">{nbPrestationsLettres} interventions, <em>un seul objectif&nbsp;:</em> que ça s'écoule.</h2>
         </div>
         <div>
           <p class="lead d-only">Du débouchage au pompage, HYDROFLASH couvre toute la chaîne d'intervention{aff(e.typesOuvragesPompage) === 'tbc' && <> <span class="tbc-wrap"><Tbc label="périmètre du pompage à confirmer" /></span></>}&nbsp;: un seul interlocuteur, et la bonne technique selon la canalisation, l'accès et l'origine du problème.</p>
-          <p class="chain mono d-only" aria-label="Chaîne d'intervention"><span>Débouchage</span><i></i><span>Curage</span><i></i><span>Détartrage</span><i></i><span>Passage caméra</span><i></i><span>Pompage</span><i></i><span>Entretien des réseaux</span></p>
+          <p class="chain mono d-only" aria-label="Chaîne d'intervention"><span>Débouchage</span><i></i><span>Curage</span><i></i><span>Détartrage</span><i></i><span>Passage caméra</span><i></i><span>Pompage</span><i></i><span>Entretien des réseaux</span><i></i><span>Pompes de relevage</span></p>
           <a class="link-arrow m-only" href="/services/">Toutes nos prestations <span aria-hidden="true">→</span></a>
         </div>
       </div>
@@ -176,6 +176,13 @@ const altVehicule = `Véhicule d'intervention HYDROFLASH : pick-up orange à cab
           <div class="svc-row"><h3>Entretien des réseaux</h3><p class="svc-long">Interventions préventives planifiées pour limiter les bouchons et préserver vos installations, en maison, en copropriété ou en local professionnel.</p></div>
           <p class="svc-short">Interventions préventives planifiées.</p>
           <a class="svc-link" href={svc.entretien.url}><span class="svc-lt">Découvrir l'entretien</span> <span class="ar"><svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></span></a>
+        </article>
+        <article class="svc svc--g reveal">
+          <div class="svc-top"><span class="mono idx">07<span class="idx-n"> — Pompes de relevage</span></span><picture><source media="(max-width: 700px)" srcset="/img/pictos/pompe-relevage-blanc.svg"><img class="picto" src="/img/pictos/pompe-relevage-noir.svg" alt="" width="56" height="56"></picture></div>
+          <h3>Pompes de relevage</h3>
+          <p class="svc-long">Nettoyage du poste, contrôle des flotteurs et du clapet anti-retour, essai de fonctionnement&nbsp;: un entretien sur devis, avant la panne.</p>
+          <p class="svc-short">Nettoyage et contrôle du poste.</p>
+          <a class="svc-link" href={svc['pompes-relevage'].url}><span class="svc-lt">Découvrir l'entretien des pompes de relevage</span> <span class="ar"><svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></span></a>
         </article>
       </div>
     </div>

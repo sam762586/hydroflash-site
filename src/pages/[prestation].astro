@@ -1,5 +1,5 @@
 ---
-/* PAGES PRESTATIONS (à la racine, décision D1) — une route pour les 6 fichiers de src/content/prestations/.
+/* PAGES PRESTATIONS (à la racine, décision D1) — une route par fichier de src/content/prestations/.
  *
  * Contenu éditable dans chaque fichier Markdown :
  *  - frontmatter (schéma : src/content.config.ts) : titres SEO, H1, intro, symptômes, étapes, FAQ, prestations liées ;
@@ -100,6 +100,7 @@ const infos: Info[] = [
   ...(d.slug === 'pompage-vidange' ? [e.typesOuvragesPompage ? { k: 'Ouvrages', v: e.typesOuvragesPompage } : { k: 'Types d\'ouvrages', tbc: true },
     { k: 'Traçabilité', v: e.documentsPompage }] : []),
   ...(d.slug === 'entretien-reseaux-assainissement' ? [{ k: 'Contrat d\'entretien', v: e.contratEntretien }] : []),
+  ...(d.slug === 'entretien-pompe-de-relevage' ? [{ k: 'Prix', v: 'Sur devis, selon le poste' }] : []),
   e.principeFacturation ? { k: 'Tarifs', v: e.principeFacturation } : { k: 'Tarifs', tbc: true },
   ...(e.devisAvantIntervention === null ? [{ k: 'Devis avant intervention', tbc: true }] : []),
   ...(e.materiel === null ? [{ k: 'Matériel', tbc: true }] : []),

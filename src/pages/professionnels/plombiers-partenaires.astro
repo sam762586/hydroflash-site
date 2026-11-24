@@ -32,6 +32,7 @@ const lignes: Ligne[] = [
   { titre: 'Détartrage haute pression', texte: 'Après passage caméra, selon le nombre d’étages et l’état du réseau. Pas de détartrage la nuit, le dimanche ni les jours fériés.' },
   ...(camera ? [{ titre: 'Passage caméra avec rapport', texte: camera.detail }] : []),
   ...(eu ? [{ titre: 'Pompage', texte: eu.detail }] : []),
+  { titre: 'Entretien de pompes de relevage', texte: 'Nettoyage du poste, contrôle des flotteurs et du clapet anti-retour, essai de fonctionnement. Sur devis.' },
 ];
 
 const faq = [
