@@ -23,11 +23,11 @@ const t = e.tarifs;
 const REGLEMENT = 'https://metropole-rouen-normandie.fr/file-download/download/public/251254';
 const ARTICLE = '/conseils/bac-a-graisse-restaurant-obligations/';
 
-const description = `Restaurants : pompage du bac à graisse, retraitement inclus, documents de suivi remis à chaque passage, curage du branchement. ${dispo} (76, 27).`;
+const description = `Restaurants : pompage de soulagement du bac à graisse jusqu’à 1 m³, documents de suivi des déchets remis, curage du branchement. ${dispo} (76, 27).`;
 
 type Info = { k: string; v: string; lien?: string };
 const infos: Info[] = [
-  { k: 'Pompage du bac à graisse', v: 'Retraitement des déchets inclus' },
+  { k: 'Bac à graisse', v: 'Pompage de soulagement jusqu’à 1\u00a0m³, sur devis' },
   { k: 'Curage du branchement', v: 'Haute pression, quand il est encrassé' },
   { k: 'Tarifs', v: 'Sur devis, y compris en dehors des heures ouvrées' },
   { k: 'Documents remis', v: e.documentsPompage },
@@ -36,6 +36,8 @@ const infos: Info[] = [
 ];
 
 const faq = [
+  { q: 'Vidangez-vous tous les bacs à graisse ?',
+    a: 'Nous réalisons le pompage de soulagement des bacs à graisse, jusqu’à 1&nbsp;m³, sur devis&nbsp;: quand le bac déborde, ou pour l’abaisser avant une intervention sur vos évacuations. Décrivez-nous votre bac au téléphone, nous vous disons ce qui est possible.' },
   { q: 'À quelle fréquence faire vidanger le bac à graisse ?',
     a: `Le vrai critère n’est pas le calendrier mais l’épaisseur de la couche de graisse&nbsp;: quand elle dépasse environ 15 à 25 % de la hauteur utile du bac, la vidange s’impose. Dans la Métropole Rouen Normandie, le règlement d’assainissement fixe en plus un minimum d’une vidange et d’un nettoyage par an. Le détail dans notre article <a href="${ARTICLE}">Bac à graisse en restaurant</a>.` },
   { q: 'Que dois-je conserver en cas de contrôle ?',
@@ -57,7 +59,7 @@ const faq = [
     surtitre="Restaurants · Traiteurs · Métiers de bouche"
     titre="Restaurants et métiers de bouche"
     titreFin="Un bac à graisse suivi, un registre à jour."
-    intro={`Pompage du bac à graisse avec retraitement des déchets inclus, documents de suivi remis à chaque passage, curage du branchement quand il est encrassé&nbsp;: HYDROFLASH intervient <strong>${dispo}</strong>, en dehors de votre service si vous le souhaitez.`}
+    intro={`Pompage de soulagement du bac à graisse jusqu’à 1&nbsp;m³, sur devis, documents de suivi des déchets remis, curage du branchement quand il est encrassé&nbsp;: HYDROFLASH intervient <strong>${dispo}</strong>, en dehors de votre service si vous le souhaitez.`}
     picto="professionnel"
   />
 
@@ -98,7 +100,7 @@ const faq = [
       </div>
       <ol class="steps-c reveal">
         <li><h3>Le créneau</h3><p>Vous indiquez vos contraintes d’horaires&nbsp;: nous intervenons au moment le plus adapté. En dehors des heures ouvrées, le tarif vous est précisé sur devis, avant l’intervention.</p></li>
-        <li><h3>Le pompage</h3><p>Vidange du bac, retraitement des déchets inclus.</p></li>
+        <li><h3>Le pompage</h3><p>Pompage de soulagement du bac, jusqu’à 1&nbsp;m³, au prix fixé sur devis.</p></li>
         <li><h3>Le branchement</h3><p>S’il est encrassé, nous vous le disons et vous donnons le prix du curage avant de commencer&nbsp;: rien ne démarre sans votre accord.</p></li>
         <li><h3>Les documents</h3><p>Les documents de suivi des déchets vous sont remis, à conserver dans votre registre.</p></li>
       </ol>
@@ -109,5 +111,5 @@ const faq = [
 
   <Faq items={faq} intro={'Restaurateurs : les réponses aux questions que vous vous posez sur le bac à graisse.'} />
 
-  <ContactCta label="Devis restaurant" titreD={'Un bac à graisse à faire vidanger ?'} titreDem="Demandez un passage." titreM="Appelez HYDROFLASH." prestation="Pompage" />
+  <ContactCta label="Devis restaurant" titreD={'Un bac à graisse qui déborde ?'} titreDem="Demandez un passage." titreM="Appelez HYDROFLASH." prestation="Pompage" />
 </Base>

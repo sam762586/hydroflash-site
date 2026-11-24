@@ -69,7 +69,7 @@ La liste des vidangeurs agréés de votre département est publiée par la préf
 
 ## Ce que fait HYDROFLASH
 
-Nous assurons le **pompage des eaux usées, des eaux pluviales et des bacs à graisse**. Le retraitement des déchets est compris dans le forfait pour les eaux usées et les bacs à graisse ; il ne s'applique pas aux eaux pluviales, qui n'en relèvent pas. Nos tarifs sont [publiés en ligne](/tarifs/).
+Nous assurons le **pompage des eaux usées et des eaux pluviales**, ainsi que le pompage de soulagement des bacs à graisse (jusqu'à 1 m³, sur devis). Le retraitement des déchets est compris dans le forfait pour les eaux usées ; il ne s'applique pas aux eaux pluviales, qui n'en relèvent pas. Nos tarifs pour les particuliers sont [publiés en ligne](/tarifs/).
 
 Pour une inspection du réseau avant ou après vidange — savoir si l'épandage est colmaté, si une canalisation est déboîtée, si les boues sont reparties en aval —, l'[inspection caméra](/inspection-camera-canalisation/) vous donne la réponse sans terrassement, photos à l'appui.
 
