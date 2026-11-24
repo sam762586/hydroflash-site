@@ -71,6 +71,11 @@
 .pro-profil--dark > p { color: var(--grey-d); }
 .pro-profil--dark .checks { border-color: var(--line-d); }
 .pro-profil--dark .checks li { color: #fff; }
+.pro-lien { margin-top: auto; padding-top: 24px; display: inline-flex; align-items: center; gap: 10px; align-self: flex-start; font-weight: 700; font-size: 16.5px; color: var(--ink2); text-decoration: none; }
+.pro-lien .ic { width: 30px; height: 30px; padding: 7px; border-radius: 50%; background: var(--o); color: var(--ink2); flex: none; }
+.pro-lien:hover { color: var(--o-text); }
+.pro-relais { margin-top: 22px; font-size: 17px; color: var(--grey); }
+.pro-relais a { font-weight: 700; color: var(--ink2); }
 .pro-trace .c-grid2 { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 72px; }
 .pro-trace .h2 { margin-top: 14px; }
 .pro-trace .prose { margin-top: 28px; }

@@ -64,6 +64,10 @@
 .pro-profil--dark { background: var(--ink2); color: #fff; }
 .pro-profil--dark > p { color: #D9DCE0; }
 .pro-profil--dark .checks li { color: #fff; }
+.pro-lien { margin-top: 14px; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-weight: 800; font-size: 15.5px; color: var(--ink2); }
+.pro-lien .ic { width: 26px; height: 26px; padding: 6px; border-radius: 50%; background: var(--o); color: var(--ink2); flex: none; }
+.pro-relais { margin-top: 16px; font-size: 16px; line-height: 1.5; }
+.pro-relais a { font-weight: 800; color: var(--ink2); }
 .pro-trace { background: var(--mist); }
 .pro-trace .prose { margin-top: 14px; }
 .pro-fig { margin-top: 20px; }

@@ -1,0 +1,101 @@
+---
+/* PLOMBIERS ET CHAUFFAGISTES — « quand il faut un camion, on prend le relais ».
+ * Prestations et prix lus dans src/data/entreprise.ts. Les conditions réservées aux partenaires
+ * (entreprise.conditionsPartenaires) ne sont affichées que lorsqu'elles sont arrêtées par les associés :
+ * en attendant, <Tbc /> en préproduction, rien en production. */
+import Base from '../../layouts/Base.astro';
+import SousHero from '../../components/SousHero.astro';
+import Faq from '../../components/Faq.astro';
+import ContactCta from '../../components/ContactCta.astro';
+import Tbc from '../../components/Tbc.astro';
+import { FEUILLE_CONTENU, FEUILLE_BLOCS } from '../../lib/feuilles';
+import { schemaService } from '../../lib/schema';
+import { PROD } from '../../lib/env';
+import { entreprise as e } from '../../data/entreprise';
+import { eur } from '../../lib/prix';
+import cssOrdi from '../../styles/pages/prestation-ordinateur.css?url';
+import cssMobile from '../../styles/pages/prestation-mobile.css?url';
+
+const dispo = e.disponibilite.libelle;
+const t = e.tarifs;
+const trouve = (debut: string) => t.prestations.find((p) => p.nom.startsWith(debut));
+const hydro = trouve('Débouchage à l');
+const curageH = t.prestations.find((p) => p.cat === 'Curage' && p.unite === 'heure');
+const curageMl = t.prestations.find((p) => p.cat === 'Curage' && p.unite === 'ml');
+const camera = trouve('Inspection caméra avec');
+const eu = trouve('Pompage eaux usées');
+const ep = trouve('Pompage eaux pluviales');
+const conditions = e.conditionsPartenaires;
+
+const description = `Plombiers et chauffagistes : débouchage à l’hydrocureur, curage, détartrage, passage caméra avec rapport PDF et pompage, ${dispo} (76, 27).`;
+
+type Ligne = { titre: string; prix: string; texte: string };
+const lignes: Ligne[] = [
+  ...(hydro && hydro.a !== null ? [{ titre: 'Débouchage à l’hydrocureur', prix: `${eur(hydro.a)} HT en zone A`, texte: hydro.detail }] : []),
+  ...(curageH && curageMl && curageH.a !== null && curageMl.a !== null ? [{ titre: 'Curage de réseau', prix: `${eur(curageH.a)} HT la première heure, puis ${eur(curageMl.a)} HT le mètre`, texte: 'Nettoyage haute pression des canalisations et des collecteurs.' }] : []),
+  { titre: 'Détartrage haute pression', prix: 'Sur devis', texte: 'Après passage caméra, selon le nombre d’étages et l’état du réseau. Pas de détartrage la nuit, le dimanche ni les jours fériés.' },
+  ...(camera && camera.a !== null ? [{ titre: 'Passage caméra avec rapport', prix: `${eur(camera.a)} HT en zone A`, texte: camera.detail }] : []),
+  ...(eu && ep && eu.a !== null && ep.a !== null ? [{ titre: 'Pompage', prix: `${eur(eu.a)} HT (eaux usées) · ${eur(ep.a)} HT (eaux pluviales)`, texte: eu.detail }] : []),
+];
+
+const faq = [
+  { q: 'Intervenez-vous le soir et le week-end ?',
+    a: `Oui, HYDROFLASH intervient ${dispo}, avec la majoration publiée dans notre <a href="/tarifs/">grille tarifaire</a>, annoncée avant le départ.` },
+  { q: 'Dans quel délai pouvez-vous être sur place ?',
+    a: e.delaiIntervention },
+  { q: 'Que recevez-vous après un passage caméra ?',
+    a: e.passageCamera.livrable },
+];
+---
+<Base
+  titre="Plombiers et chauffagistes : hydrocureur et caméra en renfort | HYDROFLASH"
+  description={description}
+  feuilles={[FEUILLE_CONTENU, { ordi: cssOrdi, mobile: cssMobile }, FEUILLE_BLOCS]}
+  jsonld={schemaService('Hydrocurage et inspection caméra pour plombiers et chauffagistes', '/professionnels/plombiers-partenaires/', description)}
+>
+  <SousHero
+    ariane={[{ label: 'Professionnels et syndics', href: '/professionnels/' }, { label: 'Plombiers et chauffagistes' }]}
+    surtitre="Plombiers · Chauffagistes · Artisans du bâtiment"
+    titre="Plombiers et chauffagistes"
+    titreFin="Quand il faut un camion, on prend le relais."
+    intro={`Bouchon hors de portée du furet, colonne entartrée, réseau à pomper ou à inspecter&nbsp;: HYDROFLASH intervient avec son camion hydrocureur, <strong>${dispo}</strong>. Le rapport caméra est remis en PDF.`}
+    picto="technicien"
+  />
+
+  <section class="sec sec-sm" aria-labelledby="t-relais">
+    <div class="wrap">
+      <div class="c-head">
+        <div><p class="sec-label">Ce que nous prenons en charge</p><h2 class="h2" id="t-relais">Le réseau, <em>avec le bon matériel.</em></h2></div>
+        <p class="lead">Les interventions qui demandent un camion hydrocureur, du pompage ou un passage caméra. Prix publiés, hors majoration, en zone A (Rouen et 20&nbsp;km autour)&nbsp;: <a href="/tarifs/">grille complète</a>.</p>
+      </div>
+      <ul class="pv-grid reveal">
+        {lignes.map((l) => (
+          <li class="pv">
+            <svg class="ic pv-ic" aria-hidden="true"><use href="#i-ok"/></svg>
+            <h3>{l.titre}</h3>
+            <p><strong>{l.prix}</strong></p>
+            <p>{l.texte}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  {(conditions || !PROD) && (
+    <section class="sec sec-sm" aria-labelledby="t-ensemble">
+      <div class="wrap">
+        <div class="callout">
+          <h2 id="t-ensemble">Travailler ensemble</h2>
+          {conditions
+            ? <ul class="checks">{conditions.map((c) => <li>{c}</li>)}</ul>
+            : <p><Tbc label="conditions réservées aux partenaires (tarif, délais, recommandations réciproques) : à arrêter par les associés" /></p>}
+          <a class="btn btn-call" href="#devis"><svg class="ic" aria-hidden="true"><use href="#i-doc"/></svg>Nous présenter un chantier</a>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <Faq items={faq} intro={'Plombiers et chauffagistes : ce qu’il faut savoir avant de nous appeler en renfort.'} />
+
+  <ContactCta label="Renfort" titreD={'Un chantier où il faut un camion ?'} titreDem="On prend le relais." titreM="Appelez HYDROFLASH." prestation="Bouchon" />
+</Base>

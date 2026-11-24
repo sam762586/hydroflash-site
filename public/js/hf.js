@@ -166,6 +166,19 @@
     });
   });
 
+  /* ---------- Contact : présélection du type de problème depuis l'URL (?prestation=curage) ----------
+     Table « slug → rang de l'option » fournie par [data-presel] (pas de script en ligne : CSP). */
+  var presel = d.querySelector('[data-presel]');
+  if (presel) {
+    try {
+      var rangs = JSON.parse(presel.getAttribute('data-presel'));
+      var m = /[?&]prestation=([^&#]*)/.exec(location.search);
+      var cle = m ? decodeURIComponent(m[1].replace(/\+/g, ' ')) : '';
+      var choix = d.querySelector('#devis select[name="type"]');
+      if (choix && Object.prototype.hasOwnProperty.call(rangs, cle)) choix.selectedIndex = rangs[cle];
+    } catch (err) { /* rien */ }
+  }
+
   /* ---------- Apparition douce des sections (ordinateur, animations acceptées) ---------- */
   if (!small.matches && !calm && 'IntersectionObserver' in window) {
     root.classList.add('anim');

@@ -30,10 +30,13 @@ npm run build:prod   # PRODUCTION : HF_ENV=production SITE_URL=https://… ; éc
 | `src/styles/ordinateur.css` / `mobile.css` | rendu C (≥ 701 px) / rendu A (≤ 700 px) : en-tête, pied, accueil, FAQ, contact… |
 | `src/styles/contenu-*.css` | pages intérieures (`FEUILLE_CONTENU`) : `.shero`, `.prose`, `.cards`, `.callout`, `.steps-c`, `.kv`, `.chips`… |
 | `src/styles/urgence-*.css` | page urgence (`FEUILLE_URGENCE`) |
-| `src/components/` | `SousHero`, `Breadcrumb` (+ JSON-LD), `Faq`, `ContactCta`, `FormulaireDemande`, `Tbc`, `JsonLd`… |
-| `src/data/` | `entreprise.ts` (source unique), `services.ts`, `navigation.ts` |
+| `src/styles/blocs-*.css` | blocs partagés (`FEUILLE_BLOCS`) : calculateur de prix, « Vérifiez-nous », « Ce qu'on a trouvé », bascule Particulier/Pro |
+| `src/components/` | `SousHero`, `Breadcrumb` (+ JSON-LD), `Faq`, `ContactCta`, `FormulaireDemande`, `Tbc`, `JsonLd`, `CalculateurPrix`, `Preuves`, `Trouvailles`… |
+| `src/data/` | `entreprise.ts` (source unique), `services.ts`, `navigation.ts`, `trouvailles.ts` (photos réelles d'interventions, 3 minimum pour publier) |
+| `src/lib/prix.ts` | TTC, taux de TVA par prestation (10 % seulement si `tarifs.tvaReduiteConfirmee === true`), format des prix |
 | `src/content/` | Markdown éditable : `prestations/`, `conseils/` (schémas : `src/content.config.ts`) |
-| `public/js/hf.js` | menu, barre d'appel, « Être rappelé », vérificateur de code postal, envoi des formulaires |
+| `public/js/hf.js` | menu, barre d'appel, « Être rappelé », vérificateur de code postal, envoi des formulaires, présélection `?prestation=` |
+| `public/js/calculateur.js` | calculateur de prix (créneau à l'heure de Paris, jours fériés, zone depuis le code postal) ; données passées par `data-calc` |
 | `public/data/communes-76-27.json` | codes postaux → communes (INSEE / La Poste via @etalab/decoupage-administratif 6.0.0, Licence Ouverte) |
 | `public/envoi-demande.php` | traitement du formulaire (hébergement PHP) |
 

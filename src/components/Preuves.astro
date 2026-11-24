@@ -1,0 +1,68 @@
+---
+/** « Vérifiez-nous » : les preuves de sérieux qu'un faux dépanneur ne peut pas montrer.
+ *  Donnée confirmée (src/data/entreprise.ts) → affichée. Donnée null → <Tbc /> en préproduction,
+ *  ligne masquée en production. Aucun numéro n'est jamais inventé. */
+import { entreprise as e } from '../data/entreprise';
+import { PROD } from '../lib/env';
+import Tbc from './Tbc.astro';
+
+interface Props { numero?: string; sombre?: boolean; id?: string }
+const { numero, sombre = false, id = 'preuves' } = Astro.props;
+
+type Preuve = { titre: string; texte?: string; lien?: { href: string; label: string }; manque?: string; tbcExtra?: string };
+const m = e.mediateur;
+const preuves: Preuve[] = [
+  { titre: 'Des prix publiés', texte: 'Toute la grille est en ligne, majorations de nuit, du week-end et des jours fériés comprises.', lien: { href: '/tarifs/', label: 'Voir la grille tarifaire' } },
+  e.devisAvantIntervention
+    ? { titre: 'Un devis avant d’intervenir', texte: 'Le prix vous est donné avant notre départ. Si la situation est différente sur place, nous vous le disons avant de continuer.' }
+    : { titre: 'Un devis avant d’intervenir', manque: 'à confirmer' },
+  { titre: 'Un rapport caméra en PDF', texte: e.passageCamera.livrable,
+    ...(e.exempleRapportPdf ? { lien: { href: e.exempleRapportPdf, label: 'Voir un exemple de rapport' } } : { tbcExtra: 'exemple de rapport anonymisé à fournir' }) },
+  { titre: 'Des déchets tracés', texte: 'Après chaque pompage, les documents de suivi des déchets vous sont remis, à conserver dans votre registre.' },
+  e.agrementVidangeur
+    ? { titre: 'Agrément de vidangeur', texte: `N° ${e.agrementVidangeur.numero}, délivré par la préfecture ${e.agrementVidangeur.prefecture}.` }
+    : { titre: 'Agrément préfectoral de vidangeur', manque: 'numéro à venir' },
+  e.recepisseTransportDechets
+    ? { titre: 'Transport de déchets déclaré', texte: `Récépissé de déclaration n° ${e.recepisseTransportDechets.numero}.` }
+    : { titre: 'Transport de déchets déclaré en préfecture', manque: 'numéro de récépissé à venir' },
+  e.assuranceRcPro
+    ? { titre: 'Assurance responsabilité civile professionnelle', texte: e.assuranceRcPro }
+    : { titre: 'Assurance responsabilité civile professionnelle', manque: 'assureur à confirmer' },
+  m
+    ? { titre: 'Un médiateur de la consommation', texte: `${m.nom}, ${m.adresse}.`, lien: { href: m.site, label: 'Site du médiateur' } }
+    : { titre: 'Un médiateur de la consommation', manque: 'médiateur à désigner' },
+  e.siret
+    ? { titre: 'Une entreprise immatriculée', texte: `SIRET ${e.siret}${e.rcsOuRm ? ` · ${e.rcsOuRm}` : ''}.` }
+    : { titre: 'Une entreprise immatriculée', manque: 'SIRET à venir' },
+];
+const visibles = preuves.filter((p) => !(PROD && p.manque));
+/* L'accroche ne parle de « numéros officiels » que si au moins un numéro (agrément, récépissé, SIRET) est confirmé. */
+const numerosOfficiels = Boolean(e.agrementVidangeur || e.recepisseTransportDechets || e.siret);
+const accroche = numerosOfficiels || !PROD
+  ? 'Prix publiés, documents remis, numéros officiels\u00a0: tout ce qui permet de vérifier une entreprise avant de lui ouvrir sa porte, nous l\u2019affichons.'
+  : 'Prix publiés, devis avant d\u2019intervenir, documents remis\u00a0: tout ce qui permet de vérifier une entreprise avant de lui ouvrir sa porte, nous l\u2019affichons.';
+---
+{visibles.length > 0 && (
+  <section class:list={['sec', 'sec-sm', 'pv-sec', { 'on-dark': sombre }]} id={id} aria-labelledby={`${id}-t`}>
+    <div class="wrap">
+      <div class="sec-head pv-head reveal">
+        <div>
+          <p class="sec-label">{numero && <span class="sl-n">{numero} — </span>}Vérifiez-nous</p>
+          <h2 class="h2" id={`${id}-t`}>Ce qu'un faux dépanneur <em>ne peut pas vous montrer.</em></h2>
+        </div>
+        <p class="lead">{accroche}</p>
+      </div>
+      <ul class="pv-grid reveal">
+        {visibles.map((p) => (
+          <li class:list={['pv', { 'pv--manque': p.manque }]}>
+            <svg class="ic pv-ic" aria-hidden="true"><use href={p.manque ? '#i-doc' : '#i-ok'}/></svg>
+            <h3>{p.titre}</h3>
+            {p.texte && <p>{p.texte}{p.tbcExtra && <> <Tbc label={p.tbcExtra} /></>}</p>}
+            {p.manque && <p><Tbc label={p.manque} /></p>}
+            {p.lien && <a class="pv-l" href={p.lien.href}>{p.lien.label} <svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></a>}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+)}
