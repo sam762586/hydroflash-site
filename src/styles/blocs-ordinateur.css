@@ -1,0 +1,81 @@
+/* HYDROFLASH — blocs partagés, rendu ordinateur / tablette (style C), ≥ 701 px :
+   calculateur de prix (.calc), « Vérifiez-nous » (.pv), « Ce qu'on a trouvé » (.tv), bascule Particulier/Pro (.vue).
+   Chargé par les pages qui utilisent ces blocs (FEUILLE_BLOCS). */
+
+/* ---------- Calculateur ---------- */
+.calc-sec { scroll-margin-top: 90px; }
+.calc { display: none; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 0; align-items: stretch; border-radius: 28px; box-shadow: 0 40px 80px -40px rgba(14, 15, 18, .55); }
+.js .calc { display: grid; }
+.js .calc-nojs { display: none; }
+.calc [hidden] { display: none !important; }
+.calc-nojs { font-size: 18px; }
+.calc-nojs a { color: var(--ink2); text-decoration-color: var(--o); text-decoration-thickness: 2px; }
+.calc .calc-form { box-shadow: none; border-radius: 28px 0 0 28px; padding: 36px; gap: 16px; display: flex; flex-direction: column; }
+.calc-grille { margin-top: auto; padding-top: 10px; display: inline-flex; align-items: center; gap: 10px; align-self: flex-start; font-weight: 700; font-size: 15.5px; color: var(--ink2); text-decoration: none; }
+.calc-grille .ic { width: 30px; height: 30px; padding: 7px; border-radius: 50%; background: var(--ink2); color: #fff; }
+.calc-grille:hover { color: var(--o-text); }
+.calc-note .tbc, .tv .tbc, .pv .tbc, .prose .tbc, .callout .tbc { white-space: normal; }
+.calc-choix { border: 0; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; min-width: 0; }
+.calc-choix legend { width: 100%; padding: 0 0 6px; font-size: 14px; font-weight: 600; color: var(--ink2); }
+.calc-choix label { position: relative; flex: 1 1 auto; cursor: pointer; }
+.calc-choix input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.calc-choix span { display: flex; align-items: center; justify-content: center; min-height: 48px; padding: 8px 16px; border-radius: 14px; background: var(--mist); border: 1.5px solid transparent; font-size: 15.5px; font-weight: 600; color: var(--ink2); text-align: center; line-height: 1.25; }
+.calc-choix label:hover span { border-color: var(--mist2); }
+.calc-choix input:checked + span { background: var(--ink2); color: #fff; }
+.calc-choix input:focus-visible + span { box-shadow: 0 0 0 4px var(--o-a35); border-color: var(--ink2); }
+.calc-cpmsg { min-height: 1.4em; margin-top: -6px; font-size: 14.5px; color: var(--grey); line-height: 1.4; }
+.calc-cpmsg:empty { display: none; }
+.calc-log { display: flex; align-items: center; gap: 10px; font-size: 15px; color: var(--ink2); cursor: pointer; }
+.calc-log input { width: 20px; height: 20px; accent-color: var(--o); }
+
+.calc-res { display: flex; flex-direction: column; gap: 16px; padding: 36px; background: var(--ink2); color: #fff; border-radius: 0 28px 28px 0; }
+.calc-res-t { color: var(--grey-d); font-size: 12px; }
+.calc-px { margin-top: 6px; display: flex; align-items: baseline; flex-wrap: wrap; gap: 10px; }
+.calc-px strong { font: 800 clamp(56px, 6vw, 84px)/.92 var(--f-display); font-stretch: 80%; letter-spacing: -.02em; color: var(--o); font-variant-numeric: tabular-nums; }
+.calc-px span { font-family: var(--f-mono); font-size: 16px; font-weight: 600; letter-spacing: .06em; color: #fff; }
+.calc-px2 { margin-top: 6px; color: var(--grey-d); font-size: 15.5px; line-height: 1.45; }
+.calc-det { display: grid; border-top: 1px solid var(--line-d); }
+.calc-det div { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 14px; padding: 11px 0; border-bottom: 1px solid var(--line-d); }
+.calc-det dt { font-family: var(--f-mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--grey-d); padding-top: 3px; }
+.calc-det dd { margin: 0; font-size: 15.5px; line-height: 1.45; }
+.calc-regle, .calc-note { font-size: 14px; line-height: 1.5; color: var(--grey-d); }
+.calc-ctas { margin-top: auto; padding-top: 6px; display: flex; flex-wrap: wrap; gap: 10px; }
+.calc-ctas .btn { min-height: 54px; padding: 0 20px; font-size: 16px; }
+
+/* ---------- Vérifiez-nous ---------- */
+.pv-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.pv { position: relative; display: flex; flex-direction: column; gap: 10px; padding: 26px 26px 24px; border-radius: 24px; background: var(--mist); color: var(--ink2); }
+.pv-ic { width: 34px; height: 34px; padding: 8px; border-radius: 50%; background: var(--o); color: var(--ink2); }
+.pv--manque .pv-ic { background: transparent; border: 1.5px dashed var(--grey); color: var(--grey); }
+.pv h3 { font-size: 22px; font-weight: var(--w-heavy); font-stretch: var(--cond); line-height: 1.1; }
+.pv p { color: var(--grey); font-size: 16px; line-height: 1.5; }
+.pv-l { margin-top: auto; padding-top: 4px; display: inline-flex; align-items: center; gap: 8px; font-weight: 700; font-size: 15px; color: var(--ink2); text-decoration: none; }
+.pv-l .ic { width: 26px; height: 26px; padding: 6px; border-radius: 50%; background: var(--ink2); color: #fff; }
+.pv-l:hover { color: var(--o-text); }
+.on-dark .pv { background: var(--ink3); color: #fff; }
+.on-dark .pv p { color: var(--grey-d); }
+.on-dark .pv-l { color: #fff; }
+.on-dark .pv-l .ic { background: var(--o); color: var(--ink2); }
+
+/* ---------- Ce qu'on a trouvé ---------- */
+.tv-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.tv { display: flex; flex-direction: column; gap: 10px; }
+.tv figure { position: relative; overflow: hidden; border-radius: 20px; background: var(--ink3); aspect-ratio: 4 / 3; }
+.tv figure img { width: 100%; height: 100%; object-fit: cover; }
+.tv figcaption { position: absolute; left: 12px; bottom: 12px; padding: 6px 10px; border-radius: 8px; background: rgba(11, 12, 14, .78); color: #fff; font-size: 11px; }
+.tv h3 { margin-top: 6px; font-size: 22px; font-weight: var(--w-heavy); font-stretch: var(--cond); line-height: 1.1; }
+.tv p { color: var(--grey-d); font-size: 16px; line-height: 1.5; }
+.tv-meta { font-size: 11.5px; color: var(--o); }
+.tv-ph { display: grid; place-items: center; aspect-ratio: 4 / 3; border-radius: 20px; border: 1.5px dashed var(--line-d); color: var(--grey-d); }
+.tv-ph .ic { width: 44px; height: 44px; }
+
+/* ---------- Bascule Particulier / Professionnel (grille tarifaire) ---------- */
+.vue-bascule { display: inline-flex; gap: 6px; padding: 6px; border-radius: 16px; background: var(--mist); margin-bottom: 18px; }
+.vue-bascule label { position: relative; cursor: pointer; }
+.vue-bascule input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.vue-bascule span { display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; border-radius: 11px; font-weight: 700; font-size: 15.5px; color: var(--ink2); }
+.vue-bascule input:checked + span { background: var(--ink2); color: #fff; }
+.vue-bascule input:focus-visible + span { box-shadow: 0 0 0 4px var(--o-a35); }
+.vue:has(#vue-pro:checked) .px-part, .vue:has(#vue-part:checked) .px-pro { display: none; }
+.vue-note { margin-top: 12px; font-size: 14.5px; color: var(--grey); }
+.vue:has(#vue-pro:checked) .vue-note-part, .vue:has(#vue-part:checked) .vue-note-pro { display: none; }

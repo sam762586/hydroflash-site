@@ -4,15 +4,20 @@
 import Base from '../../layouts/Base.astro';
 import SousHero from '../../components/SousHero.astro';
 import ContactCta from '../../components/ContactCta.astro';
-import { FEUILLE_CONTENU } from '../../lib/feuilles';
+import CalculateurPrix from '../../components/CalculateurPrix.astro';
+import Preuves from '../../components/Preuves.astro';
+import Tbc from '../../components/Tbc.astro';
+import { FEUILLE_CONTENU, FEUILLE_BLOCS } from '../../lib/feuilles';
 import tarifsOrdi from '../../styles/pages/tarifs-ordinateur.css?url';
 import tarifsMobile from '../../styles/pages/tarifs-mobile.css?url';
 import { entreprise as e } from '../../data/entreprise';
 import { schemaEntreprise } from '../../lib/schema';
+import { tauxParticulier, tvaReduiteActive, ttc } from '../../lib/prix';
 
 const FEUILLE_TARIFS = { ordi: tarifsOrdi, mobile: tarifsMobile };
 const t = e.tarifs;
 const coef = 1 + t.tvaPct / 100;
+const premier = t.prestations[0];
 
 /** 1 234,50 € — espace insécable fine avant l'euro, virgule décimale */
 const eur = (v: number) =>
@@ -37,8 +42,8 @@ const diag = t.prestations.find((p) => p.nom.startsWith('Diagnostic'))!;
 ---
 <Base
   titre="Tarifs débouchage, curage et pompage | HYDROFLASH"
-  description={`Grille tarifaire HYDROFLASH : débouchage à partir de ${eur(t.prestations[0].a!)} HT, curage, caméra et pompage en Seine-Maritime et dans l'Eure. Zones et majorations publiées.`}
-  feuilles={[FEUILLE_CONTENU, FEUILLE_TARIFS]}
+  description={`Grille tarifaire HYDROFLASH : débouchage à partir de ${eur(ttc(premier.a!, tauxParticulier(premier)))} TTC, curage, caméra et pompage en Seine-Maritime et dans l'Eure. Zones et majorations publiées.`}
+  feuilles={[FEUILLE_CONTENU, FEUILLE_TARIFS, FEUILLE_BLOCS]}
   jsonld={schemaEntreprise()}
 >
   <SousHero
@@ -49,6 +54,8 @@ const diag = t.prestations.find((p) => p.nom.startsWith('Diagnostic'))!;
     intro="Vous connaissez le prix avant notre départ. Chaque prestation a son tarif, qui varie selon deux critères seulement&nbsp;: la distance depuis Rouen et le moment de l'intervention. Aucune mauvaise surprise à l'arrivée."
     picto="devis"
   />
+
+  <CalculateurPrix id="calc-tarifs" titre="Calculez votre prix," titreFin="en dix secondes." grilleHref="#t-grille" />
 
   <section class="sec sec-sm" aria-labelledby="t-zones">
     <div class="wrap">
@@ -68,11 +75,16 @@ const diag = t.prestations.find((p) => p.nom.startsWith('Diagnostic'))!;
     <div class="wrap">
       <div class="c-head">
         <div><p class="sec-label">Grille</p><h2 class="h2" id="t-grille">Le prix de <em>chaque prestation</em></h2></div>
-        <p class="lead">Prix hors taxes, TVA&nbsp;{t.tvaPct}&nbsp;% en sus, pour une intervention en semaine entre 8&nbsp;h et 18&nbsp;h. En dehors de ce créneau, la majoration ci-dessous s'applique.</p>
+        <p class="lead">Prix pour une intervention en semaine entre 8&nbsp;h et 18&nbsp;h. En dehors de ce créneau, la majoration ci-dessous s'applique. Particulier ou professionnel&nbsp;: choisissez l'affichage qui vous concerne.</p>
       </div>
 
+      <div class="vue">
+      <div class="vue-bascule" role="radiogroup" aria-label="Affichage des prix">
+        <label><input type="radio" name="vue" id="vue-part" value="part" checked><span>Particulier · TTC</span></label>
+        <label><input type="radio" name="vue" id="vue-pro" value="pro"><span>Professionnel · HT</span></label>
+      </div>
       <table class="tf-tab">
-        <caption>Grille tarifaire HYDROFLASH — prix HT (TTC entre parenthèses)</caption>
+        <caption><span class="px-part">Grille tarifaire HYDROFLASH — prix TTC pour les particuliers (HT entre parenthèses)</span><span class="px-pro">Grille tarifaire HYDROFLASH — prix HT pour les professionnels (TTC à {t.tvaPct}&nbsp;% entre parenthèses)</span></caption>
         <thead>
           <tr>
             <th scope="col">Prestation</th>
@@ -89,12 +101,14 @@ const diag = t.prestations.find((p) => p.nom.startsWith('Diagnostic'))!;
                 <tr>
                   <th scope="row">{p.nom}<span class="tf-d">{p.detail}</span></th>
                   <td class="tf-u">{p.unite}</td>
-                  <td class="tf-p" data-l="Zone A">
-                    {p.a === null ? 'Sur devis' : <>{eur(p.a)}<span class="tf-ttc"> ({eur(Math.round(p.a * coef * 100) / 100)} TTC)</span></>}
-                  </td>
-                  <td class="tf-p" data-l="Zone B">
-                    {p.b === null ? 'Sur devis' : <>{eur(p.b)}<span class="tf-ttc"> ({eur(Math.round(p.b * coef * 100) / 100)} TTC)</span></>}
-                  </td>
+                  {[{ v: p.a, l: 'Zone A' }, { v: p.b, l: 'Zone B' }].map((z) => (
+                    <td class="tf-p" data-l={z.l}>
+                      {z.v === null ? 'Sur devis' : <>
+                        <span class="px-part">{eur(ttc(z.v, tauxParticulier(p)))} TTC<span class="tf-ttc"> ({eur(z.v)} HT)</span></span>
+                        <span class="px-pro">{eur(z.v)} HT<span class="tf-ttc"> ({eur(Math.round(z.v * coef * 100) / 100)} TTC)</span></span>
+                      </>}
+                    </td>
+                  ))}
                 </tr>
               ))}
             </>
@@ -103,6 +117,11 @@ const diag = t.prestations.find((p) => p.nom.startsWith('Diagnostic'))!;
       </table>
 
       <p class="note">{t.regleDemiHeure}</p>
+      <p class="vue-note vue-note-part">{tvaReduiteActive
+        ? <>Prix TTC avec la TVA à {t.tvaReduitePct}&nbsp;% pour le débouchage, le curage, le détartrage et les bacs à graisse dans un logement achevé depuis plus de deux ans&nbsp;; TVA à {t.tvaPct}&nbsp;% dans les autres cas.</>
+        : <>Prix TTC avec la TVA à {t.tvaPct}&nbsp;%. <Tbc label={`TVA à ${t.tvaReduitePct} % pour les logements de plus de 2 ans : à confirmer par le comptable`} /></>}</p>
+      <p class="vue-note vue-note-pro">Prix HT, TVA en sus au taux applicable à vos locaux.</p>
+      </div>
     </div>
   </section>
 
@@ -133,21 +152,16 @@ const diag = t.prestations.find((p) => p.nom.startsWith('Diagnostic'))!;
         <p class="lead">{exemple.nom}, en zone A ({t.zones[0].libelle}), déplacement et première heure inclus.</p>
       </div>
       <ul class="tf-ex">
-        <li>
-          <b>Mardi 14&nbsp;h</b>
-          <strong>{eur(exemple.a!)} HT</strong>
-          <span>Tarif de base, soit {eur(Math.round(exemple.a! * coef * 100) / 100)} TTC.</span>
-        </li>
-        <li>
-          <b>{exSamedi.libelle}</b>
-          <strong>{eur(Math.round(exemple.a! * (1 + exSamedi.maj / 100) * 100) / 100)} HT</strong>
-          <span>Majoration de {exSamedi.maj}&nbsp;%, soit {eur(Math.round(exemple.a! * (1 + exSamedi.maj / 100) * coef * 100) / 100)} TTC.</span>
-        </li>
-        <li>
-          <b>{exDim.libelle}</b>
-          <strong>{eur(Math.round(exemple.a! * (1 + exDim.maj / 100) * 100) / 100)} HT</strong>
-          <span>Majoration de {exDim.maj}&nbsp;%, soit {eur(Math.round(exemple.a! * (1 + exDim.maj / 100) * coef * 100) / 100)} TTC.</span>
-        </li>
+        {[{ b: 'Mardi 14 h', maj: 0 }, { b: exSamedi.libelle, maj: exSamedi.maj }, { b: exDim.libelle, maj: exDim.maj }].map((x) => {
+          const ht = Math.round(exemple.a! * (1 + x.maj / 100) * 100) / 100;
+          return (
+            <li>
+              <b>{x.b}</b>
+              <strong>{eur(ttc(ht, tauxParticulier(exemple)))} TTC</strong>
+              <span>{x.maj ? `Majoration de ${x.maj} %` : 'Tarif de base'}, soit {eur(ht)} HT.</span>
+            </li>
+          );
+        })}
       </ul>
     </div>
   </section>
@@ -177,6 +191,8 @@ const diag = t.prestations.find((p) => p.nom.startsWith('Diagnostic'))!;
       </div>
     </div>
   </section>
+
+  <Preuves />
 
   <ContactCta
     label="Devis"

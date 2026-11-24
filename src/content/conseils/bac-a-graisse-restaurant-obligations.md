@@ -17,9 +17,11 @@ Tous les restaurateurs savent qu'un bac à graisse est obligatoire. Beaucoup moi
 
 Contrairement à ce qu'on lit souvent, **il n'existe pas un texte national unique** qui impose le bac à graisse partout de la même façon.
 
-Le principe général vient du code de la santé publique : un rejet non domestique susceptible de nuire au bon fonctionnement du réseau d'assainissement doit être prétraité avant d'y être déversé. Les eaux grasses d'une cuisine professionnelle entrent pleinement dans cette catégorie.
+Le cadre général vient du code de la santé publique. Les eaux d'une cuisine professionnelle n'y sont pas traitées comme des rejets industriels : elles sont dites « assimilées domestiques ». Le raccordement au réseau est donc un droit, mais la collectivité peut l'assortir de prescriptions techniques adaptées à l'activité, comme le prétraitement des graisses.
 
 C'est ensuite le **règlement d'assainissement de votre commune ou de votre intercommunalité** qui fixe les prescriptions concrètes : séparateur à graisses obligatoire, dimensionnement, entretien, et parfois fréquence minimale de vidange et justificatifs à conserver. Le règlement sanitaire départemental complète le dispositif.
+
+Dans la Métropole Rouen Normandie, par exemple, le [règlement de service d'assainissement collectif](https://metropole-rouen-normandie.fr/file-download/download/public/251254) impose aux restaurants un bac dégraisseur dimensionné pour leur activité, vidangé aussi souvent que nécessaire et au minimum une fois par an par une société agréée, avec les justificatifs tenus à la disposition de l'exploitant du réseau (annexe II).
 
 **La conséquence pratique :** votre obligation exacte n'est pas la même à Rouen, au Havre ou à Évreux. Demandez le règlement d'assainissement à votre collectivité — il est public, et c'est le seul document qui vous dira ce qui vous est opposable.
 

@@ -52,7 +52,11 @@ const groupes: { titre: string; liens: Lien[] }[] = [
   ]) },
   { titre: 'HYDROFLASH', liens: filtrer([
     { label: 'Tarifs', href: '/tarifs/' },
-    { label: 'Professionnels et syndics', href: '/professionnels/' },
+    { label: 'Professionnels et syndics', href: '/professionnels/', sous: [
+      { label: 'Syndics de copropriété', href: '/professionnels/syndics/' },
+      { label: 'Restaurants et métiers de bouche', href: '/professionnels/restaurants/' },
+      { label: 'Plombiers et chauffagistes', href: '/professionnels/plombiers-partenaires/' },
+    ] },
     { label: 'Zones d\'intervention', href: '/zones-intervention/', sous: [
       ...e.zone.departements.map((d) => ({ label: `${d.nom} (${d.code})`, href: `/zones-intervention/${d.slug}/`, donnees: true })),
       ...communes.map((c) => ({ label: `${c.nom} (${c.cp})`, href: `/zones-intervention/${c.slug}-${c.cp}/`, donnees: true })),

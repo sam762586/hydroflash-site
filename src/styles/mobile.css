@@ -352,6 +352,9 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 .more-in { display: grid; gap: 12px; padding: 0 12px 12px; }
 .drop { display: flex; align-items: center; gap: 12px; min-height: 50px; padding: 0 14px; border: 2px dashed #3A3F47; border-radius: var(--radius); color: var(--grey-d); font-size: 16px; cursor: pointer; }
 .drop b { color: var(--o); }
+.drop i { font-style: normal; color: var(--grey-d); }
+.form-rappel { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 700; color: #E6E8EB; }
+.form-rappel .ic { width: 20px; height: 20px; flex: none; color: var(--o); }
 .form > .btn { width: 100%; margin-top: 2px; --h: 56px; }
 .rgpd { font-size: 16px; line-height: 1.45; color: var(--grey-d); }
 .rgpd a { color: #fff; }

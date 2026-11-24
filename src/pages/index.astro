@@ -6,6 +6,11 @@ import { Picture } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import ContactCta from '../components/ContactCta.astro';
 import Tbc from '../components/Tbc.astro';
+import CalculateurPrix from '../components/CalculateurPrix.astro';
+import Preuves from '../components/Preuves.astro';
+import Trouvailles from '../components/Trouvailles.astro';
+import { FEUILLE_BLOCS } from '../lib/feuilles';
+import { trouvailles, TROUVAILLES_MIN } from '../data/trouvailles';
 import { entreprise as e } from '../data/entreprise';
 import { services } from '../data/services';
 import { schemaEntreprise } from '../lib/schema';
@@ -24,8 +29,12 @@ const devis = aff(e.devisAvantIntervention);
 const factu = aff(e.principeFacturation);
 const FORMATS = ['avif', 'webp'] as const;
 const avis = !PROD; // aucun avis réel connecté : section masquée en production (numérotation ajustée)
-const nFaq = avis ? '07' : '06';
-const nContact = avis ? '08' : '07';
+const trouvaillesVisibles = trouvailles.length >= TROUVAILLES_MIN || !PROD;
+/** Numérotation des sections (02, 03…) calculée selon les sections réellement affichées. */
+const ordre = ['prix', 'services', 'apropos', 'methode', 'preuves', ...(trouvaillesVisibles ? ['trouvailles'] : []), 'zones', ...(avis ? ['avis'] : []), 'faq', 'contact'];
+const num = (k: string) => String(ordre.indexOf(k) + 2).padStart(2, '0');
+const nFaq = num('faq');
+const nContact = num('contact');
 const altVehicule = `Véhicule d'intervention HYDROFLASH : pick-up orange à cabine simple et caisson à compartiments, avec le marquage HYDROFLASH et le ${e.telephone.affiche} (visuel du marquage à venir)`;
 ---
 <Base
@@ -33,6 +42,7 @@ const altVehicule = `Véhicule d'intervention HYDROFLASH : pick-up orange à cab
   description={`Canalisation bouchée ? Débouchage, curage, détartrage, passage caméra et pompage ${e.disponibilite.libelle} en Seine-Maritime (76) et Eure (27). Appelez le ${e.telephone.affiche}.`}
   classeBody="p-home"
   jsonld={schemaEntreprise()}
+  feuilles={[FEUILLE_BLOCS]}
 >
   <!-- HERO -->
   <section class="hero" aria-labelledby="h1">
@@ -97,18 +107,21 @@ const altVehicule = `Véhicule d'intervention HYDROFLASH : pick-up orange à cab
           <li class="pn-ok"><svg class="ic" aria-hidden="true"><use href="#i-moon"/></svg><span><b>Devis gratuit et tarif transparent</b>, majoration comprise</span></li>
           <li class="pn-ok"><svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg><span><b>Sur place en {e.delaiZoneA}</b> en général, sur Rouen et 20&nbsp;km autour</span></li>
         </ul>
-        <a class="pn-link" href="#faq">Comprendre nos prix <svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></a>
+        <a class="pn-link" href="#prix">Calculer mon prix exact <svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></a>
       </div>
       {!PROD && <p class="reass-note mono d-only">24&nbsp;h/24, 7&nbsp;j/7 et grille tarifaire&nbsp;: confirmés par HYDROFLASH · autres engagements affichés après validation</p>}
     </div>
   </section>
+
+  <!-- VOTRE PRIX : calculateur (grille tarifaire, zone, créneau détecté) -->
+  <CalculateurPrix id="calc-acc" numero={num('prix')} />
 
   <!-- PRESTATIONS -->
   <section class="sec svc-sec" id="services" aria-labelledby="t-services">
     <div class="wrap">
       <div class="sec-head reveal">
         <div>
-          <p class="sec-label"><span class="sl-n">02 — </span>Prestations</p>
+          <p class="sec-label"><span class="sl-n">{num('services')} — </span>Prestations</p>
           <h2 class="h2" id="t-services">Six interventions, <em>un seul objectif&nbsp;:</em> que ça s'écoule.</h2>
         </div>
         <div>
@@ -173,7 +186,7 @@ const altVehicule = `Véhicule d'intervention HYDROFLASH : pick-up orange à cab
     <div class="wrap">
       <div class="sec-head reveal">
         <div>
-          <p class="sec-label"><span class="sl-n">03 — </span>Savoir-faire</p>
+          <p class="sec-label"><span class="sl-n">{num('apropos')} — </span>Savoir-faire</p>
           <h2 class="h2" id="t-about">Un spécialiste de l'assainissement, <em>équipé pour chaque situation.</em></h2>
         </div>
         <div class="about-txt">
@@ -226,7 +239,7 @@ const altVehicule = `Véhicule d'intervention HYDROFLASH : pick-up orange à cab
     <div class="wrap">
       <div class="sec-head reveal">
         <div>
-          <p class="sec-label"><span class="sl-n">04 — </span>Méthode</p>
+          <p class="sec-label"><span class="sl-n">{num('methode')} — </span>Méthode</p>
           <h2 class="h2" id="t-steps">Comment se déroule <em>une intervention&nbsp;?</em></h2>
         </div>
         <p class="lead">Quatre étapes, du premier appel au contrôle final de l'écoulement.</p>
@@ -254,12 +267,18 @@ const altVehicule = `Véhicule d'intervention HYDROFLASH : pick-up orange à cab
     </div>
   </section>
 
+  <!-- VÉRIFIEZ-NOUS : preuves de sérieux (données confirmées uniquement en production) -->
+  <Preuves numero={num('preuves')} />
+
+  <!-- CE QU'ON A TROUVÉ : photos réelles (src/data/trouvailles.ts), masquée en production sans photos -->
+  {trouvaillesVisibles && <Trouvailles numero={num('trouvailles')} />}
+
   <!-- ZONES -->
   <section class="sec zones-sec" id="zones" aria-labelledby="t-zones">
     <div class="wrap">
       <div class="zone-panel reveal">
         <div class="zone-txt">
-          <p class="sec-label sec-label-nb"><span class="sl-n">05 — </span>Territoire</p>
+          <p class="sec-label sec-label-nb"><span class="sl-n">{num('zones')} — </span>Territoire</p>
           <h2 class="h2" id="t-zones">Zones d'intervention</h2>
           <p class="lead">Nous intervenons en <strong>Seine-Maritime (76)</strong> et dans l'<strong>Eure (27)</strong>.</p>
           <p class="cp-q" id="cpz-q">Intervenez-vous chez moi&nbsp;?</p>
@@ -289,7 +308,7 @@ const altVehicule = `Véhicule d'intervention HYDROFLASH : pick-up orange à cab
       <div class="wrap">
         <div class="sec-head reveal">
           <div>
-            <p class="sec-label"><span class="sl-n">06 — </span>Avis</p>
+            <p class="sec-label"><span class="sl-n">{num('avis')} — </span>Avis</p>
             <h2 class="h2" id="t-avis">Avis clients</h2>
           </div>
           <p class="lead d-only">Cet espace accueillera uniquement des avis réels et vérifiables, par exemple issus de la fiche Google Business Profile d'HYDROFLASH.</p>
@@ -317,7 +336,7 @@ const altVehicule = `Véhicule d'intervention HYDROFLASH : pick-up orange à cab
       <div class="faq reveal">
         <details open><summary><span class="q-n">Q.01</span>Comment savoir si ma canalisation est bouchée&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Écoulement lent, remontées d'eau, gargouillements ou mauvaises odeurs sont les signes les plus courants. Si plusieurs évacuations sont touchées en même temps, le bouchon se situe probablement plus loin, sur la canalisation principale.</p></details>
         <details><summary><span class="q-n">Q.02</span>Quelle différence entre débouchage et curage&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Le débouchage supprime un bouchon pour rétablir l'écoulement. Le curage nettoie toute la paroi de la canalisation à haute pression, pour retirer les dépôts accumulés et limiter les récidives.</p></details>
-        <details><summary><span class="q-n">Q.03</span>Combien coûte une intervention&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Le prix dépend du type d'intervention, de l'accès et du matériel nécessaire.{devis && <> HYDROFLASH vous présente un devis avant intervention.</>}{!PROD && <> <Tbc label="Grille tarifaire à confirmer" /></>}</p></details>
+        <details><summary><span class="q-n">Q.03</span>Combien coûte une intervention&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Le prix dépend de l'intervention, de la zone et du moment. Calculez-le avec le <a href="#prix">calculateur</a> plus haut, ou consultez la <a href="/tarifs/">grille tarifaire complète</a>.{devis && <> HYDROFLASH vous présente un devis avant intervention.</>}</p></details>
         <details><summary><span class="q-n">Q.04</span>Intervenez-vous en urgence&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Oui, HYDROFLASH est joignable et intervient {nb(e.disponibilite.libelle)}, en Seine-Maritime et dans l'Eure. Le devis est gratuit et le tarif transparent&nbsp;: majoration de soirée, de week-end ou de jour férié comprise, vous connaissez le prix avant que nous partions. Aucun frais n'apparaît sur la facture sans avoir été annoncé.</p></details>
         <details><summary><span class="q-n">Q.05</span>À quoi sert le passage caméra&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Il permet de voir l'intérieur de la canalisation sans rien casser&nbsp;: localiser un bouchon, des racines, un affaissement ou une contre-pente, et vérifier le résultat après un curage. {e.passageCamera.livrable}</p></details>
         <details><summary><span class="q-n">Q.06</span>Les produits déboucheurs chimiques sont-ils une bonne solution&nbsp;?<span class="tog" aria-hidden="true"></span></summary><p class="ans">Ils peuvent abîmer certaines canalisations et restent souvent inefficaces sur les bouchons profonds. En cas de bouchon persistant, mieux vaut faire appel à un professionnel.</p></details>

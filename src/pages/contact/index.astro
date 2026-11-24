@@ -94,15 +94,7 @@ const indexPrestation = Object.fromEntries(services.map((s, i) => [s.slug, i]));
     </div>
   </section>
 
-  {/* Présélection du type de problème depuis l'URL (?prestation=curage). Sans JavaScript : rien ne change. */}
-  <script is:inline define:vars={{ indexPrestation }}>
-    (function () {
-      try {
-        var p = new URLSearchParams(location.search).get('prestation');
-        var sel = document.querySelector('#devis select[name="type"]');
-        if (!p || !sel || !Object.prototype.hasOwnProperty.call(indexPrestation, p)) return;
-        sel.selectedIndex = indexPrestation[p];
-      } catch (e) { /* rien */ }
-    })();
-  </script>
+  {/* Présélection du type de problème depuis l'URL (?prestation=curage) : table lue par /js/hf.js
+       (pas de script en ligne, interdit par la CSP). Sans JavaScript : rien ne change. */}
+  <div hidden data-presel={JSON.stringify(indexPrestation)}></div>
 </Base>

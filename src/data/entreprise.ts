@@ -19,6 +19,14 @@ export const entreprise = {
   /** Grille tarifaire HYDROFLASH (confirmée le 19/11/2026). Prix HT, hors majoration. */
   tarifs: {
     tvaPct: 20,
+    /** TVA à taux réduit pour les particuliers et les copropriétés : 10 % pour le débouchage, le détartrage,
+        le curage des canalisations et des réseaux privés et le nettoyage des bacs à graisse, dans des locaux
+        d'habitation achevés depuis plus de deux ans (BOFiP, BOI-ANNX-000210, version du 31/07/2024).
+        null = NON CONFIRMÉ par le comptable : tous les prix restent calculés à 20 %, et le site l'indique
+        en préproduction. Passer à true seulement après validation (conditions et justificatif client).
+        Les prestations concernées portent `tvaReduite: true` dans la liste ci-dessous. */
+    tvaReduitePct: 10,
+    tvaReduiteConfirmee: null as boolean | null,
     zones: [
       { code: 'A', libelle: 'Rouen et 20\u00a0km autour' },
       { code: 'B', libelle: 'Au-delà de 20\u00a0km de Rouen' },
@@ -31,16 +39,17 @@ export const entreprise = {
       { code: 'dim',         libelle: 'Dimanche et jours fériés, journée',           maj: 100 },
       { code: 'dim_nuit',    libelle: 'Dimanche et jours fériés, nuit',              maj: 150 },
     ],
-    /** a = prix HT zone A, b = prix HT zone B, null = sur devis */
+    /** a = prix HT zone A, b = prix HT zone B, null = sur devis.
+        tvaReduite = prestation listée au taux de 10 % par le BOFiP (voir tvaReduiteConfirmee). */
     prestations: [
-      { cat: 'Débouchage',        nom: 'Débouchage manuel',                     unite: 'forfait', a: 160,  b: 185,  detail: 'Pompette, furet manuel ou furet électrique. Déplacement et 1\u00a0h d\u2019intervention inclus.' },
-      { cat: 'Débouchage',        nom: 'Débouchage à l\u2019hydrocureur',          unite: 'forfait', a: 210,  b: 240,  detail: 'Camion hydrocureur haute pression. Déplacement et 1\u00a0h d\u2019intervention inclus.' },
-      { cat: 'Curage',            nom: 'Curage \u2013 heure de main-d\u2019œuvre',   unite: 'heure',   a: 210,  b: 240,  detail: '1\u00a0h sur place avec le camion, nettoyage du réseau haute pression inclus. S\u2019ajoute au prix au mètre.' },
-      { cat: 'Curage',            nom: 'Curage \u2013 par mètre linéaire',         unite: 'ml',      a: 9,    b: 9,    detail: 'Même prix dans les deux zones.' },
-      { cat: 'Détartrage',        nom: 'Détartrage haute pression',             unite: '—',       a: null, b: null, detail: 'Sur devis, selon le nombre d\u2019étages et l\u2019état du réseau, après passage caméra. Pas de détartrage la nuit, le dimanche ni les jours fériés.' },
+      { cat: 'Débouchage',        nom: 'Débouchage manuel',                     unite: 'forfait', a: 160,  b: 185,  tvaReduite: true, detail: 'Pompette, furet manuel ou furet électrique. Déplacement et 1\u00a0h d\u2019intervention inclus.' },
+      { cat: 'Débouchage',        nom: 'Débouchage à l\u2019hydrocureur',          unite: 'forfait', a: 210,  b: 240,  tvaReduite: true, detail: 'Camion hydrocureur haute pression. Déplacement et 1\u00a0h d\u2019intervention inclus.' },
+      { cat: 'Curage',            nom: 'Curage \u2013 heure de main-d\u2019œuvre',   unite: 'heure',   a: 210,  b: 240,  tvaReduite: true, detail: '1\u00a0h sur place avec le camion, nettoyage du réseau haute pression inclus. S\u2019ajoute au prix au mètre.' },
+      { cat: 'Curage',            nom: 'Curage \u2013 par mètre linéaire',         unite: 'ml',      a: 9,    b: 9,    tvaReduite: true, detail: 'Même prix dans les deux zones.' },
+      { cat: 'Détartrage',        nom: 'Détartrage haute pression',             unite: '—',       a: null, b: null, tvaReduite: true, detail: 'Sur devis, selon le nombre d\u2019étages et l\u2019état du réseau, après passage caméra. Pas de détartrage la nuit, le dimanche ni les jours fériés.' },
       { cat: 'Pompage',           nom: 'Pompage eaux usées (EU)',               unite: 'forfait', a: 330,  b: 380,  detail: '1\u00a0m³ pompé, retraitement des déchets inclus. Au-delà d\u20191\u00a0m³\u00a0: coût du centre de retraitement et forfait transport.' },
       { cat: 'Pompage',           nom: 'Pompage eaux pluviales (EP)',           unite: 'forfait', a: 215,  b: 245,  detail: 'Quantité illimitée, sans retraitement.' },
-      { cat: 'Pompage',           nom: 'Pompage de petit bac à graisse',        unite: 'forfait', a: 430,  b: 495,  detail: 'Jusqu\u2019à 1\u00a0m³, retraitement des déchets inclus.' },
+      { cat: 'Pompage',           nom: 'Pompage de petit bac à graisse',        unite: 'forfait', a: 430,  b: 495,  tvaReduite: true, detail: 'Jusqu\u2019à 1\u00a0m³, retraitement des déchets inclus.' },
       { cat: 'Inspection caméra', nom: 'Inspection caméra sans rapport',        unite: 'forfait', a: 110,  b: 125,  detail: 'Jusqu\u2019à 30\u00a0ml, visionnage sur place. Au-delà de 30\u00a0ml\u00a0: sur devis.' },
       { cat: 'Inspection caméra', nom: 'Inspection caméra avec rapport',        unite: 'forfait', a: 250,  b: 290,  detail: 'Jusqu\u2019à 30\u00a0ml. Rapport PDF\u00a0: photos, localisation et description des défauts.' },
       { cat: 'Divers',            nom: 'Diagnostic ou déplacement seul',        unite: 'forfait', a: 125,  b: 145,  detail: 'Lorsque l\u2019intervention s\u2019avère impossible\u00a0: 1\u00a0h et trajet inclus. 30\u00a0% déduits de la facture si une intervention est réalisée dans les 30\u00a0jours.' },
@@ -125,6 +134,17 @@ export const entreprise = {
       le dernier contact). À valider par les associés ; modifiable à tout moment. */
   dureeConservationDemandes: 'Trois ans à compter de votre dernier contact avec HYDROFLASH. Si la demande donne lieu à une intervention, les éléments nécessaires au suivi et aux obligations comptables sont conservés plus longtemps, selon les durées légales.' as string | null,
   googleBusinessProfile: null as string | null,
+
+  // ——— Preuves de sérieux (bloc « Vérifiez-nous ») : null = non confirmé ———
+  /** Agrément préfectoral de vidangeur (fosses septiques et toutes eaux), délivré pour 10 ans. */
+  agrementVidangeur: null as null | { numero: string; prefecture: string },
+  /** Récépissé de déclaration de transport de déchets (préfecture), valable 5 ans. */
+  recepisseTransportDechets: null as null | { numero: string },
+  /** Exemple de rapport caméra anonymisé (PDF déposé dans public/docs/), ex. '/docs/exemple-rapport-camera.pdf'. */
+  exempleRapportPdf: null as string | null,
+  /** Conditions proposées aux plombiers et chauffagistes partenaires (page /professionnels/plombiers-partenaires/).
+      null tant que les associés ne les ont pas arrêtées. */
+  conditionsPartenaires: null as null | string[],
 };
 
 /** Champs obligatoires pour une mise en ligne (mentions légales LCEN, NAP) */

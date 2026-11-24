@@ -1,0 +1,47 @@
+---
+/** Galerie « Ce qu'on a trouvé » : vraies images d'interventions HYDROFLASH (src/data/trouvailles.ts).
+ *  Production : affichée seulement à partir de TROUVAILLES_MIN photos réelles.
+ *  Préproduction : emplacements « photo réelle à fournir » tant que la liste est incomplète. */
+import { Picture } from 'astro:assets';
+import { trouvailles, TROUVAILLES_MIN } from '../data/trouvailles';
+import { PROD } from '../lib/env';
+import Tbc from './Tbc.astro';
+
+interface Props { numero?: string; id?: string }
+const { numero, id = 'trouvailles' } = Astro.props;
+const complet = trouvailles.length >= TROUVAILLES_MIN;
+const vides = complet ? 0 : TROUVAILLES_MIN - trouvailles.length;
+---
+{(complet || !PROD) && (
+  <section class="sec sec-sm on-dark tv-sec" id={id} aria-labelledby={`${id}-t`}>
+    <div class="wrap">
+      <div class="sec-head tv-head reveal">
+        <div>
+          <p class="sec-label">{numero && <span class="sl-n">{numero} — </span>}Sur le terrain</p>
+          <h2 class="h2" id={`${id}-t`}>Ce qu'on a trouvé <em>dans vos canalisations.</em></h2>
+        </div>
+        <p class="lead">Racines, lingettes, graisses figées&nbsp;: des images réelles de nos interventions, prises avec l'accord des clients, sans adresse ni visage.</p>
+      </div>
+      <ul class="tv-grid reveal">
+        {trouvailles.map((t) => (
+          <li class="tv">
+            <figure>
+              <Picture src={t.image} alt={t.alt} widths={[480, 720, 960]} sizes="(max-width: 700px) 100vw, 33vw" formats={['avif', 'webp']} loading="lazy" />
+              <figcaption class="mono">Photo réelle · intervention HYDROFLASH</figcaption>
+            </figure>
+            <h3>{t.titre}</h3>
+            <p>{t.texte}</p>
+            {(t.commune || t.mois) && <p class="tv-meta mono">{[t.commune, t.mois].filter(Boolean).join(' · ')}</p>}
+          </li>
+        ))}
+        {Array.from({ length: vides }, (_, i) => (
+          <li class="tv tv--vide">
+            <div class="tv-ph" aria-hidden="true"><svg class="ic"><use href="#i-cam"/></svg></div>
+            <h3>Photo réelle n°&nbsp;{trouvailles.length + i + 1}</h3>
+            <p><Tbc label="photo réelle d'intervention à fournir (voir src/data/trouvailles.ts)" /></p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+)}

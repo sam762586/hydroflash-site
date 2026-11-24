@@ -1,0 +1,145 @@
+---
+/** Calculateur « Votre prix exact » : prestation, code postal (zone A/B), moment (créneau détecté
+ *  automatiquement, jours fériés compris), particulier ou professionnel.
+ *  Données : entreprise.tarifs (source unique) et communes.ts (zone par commune), passées en attribut
+ *  data-calc (aucun script en ligne : la politique de sécurité du site les interdit).
+ *  Comportement : public/js/calculateur.js. Sans JavaScript : lien vers la grille complète.
+ *  TVA : 10 % pour les prestations éligibles chez un particulier (logement de plus de 2 ans) SEULEMENT si
+ *  entreprise.tarifs.tvaReduiteConfirmee === true ; sinon 20 % partout et étiquette « à confirmer » en préproduction. */
+import { entreprise as e } from '../data/entreprise';
+import { communes } from '../data/communes';
+import { PROD } from '../lib/env';
+import { eligibleTvaReduite, tvaReduiteActive, type Prestation } from '../lib/prix';
+import Tbc from './Tbc.astro';
+
+interface Props {
+  id?: string;            // préfixe d'identifiants, unique dans la page
+  numero?: string;        // numéro de section (« 02 »)
+  titre?: string;         // première partie du titre
+  titreFin?: string;      // seconde partie (en léger)
+  rappelHref?: string;    // cible du bouton « Être rappelé »
+  rappelData?: boolean;   // true sur la page urgence (ouvre le volet « Être rappelé »)
+  fond?: 'clair' | 'mist';
+  grilleHref?: string;    // lien « Voir toute la grille tarifaire » (#t-grille sur la page Tarifs)
+}
+const {
+  id = 'calc', numero, titre = 'Votre prix exact,', titreFin = 'avant de nous appeler.',
+  rappelHref = '#devis', rappelData = false, fond = 'mist', grilleHref = '/tarifs/',
+} = Astro.props;
+
+const t = e.tarifs;
+const parNom = (debut: string) => t.prestations.find((p) => p.nom.startsWith(debut));
+const curageH = t.prestations.find((p) => p.cat === 'Curage' && p.unite === 'heure');
+const curageMl = t.prestations.find((p) => p.cat === 'Curage' && p.unite === 'ml');
+
+type Opt = { k: string; label: string; a: number | null; b: number | null; r: boolean; detail: string; ml?: { a: number; b: number } };
+const opt = (k: string, p: Prestation | undefined, label?: string): Opt | null =>
+  p ? { k, label: label ?? p.nom, a: p.a, b: p.b, r: eligibleTvaReduite(p), detail: p.detail } : null;
+
+const opts = [
+  opt('deb-manuel', parNom('Débouchage manuel')),
+  opt('deb-hydro', parNom('Débouchage à l')),
+  curageH && curageMl && curageH.a !== null && curageH.b !== null && curageMl.a !== null && curageMl.b !== null
+    ? { ...opt('curage', curageH, 'Curage du réseau (1re heure + mètres)')!, ml: { a: curageMl.a, b: curageMl.b },
+        detail: `${curageH.detail.replace(' S’ajoute au prix au mètre.', '')} Puis ${curageMl.a} € HT le mètre.` }
+    : null,
+  opt('pompage-eu', parNom('Pompage eaux usées')),
+  opt('pompage-ep', parNom('Pompage eaux pluviales')),
+  opt('bac', parNom('Pompage de petit bac')),
+  opt('camera', parNom('Inspection caméra sans')),
+  opt('camera-rapport', parNom('Inspection caméra avec')),
+  opt('detartrage', parNom('Détartrage')),
+].filter((o): o is Opt => o !== null);
+
+/** Code postal → zone ('A', 'B' ou 'AB' si les communes d'un même code postal ne sont pas dans la même zone). */
+const zonesCp: Record<string, string> = {};
+const nomsCp: Record<string, string[]> = {};
+for (const c of communes) {
+  zonesCp[c.cp] = zonesCp[c.cp] && zonesCp[c.cp] !== c.zone ? 'AB' : c.zone;
+  (nomsCp[c.cp] ??= []).push(c.nom);
+}
+
+const data = {
+  opts,
+  creneaux: t.creneaux,
+  zones: t.zones,
+  tva: { normal: t.tvaPct, reduit: t.tvaReduitePct, actif: tvaReduiteActive },
+  cp: zonesCp,
+  noms: nomsCp,
+  deps: e.zone.departements.map((d) => d.code),
+  delaiA: e.delaiZoneA,
+};
+const tel = e.telephone.affiche.replace(/ /g, ' ');
+---
+<section class:list={['sec', 'calc-sec', { 'bg-mist': fond === 'mist' }]} id="prix" aria-labelledby={`${id}-t`}>
+  <div class="wrap">
+    <div class="sec-head calc-head reveal">
+      <div>
+        <p class="sec-label">{numero && <span class="sl-n">{numero} — </span>}Votre prix</p>
+        <h2 class="h2" id={`${id}-t`}>{titre} <em>{titreFin}</em></h2>
+      </div>
+      <p class="lead">Choisissez l'intervention, votre code postal et le moment&nbsp;: le prix final s'affiche, majoration comprise. C'est celui que nous vous annoncerons au téléphone.</p>
+    </div>
+
+    <div class="calc" data-calc={JSON.stringify(data)} data-id={id}>
+      <form class="form calc-form" novalidate aria-label="Calculer le prix d'une intervention">
+        <label class="fld"><span>L'intervention</span>
+          <select id={`${id}-p`} name="p">
+            {opts.map((o) => <option value={o.k}>{o.label}</option>)}
+          </select>
+        </label>
+        <label class="fld calc-ml" hidden><span>Longueur à curer <i>(estimation, en mètres)</i></span>
+          <input id={`${id}-ml`} name="ml" type="number" min="1" max="999" step="1" value="20" inputmode="numeric">
+        </label>
+        <div class="row2">
+          <label class="fld"><span>Code postal</span>
+            <input id={`${id}-cp`} name="cp" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="5" placeholder="Ex. 76000">
+          </label>
+          <label class="fld"><span>Moment</span>
+            <select id={`${id}-q`} name="q">
+              <option value="auto">Maintenant</option>
+              {t.creneaux.map((c) => <option value={c.code}>{c.libelle}</option>)}
+            </select>
+          </label>
+        </div>
+        <fieldset class="calc-choix">
+          <legend>Zone</legend>
+          {t.zones.map((z, i) => <label><input type="radio" name="z" value={z.code} checked={i === 0}><span>{z.libelle}</span></label>)}
+        </fieldset>
+        <p class="calc-cpmsg" data-out="cpmsg" aria-live="polite"></p>
+        <fieldset class="calc-choix">
+          <legend>Vous êtes</legend>
+          <label><input type="radio" name="c" value="part" checked><span>Particulier</span></label>
+          <label><input type="radio" name="c" value="pro"><span>Professionnel</span></label>
+        </fieldset>
+        {tvaReduiteActive && (
+          <label class="calc-log"><input type="checkbox" name="log" checked><span>Logement achevé depuis plus de 2&nbsp;ans</span></label>
+        )}
+        <a class="calc-grille" href={grilleHref}>Voir toute la grille tarifaire <svg class="ic" aria-hidden="true"><use href="#i-ar"/></svg></a>
+      </form>
+
+      <div class="calc-res">
+        <div class="calc-out" aria-live="polite" aria-atomic="true">
+          <p class="calc-res-t mono">Prix annoncé</p>
+          <p class="calc-px"><strong data-out="px">—</strong> <span data-out="unite"></span></p>
+          <p class="calc-px2" data-out="px2"></p>
+        </div>
+        <dl class="calc-det">
+          <div><dt>Moment</dt><dd data-out="creneau"></dd></div>
+          <div><dt>Zone</dt><dd data-out="zone"></dd></div>
+          <div><dt>Délai</dt><dd data-out="delai"></dd></div>
+          <div><dt>Compris</dt><dd data-out="detail"></dd></div>
+        </dl>
+        <p class="calc-regle">{t.regleDemiHeure} C'est l'heure d'arrivée sur place qui fixe la majoration.</p>
+        <p class="calc-note">Le prix annoncé est celui que vous payez si la situation correspond à votre description. Sinon, nous vous le disons avant de continuer, avec le nouveau prix&nbsp;: rien ne démarre sans votre accord.</p>
+        {!tvaReduiteActive && !PROD && <p class="calc-note"><Tbc label="TVA à 10 % (logement de plus de 2 ans) : à confirmer par le comptable — prix calculés à 20 %" /></p>}
+        <div class="calc-ctas">
+          <a class="btn btn-call" href={e.telephone.lien}><svg class="ic" aria-hidden="true"><use class="u-d" href="#i-tel"/><use class="u-m" href="#i-tel-f"/></svg>Appeler le {tel}</a>
+          <a class="btn btn-ghost" href={rappelHref} data-rappel={rappelData ? '' : undefined} aria-controls={rappelData ? 'rappel' : undefined}><svg class="ic" aria-hidden="true"><use href="#i-cb"/></svg>Être rappelé</a>
+        </div>
+      </div>
+    </div>
+    <p class="calc-nojs">Pour calculer votre prix, consultez notre <a href="/tarifs/">grille tarifaire complète</a> ou appelez le <a href={e.telephone.lien}>{e.telephone.affiche}</a>.</p>
+  </div>
+</section>
+<script is:inline src="/js/calculateur.js" defer></script>

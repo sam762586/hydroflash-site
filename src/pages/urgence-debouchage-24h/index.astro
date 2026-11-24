@@ -7,7 +7,8 @@ import { Picture } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import Tbc from '../../components/Tbc.astro';
-import { FEUILLE_URGENCE } from '../../lib/feuilles';
+import { FEUILLE_URGENCE, FEUILLE_BLOCS } from '../../lib/feuilles';
+import CalculateurPrix from '../../components/CalculateurPrix.astro';
 import { entreprise as e } from '../../data/entreprise';
 import { services } from '../../data/services';
 import { schemaService } from '../../lib/schema';
@@ -31,7 +32,7 @@ const description = `WC qui déborde, canalisation bouchée ? Intervention ${e.d
   description={description}
   classeBody="p-urg"
   barre="urgence"
-  feuilles={[FEUILLE_URGENCE]}
+  feuilles={[FEUILLE_URGENCE, FEUILLE_BLOCS]}
   jsonld={schemaService('Débouchage en urgence 24 h/24', '/urgence-debouchage-24h/', `Débouchage de canalisations en urgence, ${e.disponibilite.libelle}, en Seine-Maritime (76) et dans l'Eure (27). Devis gratuit et tarif transparent.`)}
 >
   <!-- 1. HERO -->
@@ -93,11 +94,14 @@ const description = `WC qui déborde, canalisation bouchée ? Intervention ${e.d
     <p class="stamp u-stamp m-only">Véhicule HYDROFLASH — visuel du marquage à venir · Fond&nbsp;: photo libre de droits</p>
   </section>
 
-  <!-- 2. EN ATTENDANT LE TECHNICIEN -->
+  <!-- 2. VOTRE PRIX MAINTENANT : calculateur (créneau détecté automatiquement) -->
+  <CalculateurPrix id="calc-urg" numero="02" titre="Votre prix," titreFin="maintenant." rappelHref="#rappel" rappelData fond="clair" />
+
+  <!-- 3. EN ATTENDANT LE TECHNICIEN -->
   <section class="sec u-wait" aria-labelledby="t-wait">
     <div class="wrap u-wait-grid">
       <div class="u-wait-aside">
-        <p class="sec-label"><span class="sl-n">02 — </span>En attendant</p>
+        <p class="sec-label"><span class="sl-n">03 — </span>En attendant</p>
         <h2 class="h2" id="t-wait">En attendant <em>le technicien</em></h2>
         <p class="u-note">Conseils de sécurité · informations générales</p>
       </div>
@@ -116,7 +120,7 @@ const description = `WC qui déborde, canalisation bouchée ? Intervention ${e.d
     <div class="wrap">
       <div class="sec-head u-flow-head">
         <div>
-          <p class="sec-label"><span class="sl-n">03 — </span>Votre appel</p>
+          <p class="sec-label"><span class="sl-n">04 — </span>Votre appel</p>
           <h2 class="h2" id="t-flow">Ce qui se passe <em>quand vous appelez</em></h2>
         </div>
       </div>
@@ -137,7 +141,7 @@ const description = `WC qui déborde, canalisation bouchée ? Intervention ${e.d
   <section class="sec u-cases" aria-labelledby="t-cases">
     <div class="wrap">
       <div class="u-cases-head">
-        <p class="sec-label"><span class="sl-n">04 — </span>Urgences</p>
+        <p class="sec-label"><span class="sl-n">05 — </span>Urgences</p>
         <h2 class="h2" id="t-cases">Urgences <em>prises en charge</em></h2>
       </div>
       <ul class="u-bento">
@@ -180,7 +184,7 @@ const description = `WC qui déborde, canalisation bouchée ? Intervention ${e.d
     <div class="wrap u-duo">
       <section class="u-price" aria-labelledby="t-price">
         <div class="u-price-head">
-          <p class="sec-label"><span class="sl-n">05 — </span>Prix</p>
+          <p class="sec-label"><span class="sl-n">06 — </span>Prix</p>
           <h2 class="h2" id="t-price">Prix&nbsp;: ce que nous annonçons <em>avant de venir</em></h2>
         </div>
         <div class="u-price-body">
@@ -189,13 +193,13 @@ const description = `WC qui déborde, canalisation bouchée ? Intervention ${e.d
             {factu && <li><svg class="ic" aria-hidden="true"><use href="#i-doc"/></svg><span>Règlement{factu === 'ok' && <>&nbsp;: {e.principeFacturation}</>}</span>{factu === 'tbc' && <Tbc />}</li>}
             <li class="u-tk-ok"><svg class="ic" aria-hidden="true"><use href="#i-moon"/></svg><span>Majoration&nbsp;:</span><span class="u-ok">annoncée d'avance</span></li>
           </ul>
-          {!PROD && <p class="u-rule">Aucun montant n'est affiché tant qu'il n'est pas validé par HYDROFLASH.</p>}
+          <p class="u-rule"><span><a href="#prix">Calculez votre prix exact</a> ou consultez la <a href="/tarifs/">grille tarifaire complète</a>.</span></p>
         </div>
       </section>
 
       <section class="u-zone zone-panel" id="zone" aria-labelledby="t-zone">
         <div class="zone-txt">
-          <p class="sec-label sec-label-nb"><span class="sl-n">06 — </span>Zone</p>
+          <p class="sec-label sec-label-nb"><span class="sl-n">07 — </span>Zone</p>
           <h2 class="h2" id="t-zone">Zone d'urgence</h2>
           <p class="lead">Nous intervenons en urgence en <strong>Seine-Maritime (76)</strong> et dans l'<strong>Eure (27)</strong>.</p>
           <p class="cp-q" id="cpu-q">Intervenez-vous chez moi&nbsp;?</p>
@@ -223,7 +227,7 @@ const description = `WC qui déborde, canalisation bouchée ? Intervention ${e.d
   <section class="sec faq-sec u-faq" aria-labelledby="t-faq">
     <div class="wrap faq-grid">
       <div class="faq-aside">
-        <p class="sec-label"><span class="sl-n">07 — </span>Questions</p>
+        <p class="sec-label"><span class="sl-n">08 — </span>Questions</p>
         <h2 class="h2" id="t-faq">Questions fréquentes <em>(urgence)</em></h2>
       </div>
       <div class="faq" data-faq-fold>

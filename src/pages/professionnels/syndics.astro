@@ -1,0 +1,105 @@
+---
+/* SYNDICS DE COPROPRIÉTÉ ET GESTIONNAIRES — angle « dossier prêt pour l'assemblée générale ».
+ * Uniquement des informations confirmées (src/data/entreprise.ts) ; le reste passe par <Tbc /> et disparaît en production.
+ * Calendrier : l'assemblée générale se réunit dans les six mois suivant la clôture de l'exercice (fiche INC),
+ * convocation au moins 21 jours avant (service-public.fr, F2615). Prix : entreprise.tarifs uniquement. */
+import Base from '../../layouts/Base.astro';
+import SousHero from '../../components/SousHero.astro';
+import Faq from '../../components/Faq.astro';
+import ContactCta from '../../components/ContactCta.astro';
+import Preuves from '../../components/Preuves.astro';
+import { FEUILLE_CONTENU, FEUILLE_BLOCS } from '../../lib/feuilles';
+import { schemaService } from '../../lib/schema';
+import { entreprise as e } from '../../data/entreprise';
+import { eur } from '../../lib/prix';
+import cssOrdi from '../../styles/pages/prestation-ordinateur.css?url';
+import cssMobile from '../../styles/pages/prestation-mobile.css?url';
+
+const dispo = e.disponibilite.libelle;
+const t = e.tarifs;
+const camera = t.prestations.find((p) => p.nom.startsWith('Inspection caméra avec'));
+const livrable = e.passageCamera.livrable.replace(/'/g, '’');
+const SOURCE_AG = 'https://www.inc-conso.fr/content/copropriete-quel-moment-lassemblee-generale-doit-elle-obligatoirement-se-reunir';
+const SOURCE_CONVOC = 'https://www.service-public.gouv.fr/particuliers/vosdroits/F2615';
+
+const description = `Syndics : passage caméra des colonnes, rapport PDF et devis prêts pour l’assemblée générale. Curage, détartrage et entretien ${dispo} (76, 27).`;
+
+type Info = { k: string; v: string; lien?: string };
+const infos: Info[] = [
+  ...(camera && camera.a !== null ? [{ k: 'Passage caméra avec rapport', v: `${eur(camera.a)} HT en zone A, jusqu’à 30 ml` }] : []),
+  { k: 'Inspection de plus de 30 ml', v: 'Sur devis' },
+  { k: 'Détartrage de colonne', v: 'Sur devis, après passage caméra' },
+  { k: 'Contrat d’entretien', v: e.contratEntretien },
+  { k: 'Urgences', v: `Intervention ${e.disponibilite.court}, majoration annoncée d’avance` },
+  { k: 'Documents remis', v: 'Compte rendu PDF par e‑mail' },
+  { k: 'Téléphone', v: e.telephone.affiche, lien: e.telephone.lien },
+];
+
+const faq = [
+  { q: 'Quand demander le devis pour qu’il soit voté en assemblée générale ?',
+    a: `Au moment où vous préparez l’ordre du jour. L’assemblée générale doit se réunir dans les six mois qui suivent la clôture de l’exercice, soit au plus tard le 30 juin pour un exercice calé sur l’année civile, et la convocation part au moins 21 jours avant. Un passage caméra fait quelques semaines avant vous donne l’état de la colonne et le devis à joindre à la convocation.` },
+  { q: 'Intervenez-vous dans les parties communes comme dans les logements ?',
+    a: 'Oui : colonnes, collecteurs, regards de cour et sous-sols, mais aussi évacuations privatives des logements. Les modalités d’accès (gardien, codes, clés, présence des occupants) sont à préciser lors de votre demande.' },
+  { q: 'Quels documents remettez-vous après une intervention ?',
+    a: 'Un compte rendu d’intervention complet, avec photos et schéma de principe, vous est remis par e-mail au format PDF. Une clé USB est disponible sur demande.' },
+  { q: 'Comment se planifie l’entretien des réseaux d’un immeuble ?',
+    a: `À partir d’un état des lieux (colonnes, collecteurs, regards, historique des bouchons), les interventions utiles et leur fréquence vous sont proposées, puis ajustées au fil des passages. En savoir plus sur <a href="/entretien-reseaux-assainissement/">l’entretien des réseaux d’assainissement</a>.` },
+];
+---
+<Base
+  titre="Syndics de copropriété : dossier caméra et devis pour l’AG | HYDROFLASH"
+  description={description}
+  feuilles={[FEUILLE_CONTENU, { ordi: cssOrdi, mobile: cssMobile }, FEUILLE_BLOCS]}
+  jsonld={schemaService('Assainissement pour syndics de copropriété', '/professionnels/syndics/', description)}
+>
+  <SousHero
+    ariane={[{ label: 'Professionnels et syndics', href: '/professionnels/' }, { label: 'Syndics et gestionnaires' }]}
+    surtitre="Syndics · Gestionnaires · Conseils syndicaux"
+    titre="Syndics de copropriété"
+    titreFin="Un dossier prêt pour votre assemblée générale."
+    intro={`Colonnes, collecteurs, regards de cour&nbsp;: HYDROFLASH inspecte, cure, détartre et entretient les réseaux de vos immeubles, <strong>${dispo}</strong>, et vous remet un compte rendu PDF avec photos à joindre à la convocation.`}
+    picto="syndic"
+  />
+
+  <section class="sec sec-sm pro-trace" aria-labelledby="t-ag">
+    <div class="wrap c-grid2">
+      <div>
+        <p class="sec-label">Le bon moment</p>
+        <h2 class="h2" id="t-ag">Avant l’assemblée générale, <em>pas après.</em></h2>
+        <div class="prose">
+          <p>L’assemblée générale doit se réunir dans les six mois qui suivent la clôture de l’exercice&nbsp;: <strong>au plus tard le 30&nbsp;juin</strong> pour un exercice calé sur l’année civile (<a href={SOURCE_AG} rel="noopener">source&nbsp;: INC</a>). La convocation part au moins 21&nbsp;jours avant la réunion (<a href={SOURCE_CONVOC} rel="noopener">service-public.fr</a>).</p>
+          <p>Un curage ou un détartrage de colonne se vote sur devis. Le préparer au moment de l’ordre du jour évite de repousser les travaux d’un an, et de payer entre-temps des débouchages d’urgence.</p>
+          <p>Avec un passage caméra préalable, le conseil syndical vote sur pièces&nbsp;: l’état réel de la colonne, photos à l’appui, et l’intervention qui en découle.</p>
+        </div>
+      </div>
+      <aside class="pr-infos c-sticky" aria-labelledby="t-infos">
+        <p class="pr-infos-t" id="t-infos">Pour votre dossier</p>
+        <dl>
+          {infos.map((i) => <div><dt>{i.k}</dt><dd>{i.lien ? <a href={i.lien}>{i.v}</a> : i.v}</dd></div>)}
+        </dl>
+        <a class="btn btn-call pr-infos-btn" href="#devis"><svg class="ic" aria-hidden="true"><use href="#i-doc"/></svg>Demander un devis pour l’AG</a>
+      </aside>
+    </div>
+  </section>
+
+  <section class="sec sec-sm on-dark pr-etapes" aria-labelledby="t-dossier">
+    <div class="wrap">
+      <div class="c-head">
+        <div><p class="sec-label">Ce que vous recevez</p><h2 class="h2" id="t-dossier">Un dossier <em>qui se vote.</em></h2></div>
+        <p class="lead">Tout ce dont le conseil syndical a besoin pour décider, sans réunion de plus.</p>
+      </div>
+      <ol class="steps-c reveal">
+        <li><h3>L’état des lieux en images</h3><p>Passage caméra des colonnes et des collecteurs. {livrable}</p></li>
+        <li><h3>Le devis détaillé</h3><p>Curage ou détartrage à prévoir, chiffré avant toute intervention, à joindre à la convocation.</p></li>
+        <li><h3>La fréquence d’entretien</h3><p>Une fréquence adaptée vous est conseillée après diagnostic, puis ajustée au fil des passages.</p></li>
+        <li><h3>L’intervention, le jour voulu</h3><p>Gardien, codes, clés, locaux techniques&nbsp;: les modalités d’accès sont convenues avec vous avant l’intervention.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <Preuves />
+
+  <Faq items={faq} intro={'Syndics et gestionnaires : les réponses aux questions que vous vous posez avant de faire appel à nous.'} />
+
+  <ContactCta label="Devis syndic" titreD={'Une assemblée générale à préparer ?'} titreDem="Demandez votre devis." titreM="Préparez votre AG." prestation="Passage caméra" />
+</Base>

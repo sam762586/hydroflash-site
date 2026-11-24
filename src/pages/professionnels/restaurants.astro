@@ -1,0 +1,117 @@
+---
+/* RESTAURANTS ET MÉTIERS DE BOUCHE — bac à graisse, conformité au règlement d'assainissement, traçabilité.
+ * Uniquement des informations confirmées (src/data/entreprise.ts) ; prix lus dans entreprise.tarifs.
+ * Règlement cité : règlement de service d'assainissement collectif de la Métropole Rouen Normandie
+ * (délibération du 18 décembre 2023). La restauration y est « assimilée domestique » (annexe I) ;
+ * prescriptions : annexe II, fiche « Activités de restauration » ; graisses et huiles : article 26.
+ * Ne pas citer les articles 57 à 63 : ils visent les eaux usées NON domestiques. */
+import Base from '../../layouts/Base.astro';
+import SousHero from '../../components/SousHero.astro';
+import Faq from '../../components/Faq.astro';
+import ContactCta from '../../components/ContactCta.astro';
+import Preuves from '../../components/Preuves.astro';
+import Tbc from '../../components/Tbc.astro';
+import { PROD } from '../../lib/env';
+import { FEUILLE_CONTENU, FEUILLE_BLOCS } from '../../lib/feuilles';
+import { schemaService } from '../../lib/schema';
+import { entreprise as e } from '../../data/entreprise';
+import { eur } from '../../lib/prix';
+import cssOrdi from '../../styles/pages/prestation-ordinateur.css?url';
+import cssMobile from '../../styles/pages/prestation-mobile.css?url';
+
+const dispo = e.disponibilite.libelle;
+const t = e.tarifs;
+const bac = t.prestations.find((p) => p.nom.startsWith('Pompage de petit bac'));
+const curageH = t.prestations.find((p) => p.cat === 'Curage' && p.unite === 'heure');
+const curageMl = t.prestations.find((p) => p.cat === 'Curage' && p.unite === 'ml');
+const REGLEMENT = 'https://metropole-rouen-normandie.fr/file-download/download/public/251254';
+const ARTICLE = '/conseils/bac-a-graisse-restaurant-obligations/';
+
+const description = `Restaurants : pompage du bac à graisse, retraitement inclus, documents de suivi remis à chaque passage, curage du branchement. ${dispo} (76, 27).`;
+
+type Info = { k: string; v: string; lien?: string };
+const infos: Info[] = [
+  ...(bac && bac.a !== null && bac.b !== null ? [{ k: 'Pompage de petit bac à graisse', v: `${eur(bac.a)} HT en zone A · ${eur(bac.b)} HT en zone B` }, { k: 'Compris', v: bac.detail }] : []),
+  ...(curageH && curageMl && curageH.a !== null && curageMl.a !== null ? [{ k: 'Curage du branchement', v: `${eur(curageH.a)} HT la première heure, puis ${eur(curageMl.a)} HT le mètre (zone A)` }] : []),
+  { k: 'Hors horaires', v: 'Majoration publiée : nuit, samedi, dimanche et jours fériés' },
+  { k: 'Documents remis', v: e.documentsPompage },
+  { k: 'Contrat d’entretien', v: e.contratEntretien },
+  { k: 'Téléphone', v: e.telephone.affiche, lien: e.telephone.lien },
+];
+
+const faq = [
+  { q: 'À quelle fréquence faire vidanger le bac à graisse ?',
+    a: `Le vrai critère n’est pas le calendrier mais l’épaisseur de la couche de graisse&nbsp;: quand elle dépasse environ 15 à 25 % de la hauteur utile du bac, la vidange s’impose. Dans la Métropole Rouen Normandie, le règlement d’assainissement fixe en plus un minimum d’une vidange et d’un nettoyage par an. Le détail dans notre article <a href="${ARTICLE}">Bac à graisse en restaurant</a>.` },
+  { q: 'Que dois-je conserver en cas de contrôle ?',
+    a: 'Les justificatifs d’évacuation ou d’élimination des graisses, que le règlement de la Métropole demande de tenir à la disposition de l’exploitant du réseau. Pour chaque vidange&nbsp;: la date, le volume pompé, le bordereau de suivi des déchets et le nom de l’entreprise intervenante. Nous vous remettons les documents de suivi après chaque pompage.' },
+  { q: 'Les bio-additifs remplacent-ils la vidange ?',
+    a: 'Non. Ils peuvent limiter les odeurs, mais ne font pas disparaître les graisses&nbsp;: ils les émulsionnent, et celles-ci repartent plus loin dans le réseau où elles se redéposent.' },
+  { q: 'Pouvez-vous intervenir en dehors du service ?',
+    a: `HYDROFLASH intervient ${dispo}, avec la majoration publiée dans notre <a href="/tarifs/">grille tarifaire</a>. Indiquez vos contraintes d’horaires lors de votre demande afin d’organiser l’intervention au moment le plus adapté.` },
+];
+---
+<Base
+  titre="Restaurants : bac à graisse, pompage et registre à jour | HYDROFLASH"
+  description={description}
+  feuilles={[FEUILLE_CONTENU, { ordi: cssOrdi, mobile: cssMobile }, FEUILLE_BLOCS]}
+  jsonld={schemaService('Entretien des bacs à graisse pour la restauration', '/professionnels/restaurants/', description)}
+>
+  <SousHero
+    ariane={[{ label: 'Professionnels et syndics', href: '/professionnels/' }, { label: 'Restaurants et métiers de bouche' }]}
+    surtitre="Restaurants · Traiteurs · Métiers de bouche"
+    titre="Restaurants et métiers de bouche"
+    titreFin="Un bac à graisse suivi, un registre à jour."
+    intro={`Pompage du bac à graisse avec retraitement des déchets inclus, documents de suivi remis à chaque passage, curage du branchement quand il est encrassé&nbsp;: HYDROFLASH intervient <strong>${dispo}</strong>, en dehors de votre service si vous le souhaitez.`}
+    picto="professionnel"
+  />
+
+  <section class="sec sec-sm pro-trace" aria-labelledby="t-regle">
+    <div class="wrap c-grid2">
+      <div>
+        <p class="sec-label">Ce que dit le règlement</p>
+        <h2 class="h2" id="t-regle">Un bac entretenu, <em>et la preuve qu’il l’est.</em></h2>
+        <div class="prose">
+          <p>Dans la Métropole Rouen Normandie, la restauration fait partie des activités dites «&nbsp;assimilées domestiques&nbsp;». Le <a href={REGLEMENT} rel="noopener">règlement de service d’assainissement collectif</a> leur consacre une fiche (annexe&nbsp;II) qui impose&nbsp;:</p>
+          <ul>
+            <li>un dispositif de prétraitement de type bac dégraisseur, <strong>dimensionné</strong> pour la pollution de votre activité&nbsp;;</li>
+            <li>des vidanges aussi souvent que nécessaire, et <strong>au minimum une vidange et un nettoyage par an</strong> par une société agréée&nbsp;;</li>
+            <li>les <strong>justificatifs d’évacuation ou d’élimination</strong> tenus à la disposition de l’exploitant du réseau&nbsp;;</li>
+            <li>la récupération des huiles alimentaires usagées par une société agréée, avec un stockage dédié.</li>
+          </ul>
+          <p>Le même règlement interdit de déverser graisses et huiles de friture en quantité susceptible d’obstruer les branchements ou les collecteurs (article&nbsp;26). Hors de la Métropole, c’est le règlement de votre commune ou de votre intercommunalité qui s’applique.</p>
+          <p>Concrètement, gardez pour chaque passage <strong>la date, le volume pompé et le bordereau de suivi des déchets</strong>. Après chaque pompage, nous vous remettons les documents de suivi, à conserver dans votre registre.</p>
+          {!PROD && <p><Tbc label="« société agréée » au sens du règlement : préciser l’agrément ou la déclaration dont disposera HYDROFLASH avant la mise en ligne" /></p>}
+          <p class="note">Pour aller plus loin&nbsp;: <a href={ARTICLE}>Bac à graisse en restaurant, ce que la réglementation impose vraiment</a>.</p>
+        </div>
+      </div>
+      <aside class="pr-infos c-sticky" aria-labelledby="t-infos">
+        <p class="pr-infos-t" id="t-infos">Tarifs et conditions</p>
+        <dl>
+          {infos.map((i) => <div><dt>{i.k}</dt><dd>{i.lien ? <a href={i.lien}>{i.v}</a> : i.v}</dd></div>)}
+        </dl>
+        <a class="btn btn-call pr-infos-btn" href="#devis"><svg class="ic" aria-hidden="true"><use href="#i-doc"/></svg>Demander un passage</a>
+      </aside>
+    </div>
+  </section>
+
+  <section class="sec sec-sm on-dark pr-etapes" aria-labelledby="t-passage">
+    <div class="wrap">
+      <div class="c-head">
+        <div><p class="sec-label">Un passage</p><h2 class="h2" id="t-passage">Du pompage <em>au registre.</em></h2></div>
+        <p class="lead">Une intervention organisée autour de votre service, pas l’inverse.</p>
+      </div>
+      <ol class="steps-c reveal">
+        <li><h3>Le créneau</h3><p>Vous indiquez vos contraintes d’horaires&nbsp;: nous intervenons au moment le plus adapté, majoration annoncée d’avance si c’est hors des heures ouvrées.</p></li>
+        <li><h3>Le pompage</h3><p>Vidange du bac, retraitement des déchets inclus.</p></li>
+        <li><h3>Le branchement</h3><p>S’il est encrassé, nous vous le disons et vous donnons le prix du curage avant de commencer&nbsp;: rien ne démarre sans votre accord.</p></li>
+        <li><h3>Les documents</h3><p>Les documents de suivi des déchets vous sont remis, à conserver dans votre registre.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <Preuves />
+
+  <Faq items={faq} intro={'Restaurateurs : les réponses aux questions que vous vous posez sur le bac à graisse.'} />
+
+  <ContactCta label="Devis restaurant" titreD={'Un bac à graisse à faire vidanger ?'} titreDem="Demandez un passage." titreM="Appelez HYDROFLASH." prestation="Pompage" />
+</Base>
