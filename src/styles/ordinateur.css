@@ -153,6 +153,10 @@ main { position: relative; }
 .h1b em { font-style: normal; font-weight: var(--w-black); font-stretch: var(--cond-xx); color: var(--o); letter-spacing: -.01em; }
 .hero .lead { margin-top: 26px; max-width: 35em; color: #D8DBE0; }
 .hero-ctas { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 36px; }
+/* Bandeau « Particuliers : tarif unique » (décision du 24/11/2026, rappelée en page d'accueil le 27/11/2026) */
+.tarif-unique { display: flex; align-items: center; gap: 12px; max-width: 35em; margin-top: 22px; padding: 14px 18px; border: 1.5px solid var(--o); border-radius: 14px; background: rgba(242, 106, 27, .1); color: #fff; font-size: 17px; line-height: 1.4; }
+.tarif-unique .ic { width: 26px; height: 26px; color: var(--o); }
+.tarif-unique b { color: var(--o); font-weight: 800; }
 .hero-micro { display: flex; flex-wrap: wrap; gap: 10px 26px; margin-top: 26px; color: var(--grey-d); font-family: var(--f-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; font-weight: 500; }
 .hero-micro li { display: inline-flex; align-items: center; gap: 8px; }
 .hero-micro b { color: #fff; font-weight: 600; }

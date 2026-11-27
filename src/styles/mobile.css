@@ -141,6 +141,9 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 .hero .lead { margin: 14px 0 16px; color: #D9DCE0; font-size: 16px; line-height: 1.47; }
 .hero-ctas { display: flex; flex-direction: column; gap: 10px; }
 .hero-ctas .btn-ghost { --h: 50px; }
+.tarif-unique { display: flex; align-items: flex-start; gap: 10px; margin: 12px 0 0; padding: 12px 14px; border: 1.5px solid var(--o); border-radius: 14px; background: rgba(20, 22, 26, .78); color: #fff; font-size: 15.5px; line-height: 1.4; }
+.tarif-unique .ic { width: 22px; height: 22px; margin-top: 1px; color: var(--o); flex: none; }
+.tarif-unique b { color: var(--o); font-weight: 800; }
 .aud { display: flex; gap: 8px; margin-top: 12px; }
 .aud-lbl { display: none; }
 .aud-l { flex: 1 1 0; min-width: 0; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 50px; padding: 0 10px; border-radius: 999px; border: 1.5px solid #4A4F57; text-decoration: none; font-weight: 700; font-size: 16px; color: #fff; background: rgba(11, 12, 14, .55); }

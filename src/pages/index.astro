@@ -59,6 +59,9 @@ const altVehicule = `Véhicule d'intervention HYDROFLASH : pick-up orange à cab
           <a class="btn btn-call btn-xl hero-call" href={e.telephone.lien}><span class="ic-round"><svg class="ic" aria-hidden="true"><use class="u-d" href="#i-tel"/><use class="u-m" href="#i-tel-f"/></svg></span><span class="btn-txt"><span class="l1">Appeler HYDROFLASH</span><span class="l2">{tel}</span></span></a>
           <a class="btn btn-ghost btn-xl" href="/contact/#devis"><svg class="ic m-only" aria-hidden="true"><use href="#i-doc"/></svg>Demander un devis <svg class="ic d-only" aria-hidden="true"><use href="#i-ar"/></svg></a>
         </div>
+        {e.sansMajorationParticuliers && (
+          <p class="tarif-unique"><svg class="ic" aria-hidden="true"><use href="#i-moon"/></svg><span><b>Particuliers&nbsp;: tarif unique</b>, sans majoration de nuit, de week-end ni de jours fériés.</span></p>
+        )}
         <div class="aud" role="group" aria-label="Vous êtes">
           <span class="mono aud-lbl" aria-hidden="true">Vous êtes</span>
           <a class="aud-l is-on" href="/" aria-current="page"><img class="aud-ic" src="/img/pictos/particulier-blanc.svg" alt="" width="26" height="26">Particulier</a>
