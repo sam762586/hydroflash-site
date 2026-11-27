@@ -1,7 +1,8 @@
 ---
 /* PROFESSIONNELS ET SYNDICS — syndics de copropriété, gestionnaires immobiliers, commerces et restauration.
  * Uniquement des informations confirmées (src/data/entreprise.ts) ; le reste passe par <Tbc /> et disparaît en production.
- * Devis détaillé = action principale dans le contenu (CONVERSION_UX § 4.1, exception « professionnels »). */
+ * Devis détaillé = action principale dans le contenu (CONVERSION_UX § 4.1, exception « professionnels »).
+ * Grille HT des professionnels (#tarifs-pros) depuis le 27/11/2026 : prix de base en semaine, source unique entreprise.tarifs. */
 import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import SousHero from '../../components/SousHero.astro';
@@ -15,6 +16,8 @@ import { services, nbPrestationsLettres } from '../../data/services';
 import { entreprise as e } from '../../data/entreprise';
 import cssOrdi from '../../styles/pages/prestation-ordinateur.css?url';
 import cssMobile from '../../styles/pages/prestation-mobile.css?url';
+import tarifsOrdi from '../../styles/pages/tarifs-ordinateur.css?url';
+import tarifsMobile from '../../styles/pages/tarifs-mobile.css?url';
 import photoGants from '../../assets/photos/gants-technicien.webp';
 
 const zoneEn = e.zone.departements.map((z) => `${/^[AEIOUYÉÈ]/i.test(z.nom) ? `dans l’${z.nom}` : `en ${z.nom}`} (${z.code})`).join(' et ');
@@ -24,6 +27,20 @@ const livrable = e.passageCamera.livrable.replace(/'/g, '’');
 const minuscule = (s: string) => s.charAt(0).toLowerCase() + s.slice(1);
 const tbcHtml = (label: string) => (PROD ? '' : ` <span class="tbc" data-tbc>${label}</span>`);
 const avecDevis = ', avec un devis avant toute intervention';
+
+/* Grille HT des professionnels : prestations du site + lignes réservées aux pros (Bilan réseaux après l'inspection caméra) */
+const t = e.tarifs;
+/** 1 234,50 € (même écriture que la page Tarifs) */
+const eur = (v: number) =>
+  v.toLocaleString('fr-FR', { minimumFractionDigits: v % 1 ? 2 : 0, maximumFractionDigits: 2 }) + ' €';
+const lignesPro = t.prestations.flatMap((p) => (p.nom === 'Inspection caméra avec rapport' ? [p, t.prestationsPro[0]] : [p]));
+lignesPro.push(...t.prestationsPro.slice(1));
+const categoriesPro: { nom: string; lignes: typeof lignesPro }[] = [];
+for (const p of lignesPro) {
+  const derniere = categoriesPro[categoriesPro.length - 1];
+  if (derniere && derniere.nom === p.cat) derniere.lignes.push(p);
+  else categoriesPro.push({ nom: p.cat, lignes: [p] });
+}
 
 const description = `Colonnes, parties communes, cuisines : débouchage, curage, détartrage, passage caméra et entretien des réseaux pour syndics et pros, ${dispo} (76, 27).`;
 
@@ -67,7 +84,7 @@ const faq = [
 <Base
   titre="Syndics, gestionnaires et professionnels | HYDROFLASH"
   description={description}
-  feuilles={[FEUILLE_CONTENU, { ordi: cssOrdi, mobile: cssMobile }]}
+  feuilles={[FEUILLE_CONTENU, { ordi: cssOrdi, mobile: cssMobile }, { ordi: tarifsOrdi, mobile: tarifsMobile }]}
   jsonld={schemaService('Assainissement pour syndics, gestionnaires et professionnels', '/professionnels/', description)}
 >
   <SousHero
@@ -143,6 +160,45 @@ const faq = [
           </a></li>
         ))}
       </ul>
+    </div>
+  </section>
+
+  <section class="sec sec-sm" id="tarifs-pros" aria-labelledby="t-tarifs-pros">
+    <div class="wrap">
+      <div class="c-head">
+        <div><p class="sec-label">Tarifs</p><h2 class="h2" id="t-tarifs-pros">Nos prix <em>hors taxes</em></h2></div>
+        <p class="lead">Prix HT par prestation, {t.horairesPro}. Zone&nbsp;A&nbsp;: {t.zones[0].libelle}&nbsp;; zone&nbsp;B&nbsp;: {minuscule(t.zones[1].libelle)}.</p>
+      </div>
+      <table class="tf-tab">
+        <caption>Grille tarifaire HYDROFLASH — prix HT pour les professionnels</caption>
+        <thead>
+          <tr>
+            <th scope="col">Prestation</th>
+            <th scope="col">Unité</th>
+            <th scope="col">Zone A</th>
+            <th scope="col">Zone B</th>
+          </tr>
+        </thead>
+        <tbody>
+          {categoriesPro.map((c) => (
+            <>
+              <tr class="tf-cat"><td colspan="4">{c.nom}</td></tr>
+              {c.lignes.map((p) => (
+                <tr>
+                  <th scope="row">{p.nom}<span class="tf-d">{p.detail}</span></th>
+                  <td class="tf-u">{p.unite}</td>
+                  {[{ v: p.a, l: 'Zone A' }, { v: p.b, l: 'Zone B' }].map((z) => (
+                    <td class="tf-p" data-l={z.l}>{z.v === null ? 'Sur devis' : <>{eur(z.v)} HT</>}</td>
+                  ))}
+                </tr>
+              ))}
+            </>
+          ))}
+        </tbody>
+      </table>
+      <p class="note">{t.majorationsPro}</p>
+      <p class="note">{t.regleDemiHeure} {t.notesPro.join(' ')}</p>
+      <p class="note">{t.tvaPro}</p>
     </div>
   </section>
 

@@ -2,7 +2,7 @@
 /* SYNDICS DE COPROPRIÉTÉ ET GESTIONNAIRES — angle « dossier prêt pour l'assemblée générale ».
  * Uniquement des informations confirmées (src/data/entreprise.ts) ; le reste passe par <Tbc /> et disparaît en production.
  * Calendrier : l'assemblée générale se réunit dans les six mois suivant la clôture de l'exercice (fiche INC),
- * convocation au moins 21 jours avant (service-public.fr, F2615). Aucun prix affiché : tarifs pros sur devis (démarchage avec plaquettes). */
+ * convocation au moins 21 jours avant (service-public.fr, F2615). Prix : grille HT sur la page Professionnels (depuis le 27/11/2026). */
 import Base from '../../layouts/Base.astro';
 import SousHero from '../../components/SousHero.astro';
 import Faq from '../../components/Faq.astro';
@@ -24,7 +24,7 @@ const description = `Syndics : passage caméra des colonnes, rapport PDF et devi
 
 type Info = { k: string; v: string; lien?: string };
 const infos: Info[] = [
-  { k: 'Tarifs', v: 'Sur devis, adaptés à votre parc' },
+  { k: 'Tarifs', v: 'Grille HT sur la page Professionnels\u00a0; entretien de votre parc sur devis' },
   { k: 'Passage caméra', v: 'Compte rendu PDF avec photos' },
   { k: 'Détartrage de colonne', v: 'Sur devis, après passage caméra' },
   { k: 'Pompes de relevage', v: 'Entretien des postes de parkings et sous-sols, sur devis' },

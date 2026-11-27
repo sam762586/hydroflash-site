@@ -1,6 +1,6 @@
 ---
 /* RESTAURANTS ET MÉTIERS DE BOUCHE — bac à graisse, conformité au règlement d'assainissement, traçabilité.
- * Uniquement des informations confirmées (src/data/entreprise.ts). Aucun prix affiché : tarifs pros sur devis.
+ * Uniquement des informations confirmées (src/data/entreprise.ts). Prix : grille HT sur la page Professionnels (depuis le 27/11/2026).
  * Règlement cité : règlement de service d'assainissement collectif de la Métropole Rouen Normandie
  * (délibération du 18 décembre 2023). La restauration y est « assimilée domestique » (annexe I) ;
  * prescriptions : annexe II, fiche « Activités de restauration » ; graisses et huiles : article 26.
@@ -29,7 +29,7 @@ type Info = { k: string; v: string; lien?: string };
 const infos: Info[] = [
   { k: 'Bac à graisse', v: 'Pompage de soulagement jusqu’à 1\u00a0m³, sur devis' },
   { k: 'Curage du branchement', v: 'Haute pression, quand il est encrassé' },
-  { k: 'Tarifs', v: 'Sur devis, y compris en dehors des heures ouvrées' },
+  { k: 'Tarifs', v: 'Grille HT sur la page Professionnels\u00a0; hors heures ouvrées, majoration annoncée avant l\u2019intervention' },
   { k: 'Documents remis', v: e.documentsPompage },
   { k: 'Contrat d’entretien', v: e.contratEntretien },
   { k: 'Téléphone', v: e.telephone.affiche, lien: e.telephone.lien },
