@@ -153,6 +153,17 @@ main { position: relative; }
 .h1b em { font-style: normal; font-weight: var(--w-black); font-stretch: var(--cond-xx); color: var(--o); letter-spacing: -.01em; }
 .hero .lead { margin-top: 26px; max-width: 35em; color: #D8DBE0; }
 .hero-ctas { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 36px; }
+/* Bandeau « Particuliers : tarif unique » (décision du 24/11/2026, rappelée en page d'accueil le 27/11/2026) */
+.tarif-unique { position: relative; display: flex; align-items: center; gap: 16px; width: fit-content; max-width: 100%; margin-top: 24px; padding: 10px 24px 10px 10px; border: 2px solid var(--o); border-radius: 18px; background: rgba(242, 106, 27, .12); color: #fff; }
+.tarif-unique::before { content: ""; position: absolute; inset: -2px; border-radius: inherit; border: 3px solid var(--o); opacity: 0; pointer-events: none; }
+.tu-badge { position: relative; overflow: hidden; flex: none; display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 108px; height: 70px; padding: 0 12px; border-radius: 12px; background: var(--o); color: var(--ink); line-height: 1; }
+.tu-badge b { font-family: var(--f-display); font-size: 34px; font-weight: 900; }
+.tu-badge span { margin-top: 4px; font-family: var(--f-mono); font-size: 10.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.tu-badge::after { content: ""; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, .6) 50%, transparent 65%); transform: translateX(-130%); }
+.tu-txt { display: flex; flex-direction: column; gap: 3px; }
+.tu-txt b { font-size: 21px; font-weight: 800; line-height: 1.2; }
+.tu-txt em { font-style: normal; color: var(--o); }
+.tu-txt span { font-size: 16.5px; line-height: 1.35; color: #D8DBE0; }
 .hero-micro { display: flex; flex-wrap: wrap; gap: 10px 26px; margin-top: 26px; color: var(--grey-d); font-family: var(--f-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; font-weight: 500; }
 .hero-micro li { display: inline-flex; align-items: center; gap: 8px; }
 .hero-micro b { color: #fff; font-weight: 600; }
@@ -470,6 +481,8 @@ main { position: relative; }
   .steps-svg .core { animation: flow 1.8s linear infinite; }
   .truck .glow { animation: beacon 1.6s ease-in-out infinite; }
   .pulse::after { animation: ping 2s ease-out infinite; }
+  .tarif-unique::before { animation: tu-onde 2.2s ease-out infinite; }
+  .tu-badge::after { animation: tu-reflet 4.4s ease-in-out 1s infinite; }
   /* Glissement seul (pas d'opacité) : le contraste du texte reste toujours conforme */
   .anim .reveal { transform: translateY(26px); transition: transform .7s cubic-bezier(.2, .7, .2, 1); }
   .anim .reveal.in { transform: none; }
@@ -477,6 +490,8 @@ main { position: relative; }
 @keyframes flow { to { stroke-dashoffset: -88; } }
 @keyframes beacon { 0%, 100% { opacity: .25; } 50% { opacity: .8; } }
 @keyframes ping { 0% { transform: scale(.6); opacity: .7; } 100% { transform: scale(1.8); opacity: 0; } }
+@keyframes tu-onde { 0% { transform: scale(1); opacity: .9; } 100% { transform: scale(1.03, 1.22); opacity: 0; } }
+@keyframes tu-reflet { 0% { transform: translateX(-130%); } 35%, 100% { transform: translateX(130%); } }
 
 /* ================= TABLETTE ET PETITS ORDINATEURS (701 → 1400 px) ================= */
 @media (max-width: 1400px) and (min-width: 1241px) {
