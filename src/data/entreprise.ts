@@ -15,18 +15,19 @@ export const entreprise = {
   email: 'contact@hydroflash.fr',
   disponibilite: { libelle: '24\u00a0h/24, 7\u00a0j/7', court: '24\u00a0h/24 · 7\u00a0j/7' }, // espaces insécables
   /** Décision du 24/11/2026 : PARTICULIERS = même prix à toute heure (aucune majoration la nuit, le week-end ni
-      les jours fériés). Professionnels (syndics, cabinets immobiliers, entreprises) : AUCUN PRIX PRO SUR LE SITE (démarchage
-      direct avec plaquettes et devis ; majorations hors heures ouvrées). Ne jamais écrire « sans majoration » sans
+      les jours fériés). Professionnels (syndics, cabinets immobiliers, entreprises) : grille HT affichée sur la page
+      Professionnels depuis le 27/11/2026 (prix de base en semaine ; majorations hors heures ouvrées annoncées avant
+      l'intervention, taux non publiés). Ne jamais écrire « sans majoration » sans
       préciser « pour les particuliers » (pratique trompeuse, y compris envers un pro). */
   sansMajorationParticuliers: true,
 
   /** Grille tarifaire HYDROFLASH (confirmée le 19/11/2026, mise à jour le 24/11/2026 : débouchage manuel 110/135 € HT,
       hydrocureur 227,27/257,27 € HT soit 250 € TTC à 10 % en zone A, caméra sans rapport et bac à graisse retirés,
       entretien de pompe de relevage ajouté sur devis). Prix HT, base de calcul des prix TTC PARTICULIERS affichés
-      sur le site (valables à toute heure). Les montants HT ne sont jamais affichés : pas de prix pros sur le site. */
+      sur le site (valables à toute heure), et grille HT des professionnels (page Professionnels, depuis le 27/11/2026). */
   tarifs: {
     /** Phrase affichée là où un professionnel cherche un prix (tarifs, calculateur, pages pros). */
-    tarifsPro: 'Professionnels (syndics, cabinets immobiliers, entreprises)\u00a0: tarifs sur devis.',
+    tarifsPro: 'Professionnels (syndics, cabinets immobiliers, entreprises)\u00a0: grille HT dédiée.',
     tvaPct: 20,
     /** TVA à 10 % (CGI, art. 279-0 bis) : débouchage, détartrage et curage de canalisations, curage de réseaux
         privés, nettoyage de bacs à graisse (BOFiP BOI-ANNX-000210 du 31/07/2024), dans des LOCAUX D'HABITATION
@@ -61,6 +62,17 @@ export const entreprise = {
       { cat: 'Pompe de relevage', nom: 'Entretien de pompe de relevage',        unite: '—',       a: null, b: null, tvaReduite: true, detail: 'Sur devis, selon le poste\u00a0: nombre de pompes, volume de la cuve, accès.' },
       { cat: 'Divers',            nom: 'Diagnostic ou déplacement seul',        unite: 'forfait', a: 125,  b: 145,  detail: 'Lorsque l\u2019intervention s\u2019avère impossible\u00a0: 1\u00a0h et trajet inclus. 30\u00a0% déduits de la facture si une intervention est réalisée dans les 30\u00a0jours.' },
     ],
+    /** Lignes réservées aux professionnels : grille HT de la page Professionnels et barème de la plaquette.
+        Bilan réseaux = expertise ITV à la journée, sur devis (24/11 et 27/11/2026) ; trappe de visite 20 € HT (24/11/2026). */
+    prestationsPro: [
+      { cat: 'Inspection caméra', nom: 'Bilan réseaux',                               unite: 'journée', a: null, b: null, detail: 'Expertise ITV des réseaux de l\u2019immeuble, avec rapport.' },
+      { cat: 'Fournitures',       nom: 'Trappe de visite PVC \u00d8\u00a080, 100 ou 125', unite: 'pièce',   a: 20,   b: 20,   detail: 'Fournie et posée si nécessaire.' },
+    ],
+    /** Professionnels : prix de base en semaine ; hors heures ouvrées, majoration selon le créneau (taux non publiés). */
+    horairesPro: 'en semaine, du lundi au vendredi, de 8\u00a0h à 18\u00a0h',
+    majorationsPro: 'En dehors de ces horaires (soir, nuit, samedi, dimanche et jours fériés), une majoration s\u2019applique selon le créneau\u00a0: elle est annoncée avant l\u2019intervention et figure sur le devis.',
+    notesPro: ['Inspection caméra au-delà de 30\u00a0ml\u00a0: sur devis.', 'Technicien supplémentaire\u00a0: facturé selon les mêmes modalités.'],
+    tvaPro: 'Prix hors taxes. TVA en sus\u00a0: 20\u00a0%, ou 10\u00a0% pour le débouchage, le curage, le détartrage et l\u2019entretien des réseaux de locaux d\u2019habitation achevés depuis plus de deux ans (mention certifiée sur le devis ou la facture).',
     regleDemiHeure: 'Au-delà de la première heure incluse, toute demi-heure entamée est facturée 50\u00a0% du prix de la prestation.',
   },
   rappel: 'immédiat', // demande « Être rappelé »

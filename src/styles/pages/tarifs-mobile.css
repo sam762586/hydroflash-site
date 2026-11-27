@@ -13,7 +13,8 @@
 .tf-tab tr { padding: 14px 0; border-bottom: 1px solid var(--line); }
 .tf-tab .tf-cat { padding: 18px 0 2px; border-bottom: none; }
 .tf-tab .tf-cat td { font: 800 12px/1.3 var(--f-display); font-stretch: 85%; letter-spacing: .08em; text-transform: uppercase; color: var(--o-text); }
-.tf-tab tbody th { font-size: 17px; font-weight: 700; line-height: 1.3; color: var(--ink2); }
+.tf-tab tbody th { font-size: 17px; font-weight: 700; line-height: 1.3; color: var(--ink2); text-align: left; }
+.tf-tab + .note { margin-top: 16px; } .tf-tab ~ .note + .note { margin-top: 8px; }
 .tf-tab .tf-p { margin-top: 6px; font-size: 16.5px; font-weight: 700; font-variant-numeric: tabular-nums; }
 .tf-tab .tf-p::before { content: attr(data-l) " : "; font-weight: 500; color: var(--grey); }
 .tf-tab .tf-ttc { font-weight: 500; color: var(--grey); }
